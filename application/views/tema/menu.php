@@ -1,11 +1,11 @@
 <!--sidebar-menu-->
 <nav id="sidebar">
     <div id="newlog">
-        <div class="icon2">
-            <!--<img src="<?php echo base_url() ?>assets/img/logoprimeiro.png">-->
-        </div>
+        <!--<div class="icon2">
+            <img src="<?php echo base_url() ?>assets/img/logoprimeiro.png">
+        </div>-->
         <div class="title1">
-            <?= $configuration['app_theme'] == 'white' ||  $configuration['app_theme'] == 'whitegreen' ? '<img src="' . base_url() . 'assets/img/logoprimeiro.png">' : '<img src="' . base_url() . 'assets/img/logoprimeiro.png">'; ?>
+            <?= $configuration['app_theme'] == 'white' ||  $configuration['app_theme'] == 'whitegreen' ? '<img src="' . base_url() . 'assets/img/logo_mam_menu.jpeg">' : '<img src="' . base_url() . 'assets/img/logo_mam_menu.jpeg">'; ?>
         </div>
     </div>
     <a href="#" class="visible-phone">
@@ -45,7 +45,7 @@
                         echo 'active';
                     }; ?>">
                         <a class="tip-bottom" title="" href="<?= site_url('clientes') ?>"><i class='bx bx-user iconX'></i>
-                            <span class="title">Cliente / Fornecedor</span>
+                            <span class="title">Clientes</span>
                             <span class="title-tooltip">Clientes</span>
                         </a>
                     </li>
@@ -73,7 +73,7 @@
                     </li>
                 <?php } ?>
 
-                <!--<?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vVenda')) { ?>
+                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vVenda')) { ?>
                     <li class="<?php if (isset($menuVendas)) {
                         echo 'active';
                     }; ?>">
@@ -82,15 +82,15 @@
                             <span class="title-tooltip">Vendas</span>
                         </a>
                     </li>
-                <?php } ?>-->
+                <?php } ?>
 
                 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) { ?>
-                    <li class="<?php if (isset($menuOs)) {
+                    <li class="<?php if (isset($menuProspeccoes)) {
                         echo 'active';
                     }; ?>">
-                        <a class="tip-bottom" title="" href="<?= site_url('os') ?>"><i class='bx bx-file iconX'></i>
-                            <span class="title">Ordens de Serviço</span>
-                            <span class="title-tooltip">Ordens</span>
+                        <a class="tip-bottom" title="" href="<?= site_url('prospeccoes') ?>"><i class='bx bx-file iconX'></i>
+                            <span class="title">Prospecções</span>
+                            <span class="title-tooltip">Prospecções</span>
                         </a>
                     </li>
                 <?php } ?>

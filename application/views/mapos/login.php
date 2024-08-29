@@ -53,11 +53,11 @@
             <div class="card">
               <div class="content">
                 <div id="newlog">
-                  <div class="icon2">
-                    <!--<img src="<?php echo base_url() ?>assets/img/logoprimeiro.png">-->
-                  </div>
+                  <!--<div class="icon2">
+                    <img src="<?php echo base_url() ?>assets/img/logoprimeiro.png">
+                  </div>-->
                   <div class="title01">
-                    <?= '<img src="' . base_url() . 'assets/img/logoprimeiro.png">'; ?>
+                    <?= '<img src="' . base_url() . 'assets/img/logo_mam_login.jpeg">'; ?>
                   </div>
                 </div>
                 <!--<div id="mcell">Versão: <?= $this->config->item('app_version'); ?></div>-->

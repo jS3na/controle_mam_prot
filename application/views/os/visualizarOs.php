@@ -130,7 +130,7 @@
                                 <?php if ($result->dataInicial != null) { ?>
                                     <tr>
                                         <td>
-                                            <b>STATUS OS: </b><br>
+                                            <b>STATUS DA PROSPCÇÃO: </b><br>
                                             <?php echo $result->status ?>
                                         </td>
 

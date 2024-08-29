@@ -16,7 +16,7 @@
                 <a href="<?= base_url() ?>index.php/clientes/adicionar" class="button btn btn-mini btn-success"
                     style="max-width: 165px">
                     <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span class="button__text2">
-                        Cliente / Fornecedor
+                        Clientes
                     </span>
                 </a>
             </div>
@@ -42,7 +42,7 @@
                 <thead>
                     <tr>
                         <th>Cod.</th>
-                        <th>Nome</th>
+                        <th>Cliente</th>
                         <th>Contato</th>
                         <th>CPF/CNPJ</th>
                         <th>Telefone</th>
