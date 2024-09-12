@@ -10,6 +10,9 @@
             </span>
             <h5>Cobranças</h5>
     </div>
+
+    <h1>EM MANUTENÇÃO</h1>
+    <?php /* ?>
     <div class="widget-box">
         <h5 style="padding: 3px 0"></h5>
         <div class="widget-content nopadding tab-content">
@@ -130,6 +133,7 @@
             </div>
         </form>
     </div>
+    <?php */ ?>
 </div>
     <script type="text/javascript">
         $(document).ready(function() {

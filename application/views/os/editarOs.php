@@ -13,7 +13,7 @@
         <div class="widget-box">
             <div class="widget-title" style="margin: -20px 0 0">
                 <span class="icon"><i class="fas fa-diagnoses"></i></span>
-                <h5>Editar Ordem de Serviço</h5>
+                <h5>Editar O.S</h5>
                 <div class="buttons">
                     <?php if ($result->faturado == 0) { ?>
                         <a href="#modal-faturar" id="btn-faturar" role="button" data-toggle="modal" class="button btn btn-mini btn-danger">
@@ -43,7 +43,7 @@
                     </div>
                     <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eOs')) {
                         $this->load->model('os_model');
-                        $zapnumber = preg_replace("/[^0-9]/", "", $result->celular_cliente);
+                        $zapnumber = preg_replace("/[^0-9]/", "", $result->telefone_cliente);
                         $troca = [$result->nomeCliente, $result->idOs, $result->status, 'R$ ' . ($result->desconto != 0 && $result->valor_desconto != 0 ? number_format($result->valor_desconto, 2, ',', '.') : number_format($totalProdutos + $totalServico, 2, ',', '.')), strip_tags($result->descricaoProduto), ($emitente ? $emitente->nome : ''), ($emitente ? $emitente->telefone : ''), strip_tags($result->observacoes), strip_tags($result->defeito), strip_tags($result->laudoTecnico), date('d/m/Y', strtotime($result->dataFinal)), date('d/m/Y', strtotime($result->dataInicial)), $result->garantia . ' dias'];
                         $texto_de_notificacao = $this->os_model->criarTextoWhats($texto_de_notificacao, $troca);
                         if (!empty($zapnumber)) {
@@ -60,7 +60,7 @@
             <div class="widget-content nopadding tab-content">
                 <div class="span12" id="divProdutosServicos" style=" margin-left: 0">
                     <ul class="nav nav-tabs">
-                        <li class="active" id="tabDetalhes"><a href="#tab1" data-toggle="tab">Detalhes da OS</a></li>
+                        <li class="active" id="tabDetalhes"><a href="#tab1" data-toggle="tab">Detalhes da O.S</a></li>
                         <li id="tabDesconto"><a href="#tab2" data-toggle="tab">Desconto</a></li>
                         <li id="tabProdutos"><a href="#tab3" data-toggle="tab">Produtos</a></li>
                         <li id="tabServicos"><a href="#tab4" data-toggle="tab">Serviços</a></li>
@@ -73,7 +73,7 @@
                                 <form action="<?php echo current_url(); ?>" method="post" id="formOs">
                                     <?php echo form_hidden('idOs', $result->idOs) ?>
                                     <div class="span12" style="padding: 1%; margin-left: 0">
-                                        <h3>N° OS: <?php echo $result->idOs; ?></h3>
+                                        <h3>O.S de N°: <?php echo $result->idOs; ?></h3>
                                         <div class="span6" style="margin-left: 0">
                                             <label for="cliente">Cliente<span class="required">*</span></label>
                                             <input id="cliente" class="span12" type="text" name="cliente" value="<?php echo $result->nomeCliente ?>" />
@@ -81,7 +81,7 @@
                                             <input id="valor" type="hidden" name="valor" value="" />
                                         </div>
                                         <div class="span6">
-                                            <label for="tecnico">Provedor / Responsável<span class="required">*</span></label>
+                                            <label for="tecnico">Provedor<span class="required">*</span></label>
                                             <input id="tecnico" class="span12" type="text" name="tecnico" value="<?php echo $result->nome ?>" />
                                             <input id="usuarios_id" class="span12" type="hidden" name="usuarios_id" value="<?php echo $result->usuarios_id ?>" />
                                         </div>
@@ -90,15 +90,9 @@
                                         <div class="span3">
                                             <label for="status">Status<span class="required">*</span></label>
                                             <select class="span12" name="status" id="status" value="">
-                                                <option <?php if ($result->status == 'Orçamento') { echo 'selected'; } ?> value="Orçamento">Prospcção</option>
-                                                <option <?php if ($result->status == 'Aberto') { echo 'selected'; } ?> value="Aberto">Aberto</option>
-                                                <option <?php if ($result->status == 'Faturado') { echo 'selected'; } ?> value="Faturado">Faturado</option>
-                                                <option <?php if ($result->status == 'Negociação') { echo 'selected'; } ?> value="Negociação">Negociação</option>
-                                                <option <?php if ($result->status == 'Em Andamento') { echo 'selected'; } ?> value="Em Andamento">Em Andamento</option>
-                                                <option <?php if ($result->status == 'Finalizado') { echo 'selected'; } ?> value="Finalizado">Finalizado</option>
-                                                <option <?php if ($result->status == 'Cancelado') { echo 'selected'; } ?> value="Cancelado">Cancelado</option>
-                                                <option <?php if ($result->status == 'Aguardando Peças') { echo 'selected'; } ?> value="Aguardando Peças">Aguardando</option>
-                                                <option <?php if ($result->status == 'Aprovado') { echo 'selected'; } ?> value="Aprovado">Aprovado</option>
+                                                <option <?php if ($result->status_os == 'pendencia_cliente') { echo 'selected'; } ?> value="pendencia_cliente">Pendência Cliente</option>
+                                                <option <?php if ($result->status_os == 'inviabilidade_tecnica') { echo 'selected'; } ?> value="inviabilidade_tecnica">Inviabilidade Técnica</option>
+                                                <option <?php if ($result->status_os == 'escola_nao_autorizou') { echo 'selected'; } ?> value="escola_nao_autorizou">Escola Não Autorizou</option>
                                             </select>
                                         </div>
                                         <div class="span3">
@@ -109,23 +103,23 @@
                                             <label for="dataFinal">Data Final<span class="required">*</span></label>
                                             <input id="dataFinal" autocomplete="off" class="span12 datepicker" type="text" name="dataFinal" value="<?php echo date('d/m/Y', strtotime($result->dataFinal)); ?>" />
                                         </div>
-                                        <div class="span3">
+                                        <!--<div class="span3">
                                             <label for="garantia">Garantia (dias)</label>
                                             <input id="garantia" type="number" placeholder="Status s/g inserir nº/0" min="0" max="9999" class="span12" name="garantia" value="<?php echo $result->garantia ?>" />
                                             <?php echo form_error('garantia'); ?>
                                             <label for="termoGarantia">Termo Garantia</label>
                                             <input id="termoGarantia" class="span12" type="text" name="termoGarantia" value="<?php echo $result->refGarantia ?>" />
                                             <input id="garantias_id" class="span12" type="hidden" name="garantias_id" value="<?php echo $result->garantias_id ?>" />
-                                        </div>
+                                        </div>-->
                                     </div>
                                     <div class="span6" style="padding: 1%; margin-left: 0">
-                                        <label for="descricaoProduto"><h4>Descrição Produto/Serviço</h4></label>
-                                        <textarea class="span12 editor" name="descricaoProduto" id="descricaoProduto" cols="30" rows="5"><?php echo $result->descricaoProduto ?></textarea>
+                                        <label for="descricao_os"><h4>Descrição Detalhada do Serviço</h4></label>
+                                        <textarea class="span12 editor" name="descricao_os" id="descricao_os" cols="30" rows="5"><?php echo $result->descricao_os ?></textarea>
                                     </div>
-                                    <div class="span6" style="padding: 1%; margin-left: 0">
+                                    <!--<div class="span6" style="padding: 1%; margin-left: 0">
                                         <label for="defeito"><h4>Defeito</h4></label>
                                         <textarea class="span12 editor" name="defeito" id="defeito" cols="30" rows="5"><?php echo $result->defeito ?></textarea>
-                                    </div>
+                                    </div
                                     <div class="span6" style="padding: 1%; margin-left: 0">
                                         <label for="observacoes"><h4>Observações</h4></label>
                                         <textarea class="span12 editor" name="observacoes" id="observacoes" cols="30" rows="5"><?php echo $result->observacoes ?></textarea>
@@ -133,7 +127,7 @@
                                     <div class="span6" style="padding: 1%; margin-left: 0">
                                         <label for="laudoTecnico"><h4>Laudo Técnico</h4></label>
                                         <textarea class="span12 editor" name="laudoTecnico" id="laudoTecnico" cols="30" rows="5"><?php echo $result->laudoTecnico ?></textarea>
-                                    </div>
+                                    </div>-->
                                     <div class="span12" style="padding: 0; margin-left: 0">
                                         <div class="span6 offset3" style="display:flex;justify-content: center">
                                             <button class="button btn btn-primary" id="btnContinuar"><span class="button__icon"><i class="bx bx-sync"></i></span><span class="button__text2">Atualizar</span></button>

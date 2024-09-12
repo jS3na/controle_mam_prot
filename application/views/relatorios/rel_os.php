@@ -60,7 +60,7 @@
                                     <option value="Faturado">Faturado</option>
                                     <option value="Cancelado">Cancelado</option>
                                     <option value="Negociação">Negociação</option>
-                                    <option value="Aguardando Peças">Aguardando</option>
+                                    <option value="Aguardando Peças">Aguardando Peças</option>
                                 </select>
                             </div>
                             <div class="span6">

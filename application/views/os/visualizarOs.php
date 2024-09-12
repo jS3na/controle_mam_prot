@@ -29,7 +29,7 @@
 
                     <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) {
                         $this->load->model('os_model');
-                        $zapnumber = preg_replace("/[^0-9]/", "", $result->celular_cliente);
+                        $zapnumber = preg_replace("/[^0-9]/", "", $result->telefone_cliente);
                         $troca = [$result->nomeCliente, $result->idOs, $result->status, 'R$ ' . ($result->desconto != 0 && $result->valor_desconto != 0 ? number_format($result->valor_desconto, 2, ',', '.') : number_format($totalProdutos + $totalServico, 2, ',', '.')), strip_tags($result->descricaoProduto), ($emitente ? $emitente->nome : ''), ($emitente ? $emitente->telefone : ''), strip_tags($result->observacoes), strip_tags($result->defeito), strip_tags($result->laudoTecnico), date('d/m/Y', strtotime($result->dataFinal)), date('d/m/Y', strtotime($result->dataInicial)), $result->garantia . ' dias'];
                         $texto_de_notificacao = $this->os_model->criarTextoWhats($texto_de_notificacao, $troca);
                         if (!empty($zapnumber)) {
@@ -64,7 +64,7 @@
                                         <td colspan="3" class="alert">Você precisa configurar os dados do emitente. >>><a href="<?php echo base_url(); ?>index.php/mapos/emitente">Configurar <<<</a></td>
                                     </tr>
                                 <?php } ?>
-                                <h3><i class='bx bx-file'></i> Ordem de Serviço #<?php echo sprintf('%04d', $result->idOs) ?></h3>
+                                <h3><i class='bx bx-file'></i> Detalhes do Cliente <!--<?php echo sprintf('%04d', $result->idOs) ?></h3>-->
                             </tbody>
                         </table>
                         <table class="table table-condensend">
@@ -74,15 +74,15 @@
                                         <span>
                                             <h5><b>CLIENTE</b></h5>
                                             <span><i class='bx bxs-business'></i> <b><?php echo $result->nomeCliente ?></b></span><br />
-                                            <?php if (!empty($result->celular_cliente) || !empty($result->telefone_cliente) || !empty($result->contato_cliente)): ?>
+                                            <?php if (!empty($result->telefone_cliente) || !empty($result->telefone_cliente) || !empty($result->contato_cliente)): ?>
                                                 <span><i class='bx bxs-phone'></i>
                                                     <?= !empty($result->contato_cliente) ? $result->contato_cliente . ' ' : "" ?>
-                                                    <?php if ($result->celular_cliente == $result->telefone_cliente) { ?>
-                                                        <?= $result->celular_cliente ?>
+                                                    <?php if ($result->telefone_cliente == $result->telefone_cliente) { ?>
+                                                        <?= $result->telefone_cliente ?>
                                                     <?php } else { ?>
                                                         <?= !empty($result->telefone_cliente) ? $result->telefone_cliente : "" ?>
-                                                        <?= !empty($result->celular_cliente) && !empty($result->telefone_cliente) ? ' / ' : "" ?>
-                                                        <?= !empty($result->celular_cliente) ? $result->celular_cliente : "" ?>
+                                                        <?= !empty($result->telefone_cliente) && !empty($result->telefone_cliente) ? ' / ' : "" ?>
+                                                        <?= !empty($result->telefone_cliente) ? $result->telefone_cliente : "" ?>
                                                     <?php } ?>
                                                 </span></br>
                                             <?php endif; ?>
@@ -130,7 +130,7 @@
                                 <?php if ($result->dataInicial != null) { ?>
                                     <tr>
                                         <td>
-                                            <b>STATUS DA PROSPCÇÃO: </b><br>
+                                            <b>STATUS DO CLIENTE: </b><br>
                                             <?php echo $result->status ?>
                                         </td>
 
@@ -152,18 +152,18 @@
 
                                         <?php if (in_array($result->status, ['Finalizado', 'Faturado', 'Orçamento', 'Aberto'])): ?>
                                             <td>
-                                                <b>VENC. DA GARANTIA:</b><br>
-                                                <?= dateInterval($result->dataFinal, $result->garantia); ?>
+                                                <!--<b>VENC. DA GARANTIA:</b><br>
+                                                <?= dateInterval($result->dataFinal, $result->garantia); ?> -->
                                             </td>
                                         <?php endif; ?>
                                     </tr>
                                 <?php } ?>
 
-                                <?php if ($result->descricaoProduto != null) { ?>
+                                <?php if ($result->descricao_os != null) { ?>
                                     <tr>
                                         <td colspan="5">
                                             <b>DESCRIÇÃO: </b>
-                                            <?php echo htmlspecialchars_decode($result->descricaoProduto) ?>
+                                            <?php echo htmlspecialchars_decode($result->descricao_os) ?>
                                         </td>
                                     </tr>
                                 <?php } ?>

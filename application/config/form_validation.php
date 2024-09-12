@@ -17,6 +17,47 @@ $config = [
                 'verific_cpf_cnpj' => 'O campo %s não é um CPF ou CNPJ válido.',
             ],
         ],
+    ],
+    'logs_cliente' => [
+        [
+            'field' => 'log',
+            'label' => 'Nota',
+            'rules' => 'required|trim',
+        ],
+    ],
+    'vincular' => [
+        [
+            'field' => 'fornecedor',
+            'label' => 'Fornecedor',
+            'rules' => 'required|trim',
+        ],
+        [
+            'field' => 'idFornecedor',
+            'label' => 'idFornecedor',
+            'rules' => 'trim|required',
+        ],
+    ],
+    'gerarFinanceiro' => [
+        [
+            'field' => 'idCliente',
+            'label' => 'idCliente',
+            'rules' => 'required|trim',
+        ],
+    ],
+    'fornecedores' => [
+        [
+            'field' => 'nomeFornecedor',
+            'label' => 'Nome',
+            'rules' => 'required|trim',
+        ],
+        [
+            'field' => 'cnpj',
+            'label' => 'CNPJ',
+            'rules' => 'trim|verific_cpf_cnpj|unique[fornecedores.cnpj.' . get_instance()->uri->segment(3) . '.idFornecedores]',
+            'errors' => [
+                'verific_cpf_cnpj' => 'O campo %s não é um CPF ou CNPJ válido.',
+            ],
+        ],
         [
             'field' => 'telefone',
             'label' => 'Telefone',
@@ -47,11 +88,11 @@ $config = [
             'label' => 'Cidade',
             'rules' => 'trim',
         ],
-        [
+        /*[
             'field' => 'estado',
             'label' => 'Estado',
             'rules' => 'trim',
-        ],
+        ],*/
         [
             'field' => 'cep',
             'label' => 'CEP',
@@ -114,49 +155,6 @@ $config = [
             'rules' => 'required|trim',
         ],
         [
-            'field' => 'rg',
-            'label' => 'RG',
-            'rules' => 'required|trim',
-        ],
-        [
-            'field' => 'cpf',
-            'label' => 'CPF',
-            'rules' => 'required|trim|verific_cpf_cnpj|is_unique[usuarios.cpf]',
-            'errors' => [
-                'verific_cpf_cnpj' => 'O campo %s não é um CPF válido.',
-            ],
-        ],
-        [
-            'field' => 'rua',
-            'label' => 'Rua',
-            'rules' => 'required|trim',
-        ],
-        [
-            'field' => 'numero',
-            'label' => 'Numero',
-            'rules' => 'required|trim',
-        ],
-        [
-            'field' => 'bairro',
-            'label' => 'Bairro',
-            'rules' => 'required|trim',
-        ],
-        [
-            'field' => 'cidade',
-            'label' => 'Cidade',
-            'rules' => 'required|trim',
-        ],
-        [
-            'field' => 'estado',
-            'label' => 'Estado',
-            'rules' => 'required|trim',
-        ],
-        [
-            'field' => 'cep',
-            'label' => 'CEP',
-            'rules' => 'required|trim',
-        ],
-        [
             'field' => 'email',
             'label' => 'Email',
             'rules' => 'required|trim|valid_email|is_unique[usuarios.email]',
@@ -164,11 +162,6 @@ $config = [
         [
             'field' => 'senha',
             'label' => 'Senha',
-            'rules' => 'required|trim',
-        ],
-        [
-            'field' => 'telefone',
-            'label' => 'Telefone',
             'rules' => 'required|trim',
         ],
         [

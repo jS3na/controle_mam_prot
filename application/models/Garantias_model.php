@@ -112,7 +112,7 @@ class Garantias_model extends CI_Model
 
     public function autoCompleteCliente($q)
     {
-        $this->db->select('*');
+        $this->db->select('*');d
         $this->db->limit(5);
         $this->db->like('nomeCliente', $q);
         $query = $this->db->get('clientes');

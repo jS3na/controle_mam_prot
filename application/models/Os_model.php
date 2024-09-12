@@ -9,23 +9,40 @@ class Os_model extends CI_Model
         parent::__construct();
     }
 
-    public function get($table, $fields, $where = '', $perpage = 0, $start = 0, $one = false, $array = 'array')
+    public function get($table, $fields, $where = '', $status = '', $dataInicial = '', $dataFinal = '', $perpage = 0, $start = 0, $one = false, $array = 'array')
     {
-        $this->db->select($fields . ',clientes.nomeCliente, clientes.celular as celular_cliente');
+        $this->db->select($fields);
         $this->db->from($table);
-        $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
-        $this->db->limit($perpage, $start);
+        $this->db->join('clientes', 'clientes.idClientes = ' . $table . '.clientes_id', 'left');
+        $this->db->join('usuarios', 'usuarios.idUsuarios = ' . $table . '.usuarios_id', 'left');
+
         $this->db->order_by('idOs', 'desc');
-        if ($where) {
-            $this->db->where($where);
+        $this->db->limit($perpage, $start);
+    
+        if ($where !== '') {
+            $this->db->like($table . '.clientes_id', $where);
         }
-
+    
+        if ($status != '') {
+            $this->db->where($table . '.status_os', $status);
+        }
+    
+        if ($dataInicial != '') {
+            $this->db->where($table . '.dataInicial >=', $dataInicial);
+        }
+    
+        if ($dataFinal != '') {
+            $this->db->where($table . '.dataFinal <=', $dataFinal);
+        }
+    
         $query = $this->db->get();
-
-        $result = ! $one ? $query->result() : $query->row();
-
+        $result = !$one ? $query->result() : $query->row();
+    
         return $result;
     }
+    
+    
+    
 
     public function getOs($table, $fields, $where = [], $perpage = 0, $start = 0, $one = false, $array = 'array')
     {
@@ -44,7 +61,7 @@ class Os_model extends CI_Model
             }
         }
 
-        $this->db->select($fields . ',clientes.idClientes, clientes.nomeCliente, clientes.celular as celular_cliente, usuarios.nome, garantias.*');
+        $this->db->select($fields . ',clientes.idClientes, clientes.nomeCliente, usuarios.nome, garantias.*');
         $this->db->from($table);
         $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
         $this->db->join('usuarios', 'usuarios.idUsuarios = os.usuarios_id');
@@ -88,7 +105,7 @@ class Os_model extends CI_Model
 
     public function getById($id)
     {
-        $this->db->select('os.*, clientes.*, clientes.celular as celular_cliente, clientes.telefone as telefone_cliente, clientes.contato as contato_cliente, garantias.refGarantia, garantias.textoGarantia, usuarios.telefone as telefone_usuario, usuarios.email as email_usuario, usuarios.nome');
+        $this->db->select('os.*, clientes.*, clientes.telefone as telefone_cliente, garantias.refGarantia, garantias.textoGarantia, usuarios.telefone as telefone_usuario, usuarios.email as email_usuario, usuarios.nome');
         $this->db->from('os');
         $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
         $this->db->join('usuarios', 'usuarios.idUsuarios = os.usuarios_id');
@@ -101,7 +118,7 @@ class Os_model extends CI_Model
 
     public function getByIdCobrancas($id)
     {
-        $this->db->select('os.*, clientes.*, clientes.celular as celular_cliente, garantias.refGarantia, garantias.textoGarantia, usuarios.telefone as telefone_usuario, usuarios.email as email_usuario, usuarios.nome,cobrancas.os_id,cobrancas.idCobranca,cobrancas.status');
+        $this->db->select('os.*, clientes.*, garantias.refGarantia, garantias.textoGarantia, usuarios.telefone as telefone_usuario, usuarios.email as email_usuario, usuarios.nome,cobrancas.os_id,cobrancas.idCobranca,cobrancas.status');
         $this->db->from('os');
         $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
         $this->db->join('usuarios', 'usuarios.idUsuarios = os.usuarios_id');
@@ -212,12 +229,11 @@ class Os_model extends CI_Model
         $this->db->limit(25);
         $this->db->like('nomeCliente', $q);
         $this->db->or_like('telefone', $q);
-        $this->db->or_like('celular', $q);
         $this->db->or_like('documento', $q);
         $query = $this->db->get('clientes');
         if ($query->num_rows() > 0) {
             foreach ($query->result_array() as $row) {
-                $row_set[] = ['label' => $row['nomeCliente'] . ' | Telefone: ' . $row['telefone'] . ' | Celular: ' . $row['celular'] . ' | Documento: ' . $row['documento'], 'id' => $row['idClientes']];
+                $row_set[] = ['label' => $row['nomeCliente'] . ' | Telefone: ' . $row['telefone'] . ' | Documento: ' . $row['documento'], 'id' => $row['idClientes']];
             }
             echo json_encode($row_set);
         }

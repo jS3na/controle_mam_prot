@@ -2,12 +2,12 @@
 <html lang="pt-br">
 
 <head>
-  <title><?= $configuration['app_name'] ?: 'Map-OS' ?></title>
+  <title><?= 'ManTech' ?></title>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="csrf-token-name" content="<?= config_item("csrf_token_name") ?>">
   <meta name="csrf-cookie-name" content="<?= config_item("csrf_cookie_name") ?>">
-  <link rel="shortcut icon" type="image/png" href="<?= base_url(); ?>assets/img/favicon.png" />
+  <link rel="shortcut icon" type="ico" href="<?= base_url(); ?>assets/img/logomamfavicon.ico" />
   <link rel="stylesheet" href="<?= base_url(); ?>assets/css/bootstrap.min.css" />
   <link rel="stylesheet" href="<?= base_url(); ?>assets/css/bootstrap-responsive.min.css" />
   <link rel="stylesheet" href="<?= base_url(); ?>assets/css/matrix-style.css" />
@@ -46,18 +46,19 @@
       location.href = '<?= base_url(); ?>';
     });
     shortcut.add("F1", function() {
-      location.href = '<?= site_url('clientes'); ?>';
+      location.href = '<?= site_url('fornecedores'); ?>';
     });
     shortcut.add("F2", function() {
-      location.href = '<?= site_url('produtos'); ?>';
+      location.href = '<?= site_url('clientes'); ?>';
     });
+    /*s
     shortcut.add("F3", function() {
-      location.href = '<?= site_url('servicos'); ?>';
+      location.href = '<?= site_url('os'); ?>';
     });
     shortcut.add("F4", function() {
       location.href = '<?= site_url('os'); ?>';
     });
-    //shortcut.add("F5", function() {});
+    shortcut.add("F5", function() {});
     shortcut.add("F6", function() {
       location.href = '<?= site_url('vendas/adicionar'); ?>';
     });
@@ -67,8 +68,9 @@
     shortcut.add("F8", function() {});
     shortcut.add("F9", function() {});
     shortcut.add("F10", function() {});
-    //shortcut.add("F11", function() {});
+    shortcut.add("F11", function() {});
     shortcut.add("F12", function() {});
+    */
     window.BaseUrl = "<?= base_url() ?>";
   </script>
 </head>
@@ -90,14 +92,20 @@
         <li class="dropdown">
           <a href="#" class="tip-right dropdown-toggle" data-toggle="dropdown" title="Relatórios"><i class='bx bx-pie-chart-alt-2 iconN'></i><span class="text"></span></a>
           <ul class="dropdown-menu">
+
             <li><a href="<?= site_url('relatorios/clientes') ?>">Clientes</a></li>
-            <li><a href="<?= site_url('relatorios/produtos') ?>">Produtos</a></li>
-            <li><a href="<?= site_url('relatorios/servicos') ?>">Serviços</a></li>
-            <li><a href="<?= site_url('relatorios/os') ?>">Ordens de Serviço</a></li>
-            <li><a href="<?= site_url('relatorios/vendas') ?>">Vendas</a></li>
-            <li><a href="<?= site_url('relatorios/financeiro') ?>">Financeiro</a></li>
-            <li><a href="<?= site_url('relatorios/sku') ?>">SKU</a></li>
-            <li><a href="<?= site_url('relatorios/receitasBrutasMei') ?>">Receitas Brutas - MEI</a></li>
+            <li><a href="<?= site_url('relatorios/fornecedores') ?>">Fornecedores</a></li>
+
+            <!--
+              <li><a href="<?= site_url('relatorios/produtos') ?>">Produtos</a></li>
+              <li><a href="<?= site_url('relatorios/servicos') ?>">Serviços</a></li>
+              <li><a href="<?= site_url('relatorios/os') ?>">Ordens de Serviço</a></li>
+              <li><a href="<?= site_url('relatorios/vendas') ?>">Vendas</a></li>
+              <li><a href="<?= site_url('relatorios/financeiro') ?>">Financeiro</a></li>
+              <li><a href="<?= site_url('relatorios/sku') ?>">SKU</a></li>
+              <li><a href="<?= site_url('relatorios/receitasBrutasMei') ?>">Receitas Brutas - MEI</a></li>
+            -->
+
           </ul>
         </li>
         <li class="dropdown">
@@ -140,7 +148,8 @@
       <section style="display:block;position:absolute;right:10px">
         <div class="profile">
           <div class="profile-img">
-            <a href="<?= site_url('mapos/minhaConta'); ?>"><img src="<?= !is_file(FCPATH . "assets/userImage/" . $this->session->userdata('url_image_user_admin')) ?  base_url() . "assets/img/User.png" : base_url() . "assets/userImage/" . $this->session->userdata('url_image_user_admin') ?>" alt=""></a>
+            <a href="<?= site_url('mapos/minhaConta'); ?>"><img src="<?= !is_file(FCPATH . "assets/userImage/" . $this->session->userdata('url_image_user')) ?  base_url() . "assets/img/User.png" : base_url() . "assets/userImage/" . $this->session->userdata('url_image_user') ?>" alt="">
+            </a>
           </div>
         </div>
       </section>

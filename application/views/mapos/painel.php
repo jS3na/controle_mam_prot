@@ -17,20 +17,39 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
 
-<!-- New Bem-vindos -->
+<!-- New Bem-vindos 
 <div id="content-bemv">
     <div class="bemv">Dashboard</div>
     <div></div>
 </div>
 
+-->
+
 <!--Action boxes-->
 <ul class="cardBox">
+
+    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente')) : ?>
+        <li class="card">
+            <div class="grid-blak">
+                <a href="<?= site_url('fornecedores') ?>">
+                    <div class="numbers">Fornecedores</div>
+                    <div class="cardName">F1</div>
+                </a>
+            </div>
+            <a href="<?= site_url('fornecedores') ?>">
+                <div class="lord-icon02">
+                    <i class='bx bx-car iconBx02'></i>
+                </div>
+            </a>
+        </li>
+    <?php endif ?>
+
     <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente')) : ?>
         <li class="card">
             <div class="grid-blak">
                 <a href="<?= site_url('clientes') ?>">
                     <div class="numbers">Clientes</div>
-                    <div class="cardName">F1</div>
+                    <div class="cardName">F2</div>
                 </a>
             </div>
             <a href="<?= site_url('clientes') ?>">
@@ -41,23 +60,7 @@
         </li>
     <?php endif ?>
 
-    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vProduto')) : ?>
-        <li class="card">
-            <div class="grid-blak">
-                <a href="<?= site_url('produtos') ?>">
-                    <div class="numbers">Produtos</div>
-                    <div class="cardName">F2</div>
-                </a>
-            </div>
-            <a href="<?= site_url('produtos') ?>">
-                <div class="lord-icon02">
-                    <i class='bx bx-basket iconBx02'></i>
-                </div>
-            </a>
-        </li>
-    <?php endif ?>
-
-    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vServico')) : ?>
+    <?php /* if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vServico')) : ?>
         <li class="card">
             <div class="grid-blak">
                 <a href="<?= site_url('servicos') ?>">
@@ -78,7 +81,7 @@
             <div class="grid-blak">
                 <a href="<?= site_url('os') ?>">
                     <div class="numbers N-tittle">Ordens</div>
-                    <div class="cardName">F4</div>
+                    <div class="cardName">F3</div>
                 </a>
             </div>
             <a href="<?= site_url('os') ?>">
@@ -89,7 +92,7 @@
         </li>
     <?php endif ?>
 
-    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vVenda')) : ?>
+    <?php /* if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vVenda')) : ?>
         <li class="card">
             <div class="grid-blak">
                 <a href="<?= site_url('vendas/') ?>">
@@ -119,12 +122,13 @@
             </div>
             </a>
         </li>
-    <?php endif ?>
+    <?php endif */ ?>
 </ul>
 <!--End-Action boxes-->
 
 <div class="row-fluid" style="margin-top: 0; display: flex">
     <div class="Sspan12">
+        <!--
         <div class="widget-box2">
             <div>
                 <h5 class="cardHeader">Agenda</h5>
@@ -135,15 +139,9 @@
                         <form method="post">
                             <select style="padding-left: 30px" class="span12" name="statusOsGet" id="statusOsGet" value="">
                                 <option value="">Todos os Status</option>
-                                <option value="Aberto">Aberto</option>
-                                <option value="Faturado">Faturado</option>
-                                <option value="Negociação">Negociação</option>
-                                <option value="Orçamento">Prospcção</option>
-                                <option value="Em Andamento">Em Andamento</option>
-                                <option value="Finalizado">Finalizado</option>
-                                <option value="Cancelado">Cancelado</option>
-                                <option value="Aguardando Peças">Aguardando</option>
-                                <option value="Aprovado">Aprovado</option>
+                                <option value="pendencia_cliente">Pendência Cliente</option>
+                                <option value="inviabilidade_tecnica">Inviabilidade Técnica</option>
+                                <option value="escola_nao_autorizou">Escola Não Autorizou</option>
                             </select>
                             <button type="button" class="btn-xs" id="btn-calendar"><i class="bx bx-search iconX2"></i></button>
                         </form>
@@ -151,6 +149,8 @@
                 </table>
             </div>
         </div>
+
+    -->
 
         <!-- New widget right -->
         <div class="new-statisc">
@@ -160,13 +160,23 @@
                 </div>
 
                 <div class="new-bottons">
-                    <a href="<?php echo base_url(); ?>index.php/clientes/adicionar" class="card tip-top" title="Add Clientes e Fornecedores">
+                    <a href="<?php echo base_url(); ?>index.php/clientes/adicionar" class="card tip-top" title="Adicionar Clientes">
                         <div><i class='bx bxs-group iconBx'></i></div>
                         <div>
                             <div class="cardName2"><?= $this->db->count_all('clientes'); ?></div>
                             <div class="cardName">Clientes</div>
                         </div>
                     </a>
+
+                    <a href="<?php echo base_url(); ?>index.php/fornecedores/adicionar" class="card tip-top" title="Adicionar Fornecedores">
+                        <div><i class='bx bxs-car iconBx'></i></div>
+                        <div>
+                            <div class="cardName2"><?= $this->db->count_all('fornecedores'); ?></div>
+                            <div class="cardName">Fornecedores</div>
+                        </div>
+                    </a>
+
+                    <!--
 
                     <a href="<?php echo base_url(); ?>index.php/produtos/adicionar" class="card tip-top" title="Adicionar Produtos">
                         <div><i class='bx bxs-package iconBx2'></i></div>
@@ -188,7 +198,7 @@
                         <div><i class='bx bxs-spreadsheet iconBx4'></i></div>
                         <div>
                             <div class="cardName2"><?= $this->db->count_all('os'); ?></div>
-                            <div class="cardName">Ordens</div>
+                            <div class="cardName">O.S</div>
                         </div>
                     </a>
 
@@ -208,7 +218,7 @@
                         </div>
                     </a>
 
-                    <!-- responsavel por fazer complementar a variavel "$financeiro_mes_dia->" de receita e despesa -->
+                    <!-- responsavel por fazer complementar a variavel "$financeiro_mes_dia->" de receita e despesa
                     <?php if ($estatisticas_financeiro != null) {
                         if ($estatisticas_financeiro->total_receita != null || $estatisticas_financeiro->total_despesa != null || $estatisticas_financeiro->total_receita_pendente != null || $estatisticas_financeiro->total_despesa_pendente != null) {  ?>
 
@@ -235,11 +245,13 @@
 
                     <?php  }
                     } ?>
+                    -->
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <!-- Fim new widget right -->
 
 <?php if ($estatisticas_financeiro != null) {
@@ -489,11 +501,11 @@
 </div>
 </div>
 
-<!-- Start Staus OS -->
+<!-- Start Staus OS
 <div class="span12A" style="margin-left: 0">
     <div class="widget-box0 widbox-blak">
         <div>
-            <h5 class="cardHeader">Ordens de Serviços Em Orçamento.</h5>
+            <h5 class="cardHeader">Ordens de Serviços Em Pendência Cliente.</h5>
         </div>
         <div class="widget-content">
             <table class="table table-bordered">
@@ -507,36 +519,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($ordens_orcamentos != null) : ?>
-                        <?php foreach ($ordens_orcamentos as $o) : ?>
+                    <?php if ($ordens_pendencia_cliente != null) : ?>
+                        <?php foreach ($ordens_pendencia_cliente as $o) : ?>
                             <?php
-                                    switch ($o->status) {
-                                        case 'Aberto':
+                                    switch ($o->status_os) {
+                                        case 'pendencia_cliente':
                                             $cor = '#00cd00';
                                             break;
-                                        case 'Em Andamento':
+                                        case 'inviabilidade_tecnica':
                                             $cor = '#436eee';
                                             break;
-                                        case 'Orçamento':
+                                        case 'escola_nao_autorizou':
                                             $cor = '#CDB380';
-                                            break;
-                                        case 'Negociação':
-                                            $cor = '#AEB404';
-                                            break;
-                                        case 'Cancelado':
-                                            $cor = '#CD0000';
-                                            break;
-                                        case 'Finalizado':
-                                            $cor = '#256';
-                                            break;
-                                        case 'Faturado':
-                                            $cor = '#B266FF';
-                                            break;
-                                        case 'Aguardando Peças':
-                                            $cor = '#FF7F00';
-                                            break;
-                                        case 'Aprovado':
-                                            $cor = '#808080';
                                             break;
                                         default:
                                             $cor = '#E0E4CC';
@@ -559,7 +553,7 @@
                                 } ?></td>
 
                                 <td>
-                                    <span class="badge" style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status ?></span>
+                                    <span class="badge" style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status_os ?></span>
                                 </td>
 
                                 <td>
@@ -572,7 +566,7 @@
                         <?php endforeach ?>
                     <?php else : ?>
                         <tr>
-                            <td colspan="5">Nenhuma OS em Orçamento.</td>
+                            <td colspan="5">Nenhuma OS em Pendência Cliente.</td>
                         </tr>
                     <?php endif ?>
                 </tbody>
@@ -582,7 +576,7 @@
     
     <div class="widget-box0 widbox-blak">
         <div>
-            <h5 class="cardHeader">Ordens de Serviços Em Aberto</h5>
+            <h5 class="cardHeader">Ordens de Serviços Em Inviabilidade Técnica</h5>
         </div>
         <div class="widget-content">
             <table class="table table-bordered">
@@ -596,36 +590,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($ordens_abertas != null) : ?>
-                        <?php foreach ($ordens_abertas as $o) : ?>
+                    <?php if ($ordens_inviabilidade_tecnica != null) : ?>
+                        <?php foreach ($ordens_inviabilidade_tecnica as $o) : ?>
                             <?php
-                                    switch ($o->status) {
-                                        case 'Aberto':
+                                    switch ($o->status_os) {
+                                        case 'pendencia_cliente':
                                             $cor = '#00cd00';
                                             break;
-                                        case 'Em Andamento':
+                                        case 'inviabilidade_tecnica':
                                             $cor = '#436eee';
                                             break;
-                                        case 'Orçamento':
+                                        case 'escola_nao_autorizou':
                                             $cor = '#CDB380';
-                                            break;
-                                        case 'Negociação':
-                                            $cor = '#AEB404';
-                                            break;
-                                        case 'Cancelado':
-                                            $cor = '#CD0000';
-                                            break;
-                                        case 'Finalizado':
-                                            $cor = '#256';
-                                            break;
-                                        case 'Faturado':
-                                            $cor = '#B266FF';
-                                            break;
-                                        case 'Aguardando Peças':
-                                            $cor = '#FF7F00';
-                                            break;
-                                        case 'Aprovado':
-                                            $cor = '#808080';
                                             break;
                                         default:
                                             $cor = '#E0E4CC';
@@ -648,7 +624,7 @@
                                 } ?></td>
                                 
                                 <td>
-                                    <span class="badge" style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status ?></span>
+                                    <span class="badge" style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status_os ?></span>
                                 </td>
 
                                 <td>
@@ -661,7 +637,7 @@
                         <?php endforeach ?>
                     <?php else : ?>
                         <tr>
-                            <td colspan="5">Nenhuma OS em aberto.</td>
+                            <td colspan="5">Nenhuma OS em inviabilidade técnica.</td>
                         </tr>
                     <?php endif ?>
                 </tbody>
@@ -672,7 +648,7 @@
 
     <div class="widget-box0 widbox-blak">
         <div>
-            <h5 class="cardHeader">Ordens de Serviços Aprovadas</h5>
+            <h5 class="cardHeader">Ordens de Serviços em que a Escola Não Autorizou</h5>
         </div>
         <div class="widget-content">
             <table class="table table-bordered">
@@ -686,36 +662,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($ordens_aprovadas != null) : ?>
-                        <?php foreach ($ordens_aprovadas as $o) : ?>
+                    <?php if ($ordens_escola_nao_autorizou != null) : ?>
+                        <?php foreach ($ordens_escola_nao_autorizou as $o) : ?>
                             <?php
-                                    switch ($o->status) {
-                                        case 'Aberto':
+                                    switch ($o->status_os) {
+                                        case 'pendencia_cliente':
                                             $cor = '#00cd00';
                                             break;
-                                        case 'Em Andamento':
+                                        case 'inviabilidade_tecnica':
                                             $cor = '#436eee';
                                             break;
-                                        case 'Orçamento':
+                                        case 'escola_nao_autorizou':
                                             $cor = '#CDB380';
-                                            break;
-                                        case 'Negociação':
-                                            $cor = '#AEB404';
-                                            break;
-                                        case 'Cancelado':
-                                            $cor = '#CD0000';
-                                            break;
-                                        case 'Finalizado':
-                                            $cor = '#256';
-                                            break;
-                                        case 'Faturado':
-                                            $cor = '#B266FF';
-                                            break;
-                                        case 'Aguardando Peças':
-                                            $cor = '#FF7F00';
-                                            break;
-                                        case 'Aprovado':
-                                            $cor = '#808080';
                                             break;
                                         default:
                                             $cor = '#E0E4CC';
@@ -738,7 +696,7 @@
                                 } ?></td>
                                 
                                 <td>
-                                    <span class="badge" style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status ?></span>
+                                    <span class="badge" style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status_os ?></span>
                                 </td>
 
                                 <td>
@@ -751,183 +709,7 @@
                         <?php endforeach ?>
                     <?php else : ?>
                         <tr>
-                            <td colspan="5">Nenhuma OS Aprovada.</td>
-                        </tr>
-                    <?php endif ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="widget-box0 widbox-blak">
-        <div>
-            <h5 class="cardHeader">Ordens de Serviços Finalizadas</h5>
-        </div>
-        <div class="widget-content">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>N°</th>
-                        <th>Cliente</th>
-                        <th>Data Final</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if ($ordens_finalizadas != null) : ?>
-                        <?php foreach ($ordens_finalizadas as $o) : ?>
-                            <?php
-                                    switch ($o->status) {
-                                        case 'Aberto':
-                                            $cor = '#00cd00';
-                                            break;
-                                        case 'Em Andamento':
-                                            $cor = '#436eee';
-                                            break;
-                                        case 'Orçamento':
-                                            $cor = '#CDB380';
-                                            break;
-                                        case 'Negociação':
-                                            $cor = '#AEB404';
-                                            break;
-                                        case 'Cancelado':
-                                            $cor = '#CD0000';
-                                            break;
-                                        case 'Finalizado':
-                                            $cor = '#256';
-                                            break;
-                                        case 'Faturado':
-                                            $cor = '#B266FF';
-                                            break;
-                                        case 'Aguardando Peças':
-                                            $cor = '#FF7F00';
-                                            break;
-                                        case 'Aprovado':
-                                            $cor = '#808080';
-                                            break;
-                                        default:
-                                            $cor = '#E0E4CC';
-                                            break;
-                                    }
-                                ?>
-                            <tr>
-                                <td>
-                                    <?= $o->idOs ?>
-                                </td>
-
-                                <td class="cli1">
-                                    <?= $o->nomeCliente ?>
-                                </td>
-
-                                <td><?php if ($o->dataFinal != null) {
-                                    echo date('d/m/Y', strtotime($o->dataFinal));
-                                } else {
-                                    echo "";
-                                } ?></td>
-                                
-                                <td>
-                                    <span class="badge" style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status ?></span>
-                                </td>
-
-                                <td>
-                                    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) : ?>
-                                        <a href="<?= base_url() ?>index.php/os/visualizar/<?= $o->idOs ?>" class="btn-nwe tip-top" title="Visualizar">
-                                            <i class="bx bx-show"></i> </a>
-                                    <?php endif ?>
-                                </td>
-                            </tr>
-                        <?php endforeach ?>
-                    <?php else : ?>
-                        <tr>
-                            <td colspan="5">Nenhuma OS Finalizada.</td>
-                        </tr>
-                    <?php endif ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="widget-box0 widbox-blak">
-        <div>
-            <h5 class="cardHeader">Ordens de Serviços Em Andamento e Aguardando</h5>
-        </div>
-        <div class="widget-content">
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th>N°</th>
-                        <th>Cliente</th>
-                        <th>Data Final</th>
-                        <th>Status</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if ($ordens_status != null) : ?>
-                        <?php foreach ($ordens_status as $o) : ?>
-                                <?php
-                                    switch ($o->status) {
-                                        case 'Aberto':
-                                            $cor = '#00cd00';
-                                            break;
-                                        case 'Em Andamento':
-                                            $cor = '#436eee';
-                                            break;
-                                        case 'Orçamento':
-                                            $cor = '#CDB380';
-                                            break;
-                                        case 'Negociação':
-                                            $cor = '#AEB404';
-                                            break;
-                                        case 'Cancelado':
-                                            $cor = '#CD0000';
-                                            break;
-                                        case 'Finalizado':
-                                            $cor = '#256';
-                                            break;
-                                        case 'Faturado':
-                                            $cor = '#B266FF';
-                                            break;
-                                        case 'Aguardando Peças':
-                                            $cor = '#FF7F00';
-                                            break;
-                                        case 'Aprovado':
-                                            $cor = '#808080';
-                                            break;
-                                        default:
-                                            $cor = '#E0E4CC';
-                                            break;
-                                    }
-                                ?>
-                            <tr>
-                                <td>
-                                    <?= $o->idOs ?>
-                                </td>
-                                <td class="cli1">
-                                    <?= $o->nomeCliente ?>
-                                </td>
-
-                                <td><?php if ($o->dataFinal != null) {
-                                    echo date('d/m/Y', strtotime($o->dataFinal));
-                                } else {
-                                    echo "";
-                                } ?></td>
-
-                                    <td>
-                                        <span class="badge" style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status ?></span>
-                                    </td>
-                                <td>
-                                    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) : ?>
-                                        <a href="<?= base_url() ?>index.php/os/visualizar/<?= $o->idOs ?>" class="btn-nwe tip-top" title="Visualizar">
-                                            <i class="bx bx-show"></i> </a>
-                                    <?php endif ?>
-                                </td>
-                            </tr>
-                        <?php endforeach ?>
-                    <?php else : ?>
-                        <tr>
-                            <td colspan="5">Nenhuma OS em Orçamento.</td>
+                            <td colspan="5">Nenhuma OS em que a Escola Não Autorizou.</td>
                         </tr>
                     <?php endif ?>
                 </tbody>
@@ -1124,7 +906,7 @@
     </div>
                         
 </div>
-<!-- Fim Staus OS -->
+ Fim Staus OS -->
 
 <!-- Modal Status OS Calendar -->
 <div id="calendarModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -1147,67 +929,18 @@
         <div id="modalDesconto" class="modal-Total"></div>
         <div id="modalValorFaturado" class="modal-ValorFaturado"></div>
     </div>
-    <div class="modal-footer">
         <?php
-                                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) {
-                                            echo '<a id="modalIdVisualizar" style="margin-right: 1%" href="" class="btn tip-top" title="Ver mais detalhes"><i class="fas fa-eye"></i></a>';
-                                        }
-                                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eOs')) {
-                                            echo '<a id="modalIdEditar" style="margin-right: 1%" href="" class="btn btn-info tip-top" title="Editar OS"><i class="fas fa-edit"></i></a>';
-                                        }
-                                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dOs')) {
-                                            echo '<a id="linkExcluir" href="#modal-excluir-os" role="button" data-toggle="modal" os="" class="btn btn-danger tip-top" title="Excluir OS"><i class="fas fa-trash-alt"></i></a>  ';
-                                        }
-?>
+            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) {
+                echo '<a id="modalIdVisualizar" style="margin-right: 1%" href="" class="btn tip-top" title="Ver mais detalhes"><i class="fas fa-eye"></i></a>';
+            }
+            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eOs')) {
+                echo '<a id="modalIdEditar" style="margin-right: 1%" href="" class="btn btn-info tip-top" title="Editar OS"><i class="fas fa-edit"></i></a>';
+            }
+            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dOs')) {
+                echo '<a id="linkExcluir" href="#modal-excluir-os" role="button" data-toggle="modal" os="" class="btn btn-danger tip-top" title="Excluir OS"><i class="fas fa-trash-alt"></i></a>  ';
+            }
+        ?>
     </div>
-</div>
-
-<!-- Modal Excluir Os -->
-<div id="modal-excluir-os" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <form action="<?php echo base_url() ?>index.php/os/excluir" method="post">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h5 id="myModalLabel">Excluir OS</h5>
-        </div>
-        <div class="modal-body">
-            <input type="hidden" id="modalIdExcluir" name="id" value="" />
-            <h5 style="text-align: center">Deseja realmente excluir esta OS?</h5>
-        </div>
-        <div class="modal-footer" style="display:flex;justify-content: center">
-            <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"><span class="button__icon"><i class="bx bx-x"></i></span><span class="button__text2">Cancelar</span></button>
-            <button class="button btn btn-danger"><span class="button__icon"><i class='bx bx-trash'></i></span> <span class="button__text2">Excluir</span></button>
-        </div>
-    </form>
-</div>
-
-<!-- Modal Estoque -->
-<div id="atualizar-estoque" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <form action="<?php echo base_url() ?>index.php/produtos/atualizar_estoque" method="post" id="formEstoque">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-            <h5 id="myModalLabel"><i class="fas fa-plus-square"></i> Atualizar Estoque</h5>
-        </div>
-        <div class="modal-body">
-            <div class="control-group">
-                <label for="estoqueAtual" class="control-label">Estoque Atual</label>
-                <div class="controls">
-                    <input id="estoqueAtual" type="text" name="estoqueAtual" value="" readonly />
-                </div>
-            </div>
-
-            <div class="control-group">
-                <label for="estoque" class="control-label">Adicionar Produtos<span class="required">*</span></label>
-                <div class="controls">
-                    <input type="hidden" id="idProduto" class="idProduto" name="id" value="" />
-                    <input id="estoque" type="text" name="estoque" value="" />
-                </div>
-            </div>
-        </div>
-        <div class="modal-footer" style="display:flex;justify-content: center">
-            <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"><span class="button__icon"><i class="bx bx-x"></i></span><span class="button__text2">Cancelar</span></button>
-            <button class="button btn btn-primary"><span class="button__icon"><i class="bx bx-sync"></i></span><span class="button__text2">Atualizar</span></button>
-        </div>
-    </form>
 </div>
 
 <script src="<?php echo base_url() ?>assets/js/jquery.validate.js"></script>
@@ -1263,7 +996,7 @@
                     };
                 },
                 failure: function() {
-                    alert('Falha ao buscar OS de calendário!');
+                    alert('Falha ao buscar OS de calendário!', $("#statusOsGet").val());
                 },
             },
             eventClick: function(info) {

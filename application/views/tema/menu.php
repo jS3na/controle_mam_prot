@@ -5,7 +5,7 @@
             <img src="<?php echo base_url() ?>assets/img/logoprimeiro.png">
         </div>-->
         <div class="title1">
-            <?= $configuration['app_theme'] == 'white' ||  $configuration['app_theme'] == 'whitegreen' ? '<img src="' . base_url() . 'assets/img/logo_mam_menu.jpeg">' : '<img src="' . base_url() . 'assets/img/logo_mam_menu.jpeg">'; ?>
+            <?= $configuration['app_theme'] == 'white' ||  $configuration['app_theme'] == 'whitegreen' ? '<img src="' . base_url() . 'assets/img/logoman2.jpg">' : '<img src="' . base_url() . 'assets/img/logoman2.jpg">'; ?>
         </div>
     </div>
     <a href="#" class="visible-phone">
@@ -41,6 +41,17 @@
                 </li>
 
                 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente')) { ?>
+                    <li class="<?php if (isset($menuFornecedores)) {
+                        echo 'active';
+                    }; ?>">
+                        <a class="tip-bottom" title="" href="<?= site_url('fornecedores') ?>"><i class='bx bx-car iconX'></i>
+                            <span class="title">Fornecedores</span>
+                            <span class="title-tooltip">Fornecedores</span>
+                        </a>
+                    </li>
+                <?php } ?>
+
+                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente')) { ?>
                     <li class="<?php if (isset($menuClientes)) {
                         echo 'active';
                     }; ?>">
@@ -62,7 +73,7 @@
                     </li>
                 <?php } ?>-->
 
-                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vServico')) { ?>
+                <?php /* if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vServico')) { ?>
                     <li class="<?php if (isset($menuServicos)) {
                         echo 'active';
                     }; ?>">
@@ -71,9 +82,9 @@
                             <span class="title-tooltip">Serviços</span>
                         </a>
                     </li>
-                <?php } ?>
+                <?php } */ ?>
 
-                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vVenda')) { ?>
+                <!--<?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vVenda')) { ?>
                     <li class="<?php if (isset($menuVendas)) {
                         echo 'active';
                     }; ?>">
@@ -85,15 +96,17 @@
                 <?php } ?>
 
                 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) { ?>
-                    <li class="<?php if (isset($menuProspeccoes)) {
+                    <li class="<?php if (isset($menuOs)) {
                         echo 'active';
                     }; ?>">
-                        <a class="tip-bottom" title="" href="<?= site_url('prospeccoes') ?>"><i class='bx bx-file iconX'></i>
-                            <span class="title">Prospecções</span>
-                            <span class="title-tooltip">Prospecções</span>
+                        <a class="tip-bottom" title="" href="<?= site_url('os') ?>"><i class='bx bx-file iconX'></i>
+                            <span class="title">Ordens</span>
+                            <span class="title-tooltip">Ordens</span>
                         </a>
                     </li>
                 <?php } ?>
+
+                -->
 
                 <!--<?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vGarantia')) { ?>
                     <li class="<?php if (isset($menuGarantia)) {
@@ -116,8 +129,9 @@
                         </a>
                     </li>
                 <?php } ?>
+                
 
-                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vLancamento')) { ?>
+                <?php /* if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vLancamento')) { ?>
                     <li class="<?php if (isset($menuLancamentos)) {
                         echo 'active';
                     }; ?>">
@@ -136,7 +150,7 @@
                             <span class="title-tooltip">Cobranças</span>
                         </a>
                     </li>
-                <?php } ?>
+                <?php } */ ?>
             </ul>
         </div>
 

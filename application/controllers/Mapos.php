@@ -13,12 +13,10 @@ class Mapos extends MY_Controller {
         $vstatus = array('Aberto', 'Em Andamento', 'Aguardando Peças', 'Aprovado', 'Orçamento');
         $this->data['vendasstatus'] = $this->mapos_model->getVendasStatus($vstatus);
         $this->data['lancamentos'] = $this->mapos_model->getLancamentos();
-        $this->data['ordens_orcamentos'] = $this->mapos_model->getOsOrcamentos();
-        $this->data['ordens_abertas'] = $this->mapos_model->getOsAbertas();
-        $this->data['ordens_aprovadas'] = $this->mapos_model->getOsAprovadas();
-        $this->data['ordens_finalizadas'] = $this->mapos_model->getOsFinalizadas();
-        $this->data['ordens_aguardando'] = $this->mapos_model->getOsAguardandoPecas();
-        $this->data['ordens_andamento'] = $this->mapos_model->getOsAndamento();
+        $this->data['ordens'] = $this->mapos_model->getAllOs();
+        $this->data['ordens_pendencia_cliente'] = $this->mapos_model->getOsPendenciaCliente();
+        $this->data['ordens_inviabilidade_tecnica'] = $this->mapos_model->getOsInviabilidadeTecnica();
+        $this->data['ordens_escola_nao_autorizou'] = $this->mapos_model->getOsEscolaNaoAutorizou();
         $this->data['produtos'] = $this->mapos_model->getProdutosMinimo();
         $this->data['os'] = $this->mapos_model->getOsEstatisticas();
         $this->data['estatisticas_financeiro'] = $this->mapos_model->getEstatisticasFinanceiro();
@@ -73,6 +71,7 @@ class Mapos extends MY_Controller {
 
         $data['results'] = $this->mapos_model->pesquisar($termo);
         $this->data['produtos'] = $data['results']['produtos'];
+        $this->data['fornecedores'] = $data['results']['fornecedores'];
         $this->data['servicos'] = $data['results']['servicos'];
         $this->data['os'] = $data['results']['os'];
         $this->data['clientes'] = $data['results']['clientes'];

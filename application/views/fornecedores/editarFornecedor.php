@@ -83,32 +83,44 @@
                 <span class="icon">
                     <i class="fas fa-user"></i>
                 </span>
-                <h5>Editar Cliente</h5>
+                <h5>Editar Fornecedor</h5>
             </div>
             <?php if ($custom_error != '') {
                 echo '<div class="alert alert-danger">' . $custom_error . '</div>';
             } ?>
-            <form action="<?php echo current_url(); ?>" id="formCliente" method="post" class="form-horizontal">
+            <form action="<?php echo current_url(); ?>" id="formFornecedor" method="post" class="form-horizontal">
                 <div class="widget-content nopadding tab-content">
                     <div class="span6">
                         <div class="control-group">
-                            <label for="documento" class="control-label">CNPJ</label>
+                            <label for="cnpj" class="control-label">CNPJ</label>
                             <div class="controls">
-                                <input id="documento" class="cpfcnpj" type="text" name="documento" value="<?php echo $result->documento; ?>" />
+                                <input id="cnpj" class="cpfcnpj" type="text" name="cnpj" value="<?php echo $result->cnpj; ?>" />
                                 <button id="buscar_info_cnpj" class="btn btn-xs" type="button">Buscar(CNPJ)</button>
                             </div>
                         </div>
                         <div class="control-group">
-                            <?php echo form_hidden('idClientes', $result->idClientes) ?>
-                            <label for="nomeCliente" class="control-label">Circuito + Nome <span class="required">*</span></label>
+                            <?php echo form_hidden('idFornecedores', $result->idFornecedores) ?>
+                            <label for="nomeFornecedor" class="control-label">Nome/Razão Social<span class="required">*</span></label>
                             <div class="controls">
-                                <input id="nomeCliente" type="text" name="nomeCliente" value="<?php echo $result->nomeCliente; ?>" />
+                                <input id="nomeFornecedor" type="text" name="nomeFornecedor" value="<?php echo $result->nomeFornecedor; ?>" />
                             </div>
                         </div>
                         <div class="control-group">
-                            <label for="telefone" class="control-label">Telefone</label>
+                            <label for="telefone_comercial" class="control-label">Telefone Comercial</label>
                             <div class="controls">
-                                <input id="telefone" type="text" name="telefone" value="<?php echo $result->telefone; ?>" />
+                                <input id="telefone_comercial" type="text" name="telefone_comercial" value="<?php echo $result->telefone_comercial; ?>" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="telefone_financeiro" class="control-label">Telefone Financeiro</label>
+                            <div class="controls">
+                                <input id="telefone_financeiro" type="text" name="telefone_financeiro" value="<?php echo $result->telefone_financeiro; ?>" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="telefone_suporte" class="control-label">Telefone Suporte</label>
+                            <div class="controls">
+                                <input id="telefone_suporte" type="text" name="telefone_suporte" value="<?php echo $result->telefone_suporte; ?>" />
                             </div>
                         </div>
                         <div class="control-group">
@@ -156,6 +168,11 @@
                                 <input id="cidade" type="text" name="cidade" value="<?php echo $result->cidade; ?>" />
                             </div>
                         </div>
+                        <div class="span6" style="padding: 1%; margin-left: 0">
+                            <label for="descricao"><h4>Descrição</h4></label>
+                            <textarea class="span12 editor" name="descricao" id="descricao" cols="30" rows="5"><?php echo $result->descricao ?></textarea>
+                        </div>
+                        <!--
                         <div class="control-group" class="control-label">
                             <label for="estado" class="control-label">Estado</label>
                             <div class="controls">
@@ -164,34 +181,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="control-group" class="control-label">
-                            <label for="status" class="control-label">Status</label>
-                            <div class="controls">
-                                <select id="status" name="status">
-                                    <option value="">Selecione...</option>
-                                    <option value="INSTALADO" <?php echo ($result->status == 'INSTALADO') ? 'selected' : ''; ?>>INSTALADO</option>
-                                    <option value="NÃO INSTALADO" <?php echo ($result->status == 'NÃO INSTALADO') ? 'selected' : ''; ?>>NÃO INSTALADO</option>
-                                    <option value="FECHADO" <?php echo ($result->status == 'FECHADO') ? 'selected' : ''; ?>>FECHADO</option>
-                                    <option value="COTADO" <?php echo ($result->status == 'COTADO') ? 'selected' : ''; ?>>COTADO</option>
-                                    <option value="EM ANÁLISE" <?php echo ($result->status == 'EM ANÁLISE') ? 'selected' : ''; ?>>EM ANÁLISE</option>
-                                    <option value="AGUARDANDO COTAÇÃO" <?php echo ($result->status == 'AGUARDANDO COTAÇÃO') ? 'selected' : ''; ?>>AGUARDANDO COTAÇÃO</option>
-                                    <option value="SEM RETORNO" <?php echo ($result->status == 'SEM RETORNO') ? 'selected' : ''; ?>>SEM RETORNO</option>
-                                    <option value="EM NEGOCIAÇÃO" <?php echo ($result->status == 'EM NEGOCIAÇÃO') ? 'selected' : ''; ?>>EM NEGOCIAÇÃO</option>
-                                    <option value="VIABILIZADO" <?php echo ($result->status == 'VIABILIZADO') ? 'selected' : ''; ?>>VIABILIZADO</option>
-                                    <option value="AGUARDANDO INSTALAÇÃO" <?php echo ($result->status == 'AGUARDANDO INSTALAÇÃO') ? 'selected' : ''; ?>>AGUARDANDO INSTALAÇÃO</option>
-                                    <option value="AGUARDANDO CONTRATAÇÃO" <?php echo ($result->status == 'AGUARDANDO CONTRATAÇÃO') ? 'selected' : ''; ?>>AGUARDANDO CONTRATAÇÃO</option>
-                                    <option value="CANCELADO" <?php echo ($result->status == 'CANCELADO') ? 'selected' : ''; ?>>CANCELADO</option>
-                                    <option value="RADIO" <?php echo ($result->status == 'RADIO') ? 'selected' : ''; ?>>RADIO</option>
-                                    <option value="VALOR ALTO" <?php echo ($result->status == 'VALOR ALTO') ? 'selected' : ''; ?>>VALOR ALTO</option>
-                                    <option value="COTANDO" <?php echo ($result->status == 'COTANDO') ? 'selected' : ''; ?>>COTANDO</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="span6" style="padding: 1%; margin-left: 0">
-                            <label for="descricao"><h4>Descrição</h4></label>
-                            <textarea class="span12 editor" name="descricao" id="descricao" cols="30" rows="5"><?php echo $result->descricao ?></textarea>
-                        </div>
-
+                        -->
                     </div>
                 </div>
                 <div class="form-actions">
@@ -199,7 +189,7 @@
                         <div class="span6 offset3" style="display:flex;justify-content: center">
                             <button type="submit" class="button btn btn-primary" style="max-width: 160px">
                                 <span class="button__icon"><i class="bx bx-sync"></i></span><span class="button__text2">Atualizar</span></button>
-                            <a title="Voltar" class="button btn btn-warning" href="<?php echo site_url() ?>/clientes"><span class="button__icon"><i class="bx bx-undo"></i></span> <span class="button__text2">Voltar</span></a>
+                            <a title="Voltar" class="button btn btn-warning" href="<?php echo site_url() ?>/fornecedores"><span class="button__icon"><i class="bx bx-undo"></i></span> <span class="button__text2">Voltar</span></a>
                         </div>
                     </div>
                 </div>
@@ -235,14 +225,14 @@
             }
 
         });
-        $('#formCliente').validate({
+        $('#formFornecedor').validate({
             rules: {
-                nomeCliente: {
+                nomeFornecedor: {
                     required: true
                 },
             },
             messages: {
-                nomeCliente: {
+                nomeFornecedor: {
                     required: 'Campo Requerido.'
                 },
             },

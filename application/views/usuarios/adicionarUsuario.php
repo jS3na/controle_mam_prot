@@ -23,6 +23,8 @@
                         </div>
                     </div>
 
+                    <!--
+
                     <div class="control-group">
                         <label for="rg" class="control-label">RG<span class="required">*</span></label>
                         <div class="controls">
@@ -43,6 +45,8 @@
                             <input id="telefone" type="text" name="telefone" value="<?php echo set_value('telefone'); ?>" />
                         </div>
                     </div>
+
+                    -->
 
                     <div class="control-group">
                         <label for="celular" class="control-label">Celular</label>
@@ -65,6 +69,8 @@
                             <input id="senha" type="password" name="senha" value="<?php echo set_value('senha'); ?>" />
                         </div>
                     </div>
+
+                    <!--
 
                     <div class="control-group" class="control-label">
                         <label for="cep" class="control-label">CEP<span class="required">*</span></label>
@@ -106,7 +112,9 @@
                         <div class="controls">
                             <input id="estado" type="text" name="estado" value="<?php echo set_value('estado'); ?>" />
                         </div>
-                    </div>
+                    div>
+
+                    -->
 
 
                     <!-- Campo para inserir a data de validade de acesso do usuário-->
@@ -172,33 +180,12 @@
                 cpf: {
                     required: true
                 },
-                telefone: {
-                    required: true
-                },
                 email: {
                     required: true
                 },
                 senha: {
                     required: true
                 },
-                rua: {
-                    required: true
-                },
-                numero: {
-                    required: true
-                },
-                bairro: {
-                    required: true
-                },
-                cidade: {
-                    required: true
-                },
-                estado: {
-                    required: true
-                },
-                cep: {
-                    required: true
-                }
             },
             messages: {
                 nome: {
@@ -210,33 +197,12 @@
                 cpf: {
                     required: 'Campo Requerido.'
                 },
-                telefone: {
-                    required: 'Campo Requerido.'
-                },
                 email: {
                     required: 'Campo Requerido.'
                 },
                 senha: {
                     required: 'Campo Requerido.'
                 },
-                rua: {
-                    required: 'Campo Requerido.'
-                },
-                numero: {
-                    required: 'Campo Requerido.'
-                },
-                bairro: {
-                    required: 'Campo Requerido.'
-                },
-                cidade: {
-                    required: 'Campo Requerido.'
-                },
-                estado: {
-                    required: 'Campo Requerido.'
-                },
-                cep: {
-                    required: 'Campo Requerido.'
-                }
             },
             errorClass: "help-inline",
             errorElement: "span",

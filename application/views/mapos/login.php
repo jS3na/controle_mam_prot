@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="<?= base_url() ?>assets/css/bootstrap-responsive.min.css" />
   <link rel="stylesheet" href="<?= base_url() ?>assets/css/matrix-login.css" />
   <link href="<?= base_url(); ?>assets/font-awesome/css/font-awesome.css" rel="stylesheet" />
-  <link rel="shortcut icon" type="image/png" href="<?= base_url(); ?>assets/img/favicon.png" />
+  <link rel="shortcut icon" type="ico" href="<?= base_url(); ?>assets/img/logomamfavicon.ico" />
 </head>
 
 <body>
@@ -57,7 +57,7 @@
                     <img src="<?php echo base_url() ?>assets/img/logoprimeiro.png">
                   </div>-->
                   <div class="title01">
-                    <?= '<img src="' . base_url() . 'assets/img/logo_mam_login.jpeg">'; ?>
+                    <?= '<img src="' . base_url() . 'assets/img/logoman1.jpg">'; ?>
                   </div>
                 </div>
                 <!--<div id="mcell">Versão: <?= $this->config->item('app_version'); ?></div>-->

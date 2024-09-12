@@ -61,7 +61,7 @@ class Relatorios_model extends CI_Model
         return $this->db->count_all($table);
     }
 
-    public function clientesCustom($dataInicial = null, $dataFinal = null, $tipo = null)
+    public function clientesCustom($dataInicial = null, $dataFinal = null)
     {
         $whereData = '';
         if ($dataInicial != null) {
@@ -70,32 +70,62 @@ class Relatorios_model extends CI_Model
         if ($dataFinal != null) {
             $whereData .= 'AND dataCadastro <= ' . $this->db->escape($dataFinal);
         }
-        if ($tipo != null) {
-            $whereData .= 'AND fornecedor = ' . $this->db->escape($tipo);
-        }
-        $query = "SELECT idClientes, nomeCliente, sexo, pessoa_fisica,
-        documento, telefone, celular, contato, email, fornecedor,
+        $query = "SELECT idClientes, nomeCliente, documento, telefone, email,
         dataCadastro, rua, numero, complemento, bairro, cidade, estado,
-        cep FROM clientes WHERE dataCadastro $whereData ORDER BY nomeCliente";
+        cep, status FROM clientes WHERE dataCadastro $whereData ORDER BY nomeCliente";
 
         return $this->db->query($query, [$dataInicial, $dataFinal])->result();
     }
 
     public function clientesRapid($array = false)
     {
-        $this->db->select('idClientes, nomeCliente, sexo, pessoa_fisica,
-        documento, telefone, celular, contato, email, fornecedor,
-        dataCadastro, rua, numero, complemento, bairro, cidade, estado,
-        cep');
+        $this->db->select('idClientes, nomeCliente,
+        documento, telefone, email, dataCadastro, rua, numero, complemento, bairro, cidade, estado,
+        cep, status');
 
         $this->db->order_by('nomeCliente', 'asc');
 
-        $this->db->select('idClientes, nomeCliente, sexo, pessoa_fisica,
-        documento, telefone, celular, contato, email, fornecedor,
-        dataCadastro, rua, numero, complemento, bairro, cidade, estado,
-        cep');
+        $this->db->select('idClientes, nomeCliente,
+        documento, telefone, email, dataCadastro, rua, numero, complemento, bairro, cidade, estado,
+        cep, status');
 
         $result = $this->db->get('clientes');
+        if ($array) {
+            return $result->result_array();
+        }
+
+        return $result->result();
+    }
+
+    public function fornecedoresCustom($dataInicial = null, $dataFinal = null)
+    {
+        $whereData = '';
+        if ($dataInicial != null) {
+            $whereData .= 'AND dataCadastro >= ' . $this->db->escape($dataInicial);
+        }
+        if ($dataFinal != null) {
+            $whereData .= 'AND dataCadastro <= ' . $this->db->escape($dataFinal);
+        }
+        $query = "SELECT idFornecedores, nomeFornecedor, cnpj, telefone_comercial, email,
+        dataCadastro, rua, numero, complemento, bairro, cidade, estado,
+        cep, status FROM clientes WHERE dataCadastro $whereData ORDER BY nomeFornecedor";
+
+        return $this->db->query($query, [$dataInicial, $dataFinal])->result();
+    }
+
+    public function fornecedoresRapid($array = false)
+    {
+        $this->db->select('idFornecedores, nomeFornecedor,
+        cnpj, telefone_comercial, email, dataCadastro, rua, numero, complemento, bairro, cidade, estado,
+        cep');
+
+        $this->db->order_by('nomeFornecedor', 'asc');
+
+        $this->db->select('idFornecedores, nomeFornecedor,
+        cnpj, telefone_comercial, email, dataCadastro, rua, numero, complemento, bairro, cidade, estado,
+        cep');
+
+        $result = $this->db->get('fornecedores');
         if ($array) {
             return $result->result_array();
         }

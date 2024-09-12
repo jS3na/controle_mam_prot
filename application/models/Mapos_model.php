@@ -53,8 +53,8 @@ class Mapos_model extends CI_Model
         // buscando clientes
         $this->db->like('nomeCliente', $termo);
         $this->db->or_like('telefone', $termo);
-        $this->db->or_like('celular', $termo);
         $this->db->or_like('documento', $termo);
+        $this->db->or_like('cidade', $termo);
         $this->db->limit(15);
         $data['clientes'] = $this->db->get('clientes')->result();
 
@@ -69,6 +69,14 @@ class Mapos_model extends CI_Model
         $this->db->or_like('descricao', $termo);
         $this->db->limit(50);
         $data['produtos'] = $this->db->get('produtos')->result();
+
+        // buscando fornecedores
+        $this->db->like('idFornecedores', $termo);
+        $this->db->or_like('nomeFornecedor', $termo);
+        $this->db->or_like('cnpj', $termo);
+        $this->db->or_like('cidade', $termo);
+        $this->db->limit(50);
+        $data['fornecedores'] = $this->db->get('fornecedores')->result();
 
         //buscando serviços
         $this->db->like('nome', $termo);
@@ -116,68 +124,46 @@ class Mapos_model extends CI_Model
         return $this->db->count_all($table);
     }
 
-    public function getOsOrcamentos()
+    public function getAllOs()
     {
         $this->db->select('os.*, clientes.nomeCliente');
         $this->db->from('os');
         $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
-        $this->db->where('os.status', 'Orçamento');
+        $this->db->order_by('os.idOs', 'desc');
+        $this->db->limit(10);
+
+        return $this->db->get()->result();
+    }
+
+    public function getOsEscolaNaoAutorizou()
+    {
+        $this->db->select('os.*, clientes.nomeCliente');
+        $this->db->from('os');
+        $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
+        $this->db->where('os.status_os', 'escola_nao_autorizou');
         $this->db->limit(10);
 
         return $this->db->get()->result();
     }
     
-    public function getOsAbertas()
+    public function getOsPendenciaCliente()
     {
         $this->db->select('os.*, clientes.nomeCliente');
         $this->db->from('os');
         $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
-        $this->db->where('os.status', 'Aberto');
+        $this->db->where('os.status_os', 'pendencia_cliente');
         $this->db->limit(10);
 
         return $this->db->get()->result();
     }
 
-    public function getOsFinalizadas()
+    public function getOsInviabilidadeTecnica()
     {
         $this->db->select('os.*, clientes.nomeCliente');
         $this->db->from('os');
         $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
-        $this->db->where('os.status', 'Finalizado');
+        $this->db->where('os.status_os', 'inviabilidade_tecnica');
         $this->db->order_by('os.idOs', 'DESC');
-        $this->db->limit(10);
-
-        return $this->db->get()->result();
-    }
-
-    public function getOsAprovadas()
-    {
-        $this->db->select('os.*, clientes.nomeCliente');
-        $this->db->from('os');
-        $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
-        $this->db->where('os.status', 'Aprovado');
-        $this->db->limit(10);
-
-        return $this->db->get()->result();
-    }
-
-    public function getOsAguardandoPecas()
-    {
-        $this->db->select('os.*, clientes.nomeCliente');
-        $this->db->from('os');
-        $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
-        $this->db->where('os.status', 'Aguardando Peças');
-        $this->db->limit(10);
-
-        return $this->db->get()->result();
-    }
-
-    public function getOsAndamento()
-    {
-        $this->db->select('os.*, clientes.nomeCliente');
-        $this->db->from('os');
-        $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
-        $this->db->where('os.status', 'Em Andamento');
         $this->db->limit(10);
 
         return $this->db->get()->result();
@@ -188,7 +174,7 @@ class Mapos_model extends CI_Model
         $this->db->select('os.*, clientes.nomeCliente');
         $this->db->from('os');
         $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
-        $this->db->where_in('os.status', $status);
+        $this->db->where_in('os.status_os', $status);
         $this->db->order_by('os.idOs', 'DESC');
         $this->db->limit(10);
 
@@ -221,26 +207,46 @@ class Mapos_model extends CI_Model
 
     public function calendario($start, $end, $status = null)
     {
-        $this->db->select(
-            'os.*,
-            clientes.nomeCliente,
-            COALESCE((SELECT SUM(produtos_os.preco * produtos_os.quantidade ) FROM produtos_os WHERE produtos_os.os_id = os.idOs), 0) totalProdutos,
-            COALESCE((SELECT SUM(servicos_os.preco * servicos_os.quantidade ) FROM servicos_os WHERE servicos_os.os_id = os.idOs), 0) totalServicos'
-        );
-        $this->db->from('os');
-        $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
-        $this->db->join('produtos_os', 'produtos_os.os_id = os.idOs', 'left');
-        $this->db->join('servicos_os', 'servicos_os.os_id = os.idOs', 'left');
-        $this->db->where('os.dataFinal >=', $start);
-        $this->db->where('os.dataFinal <=', $end);
-        $this->db->group_by('os.idOs');
-
-        if (! empty($status)) {
-            $this->db->where('os.status', $status);
+        try {
+            error_log("Entrou no método calendario");
+    
+            // Verificar se os parâmetros são válidos
+            error_log("Start: " . $start);
+            error_log("End: " . $end);
+            error_log("Status: " . $status);
+    
+            $this->db->select(
+                'os.*,
+                clientes.nomeCliente,
+                COALESCE((SELECT SUM(produtos_os.preco * produtos_os.quantidade ) FROM produtos_os WHERE produtos_os.os_id = os.idOs), 0) totalProdutos,
+                COALESCE((SELECT SUM(servicos_os.preco * servicos_os.quantidade ) FROM servicos_os WHERE servicos_os.os_id = os.idOs), 0) totalServicos'
+            );
+            $this->db->from('os');
+            $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
+            $this->db->join('produtos_os', 'produtos_os.os_id = os.idOs', 'left');
+            $this->db->join('servicos_os', 'servicos_os.os_id = os.idOs', 'left');
+            $this->db->where('os.dataFinal >=', $start);
+            $this->db->where('os.dataFinal <=', $end);
+            $this->db->group_by('os.idOs');
+    
+            if (!empty($status)) {
+                $this->db->where('os.status_os', $status);
+            }
+    
+            $result = $this->db->get()->result();
+            
+            // Verificar o resultado da consulta
+            error_log("Resultado da consulta: " . print_r($result, true));
+    
+            return $result;
+        } catch (Exception $e) {
+            // Log a detailed error message for debugging
+            error_log("Erro ao executar a consulta: " . $e->getMessage());
+            return array(); // Return an empty array or handle the error appropriately
         }
-
-        return $this->db->get()->result();
     }
+    
+
 
     public function getProdutosMinimo()
     {
@@ -251,7 +257,7 @@ class Mapos_model extends CI_Model
 
     public function getOsEstatisticas()
     {
-        $sql = 'SELECT status, COUNT(status) as total FROM os GROUP BY status ORDER BY status';
+        $sql = 'SELECT status_os, COUNT(status_os) as total FROM os GROUP BY status_os ORDER BY status_os';
 
         return $this->db->query($sql)->result();
     }

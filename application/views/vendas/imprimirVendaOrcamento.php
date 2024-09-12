@@ -50,7 +50,7 @@
                                                                 Vendedor: <?php echo $result->nome ?>
                                                             </span>
                                         </td>
-                                        <td style="width: 18%; text-align: center"><b>#Orçamento: </b><span>
+                                        <td style="width: 18%; text-align: center"><b>#Orçamen: </b><span>
                                                 <?php echo $result->idVendas ?></span></br> </br> <span><b>Emissão: </b>
                                                 <?php echo date('d/m/Y'); ?><br><b>Válido por até 10 dias.</b></span>
                                         </td>

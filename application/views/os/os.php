@@ -3,55 +3,52 @@
 <script type="text/javascript" src="<?php echo base_url() ?>assets/js/jquery-ui/js/jquery-ui-1.9.2.custom.js"></script>
 <script src="<?php echo base_url() ?>assets/js/sweetalert2.all.min.js"></script>
 <style>
+
   select {
     width: 70px;
   }
+
+  .topActions {
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between;
+    }
+
 </style>
 <div class="new122">
     <div class="widget-title" style="margin: -20px 0 0">
             <span class="icon">
                 <i class="fas fa-diagnoses"></i>
             </span>
-            <h5>Ordens de Serviço</h5>
+            <h5>O.S</h5>
         </div>
     <div class="span12" style="margin-left: 0">
-        <form method="get" action="<?php echo base_url(); ?>index.php/os/gerenciar">
-            <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aOs')) { ?>
-                <div class="span3">
-                    <a href="<?php echo base_url(); ?>index.php/os/adicionar" class="button btn btn-mini btn-success" style="max-width: 160px">
-                        <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span class="button__text2">Ordem de Serviço</span></a>
-                </div>
-            <?php
-            } ?>
-
+        <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aOs')) { ?>
+        <div class="topActions">
             <div class="span3">
-                <input type="text" name="pesquisa" id="pesquisa" placeholder="Nome do cliente a pesquisar" class="span12" value="<?=set_value('pesquisa')?>">
+                <a href="<?php echo base_url(); ?>index.php/os/adicionar" class="button btn btn-mini btn-success" style="max-width: 160px">
+                    <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span class="button__text2">Adicinar O.S</span></a>
             </div>
-            <div class="span2">
-                <select name="status" id="" class="span12">
-                    <option value="">Selecione status</option>
-                    <option value="Aberto" <?=$this->input->get('status') == 'Aberto' ? 'selected' : ''?>>Aberto</option>
-                    <option value="Faturado" <?=$this->input->get('status') == 'Faturado' ? 'selected' : ''?>>Faturado</option>
-                    <option value="Negociação" <?=$this->input->get('status') == 'Negociação' ? 'selected' : ''?>>Negociação</option>
-                    <option value="Em Andamento" <?=$this->input->get('status') == 'Em Andamento' ? 'selected' : ''?>>Em Andamento</option>
-                    <option value="Orçamento" <?=$this->input->get('status') == 'Orçamento' ? 'selected' : ''?>>Prospcção</option>
-                    <option value="Finalizado" <?=$this->input->get('status') == 'Finalizado' ? 'selected' : ''?>>Finalizado</option>
-                    <option value="Cancelado" <?=$this->input->get('status') == 'Cancelado' ? 'selected' : ''?>>Cancelado</option>
-                    <option value="Aguardando Peças" <?=$this->input->get('status') == 'Aguardando Peças' ? 'selected' : ''?>>Aguardando</option>
-                    <option value="Aprovado" <?=$this->input->get('status') == 'Aprovado' ? 'selected' : ''?>>Aprovado</option>
+        <?php
+        } ?>
+
+            <form method="get" action="<?= base_url() ?>index.php/os" style="display: flex; justify-content: flex-end; gap: 10px;">
+                <!--<input type="text" name="pesquisa" id="pesquisa" placeholder="Buscar por Nome, Doc, Email ou Telefone..." class="form-control" value="<?= $this->input->get('pesquisa') ?>">-->
+                <select name="status" id="status" style="width: 100%;">
+                    <option value="">Todos os Status</option>
+                    <option value="pendencia_cliente" <?= $this->input->get('status') == 'pendencia_cliente' ? 'selected' : '' ?>>Pendência Cliente</option>
+                    <option value="inviabilidade_tecnica" <?= $this->input->get('status') == 'inviabilidade_tecnica' ? 'selected' : '' ?>>Inviabilidade Técnica</option>
+                    <option value="escola_nao_autorizou" <?= $this->input->get('status') == 'escola_nao_autorizou' ? 'selected' : '' ?>>Escola Não Autorizou</option>
                 </select>
+                <input type="text" name="dataInicial" id="dataInicial" placeholder="Data Inicial (YYYY-MM-DD)" class="form-control" value="<?= $this->input->get('dataInicial') ?>">
+                <input type="text" name="dataFinal" id="dataFinal" placeholder="Data Final (YYYY-MM-DD)" class="form-control" value="<?= $this->input->get('dataFinal') ?>">
+                <div class="span1">
+                    <button class="button btn btn-mini btn-warning" style="min-width: 30px">
+                        <span class="button__icon"><i class='bx bx-search-alt'></i></span></button>
+                </div>
+            </form>
 
-            </div>
-
-            <div class="span3">
-                <input type="text" name="data" autocomplete="off" id="data" placeholder="Data Inicial" class="span6 datepicker" value="<?=$this->input->get('data')?>">
-                <input type="text" name="data2" autocomplete="off" id="data2" placeholder="Data Final" class="span6 datepicker" value="<?=$this->input->get('data2')?>">
-            </div>
-            <div class="span1">
-                <button class="button btn btn-mini btn-warning" style="min-width: 30px">
-                    <span class="button__icon"><i class='bx bx-search-alt'></i></span></button>
-            </div>
-        </form>
+        </div>
     </div>
 
     <div class="widget-box" style="margin-top: 8px">
@@ -65,10 +62,10 @@
                             <th class="ph1">Responsável</th>
                             <th>Data Inicial</th>
                             <th class="ph2">Data Final</th>
-                            <th class="ph3">Venc. Garantia</th>
+                            <th class="ph3">####</th>
                             <th>Valor Total</th>
                             <th>Valor com Desconto</th>
-                            <th class="ph4">V.T (Faturado)</th>
+                            <th class="ph4">Valor Faturado</th>
                             <th>Status</th>
                             <th>Ações</th>
                         </tr>
@@ -76,106 +73,57 @@
                     <tbody>
                         <?php if (!$results) {
                             echo '<tr>
-                            <td colspan="10">Nenhuma OS Cadastrada</td>
+                            <td colspan="10">Sem O.S</td>
                             </tr>';
                         }
 
-                        $this->load->model('os_model'); foreach ($results as $r) {
-                                $dataInicial = date(('d/m/Y'), strtotime($r->dataInicial));
-                                if ($r->dataFinal != null) {
-                                    $dataFinal = date(('d/m/Y'), strtotime($r->dataFinal));
-                                } else {
-                                    $dataFinal = "";
-                                }
-                                if ($this->input->get('pesquisa') === null && is_array(json_decode($configuration['os_status_list']))) {
-                                    if (in_array($r->status, json_decode($configuration['os_status_list'])) != true) {
-                                        continue;
-                                    }
-                                }
+                        foreach ($results as $r) {
 
-                                switch ($r->status) {
-                                    case 'Aberto':
-                                        $cor = '#00cd00';
-                                        break;
-                                    case 'Em Andamento':
-                                        $cor = '#436eee';
-                                        break;
-                                    case 'Orçamento':
-                                        $cor = '#CDB380';
-                                        break;
-                                    case 'Negociação':
-                                        $cor = '#AEB404';
-                                        break;
-                                    case 'Cancelado':
-                                        $cor = '#CD0000';
-                                        break;
-                                    case 'Finalizado':
-                                        $cor = '#256';
-                                        break;
-                                    case 'Faturado':
-                                        $cor = '#B266FF';
-                                        break;
-                                    case 'Aguardando Peças':
-                                        $cor = '#FF7F00';
-                                        break;
-                                    case 'Aprovado':
-                                        $cor = '#808080';
-                                        break;
-                                    default:
-                                        $cor = '#E0E4CC';
-                                        break;
-                                }
-                                $vencGarantia = '';
+                            $dataInicial = new DateTime($r->dataInicial);
+                            $dataFinal = new DateTime($r->dataFinal);
 
-                                if ($r->garantia && is_numeric($r->garantia)) {
-                                    $vencGarantia = dateInterval($r->dataFinal, $r->garantia);
-                                }
-                                $corGarantia = '';
-                                if (!empty($vencGarantia)) {
-                                    $dataGarantia = explode('/', $vencGarantia);
-                                    $dataGarantiaFormatada = $dataGarantia[2] . '-' . $dataGarantia[1] . '-' . $dataGarantia[0];
-                                    if (strtotime($dataGarantiaFormatada) >= strtotime(date('d-m-Y'))) {
-                                        $corGarantia = '#4d9c79';
-                                    } else {
-                                        $corGarantia = '#f24c6f';
-                                    }
-                                } elseif ($r->garantia == "0") {
-                                    $vencGarantia = 'Sem Garantia';
-                                    $corGarantia = '';
-                                } else {
-                                    $vencGarantia = '';
-                                    $corGarantia = '';
-                                }
+                            $dataInicialFormatada = $dataInicial->format('d/m/Y');
+                            $dataFinalFormatada = $dataFinal->format('d/m/Y');
 
-                                echo '<tr>';
-                                echo '<td>' . $r->idOs . '</td>';
-                                echo '<td class="cli1"><a href="' . base_url() . 'index.php/clientes/visualizar/' . $r->idClientes . '" style="margin-right: 1%">' . $r->nomeCliente . '</a></td>';
-                                echo '<td class="ph1">' . $r->nome . '</td>';
-                                echo '<td>' . $dataInicial . '</td>';
-                                echo '<td class="ph2">' . $dataFinal . '</td>';
-                                echo '<td class="ph3"><span class="badge" style="background-color: ' . $corGarantia . '; border-color: ' . $corGarantia . '">' . $vencGarantia . '</span> </td>';
-                                echo '<td>R$ ' . number_format($r->totalProdutos + $r->totalServicos, 2, ',', '.') . '</td>';
-                                echo '<td>R$ ' . number_format(floatval($r->valor_desconto), 2, ',', '.') . '</td>';
-                                echo '<td class="ph4">R$ ' . number_format($r->valor_desconto != 0 ? $r->valor_desconto : $r->valorTotal, 2, ',', '.') . '</td>';
-                                echo '<td><span class="badge" style="background-color: ' . $cor . '; border-color: ' . $cor . '">' . $r->status . '</span> </td>';
-                                echo '<td>';
+                            echo '<tr>';
+                            echo '<td>' . $r->idOs . '</td>';
+                            echo '<td><a href="' . base_url() . 'index.php/os/visualizar/' . $r->idOs . '" style="margin-right: 1%">' . $r->nomeCliente . '</a></td>';
+                            echo '<td>' . $r->nome . '</td>';
+                            echo '<td>' . $dataInicialFormatada  . '</td>';
+                            echo '<td>' . $dataFinalFormatada  . '</td>';
+                            echo '<td></td>';
+                            echo '<td>' . $r->valorTotal . '</td>';
+                            echo '<td>' . $r->valor_desconto . '</td>';
+                            echo '<td>' . $r->faturado . '</td>';
 
-                                $editavel = $this->os_model->isEditable($r->idOs);
+                            switch($r->status_os){
+                                case 'pendencia_cliente':
+                                    echo '<td>Pendência Cliente</td>';
+                                    break;
+                                case 'inviabilidade_tecnica':
+                                    echo '<td>Inviabilidade Técnica</td>';
+                                    break;
+                                case 'escola_nao_autorizou':
+                                    echo '<td>Escola Não Autorizou</td>';
+                                    break;
+                                default:
+                                    echo '<td>Escola Não Autorizou</td>';
+                                    break;
+                            }
 
-                                if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) {
-                                    echo '<a style="margin-right: 1%" href="' . base_url() . 'index.php/os/visualizar/' . $r->idOs . '" class="btn-nwe" title="Ver mais detalhes"><i class="bx bx-show"></i></a>';
-                                    echo '<a style="margin-right: 1%" href="' . base_url() . 'index.php/os/imprimir/' . $r->idOs . '" target="_blank" class="btn-nwe6" title="Imprimir A4"><i class="bx bx-printer bx-xs"></i></a>';
-                                    echo '<a style="margin-right: 1%" href="' . base_url() . 'index.php/os/imprimirTermica/' . $r->idOs . '" target="_blank" class="btn-nwe6" title="Imprimir Não Fiscal"><i class="bx bx-printer bx-xs"></i></a>';
-                                }
-                                if ($editavel) {
-                                    echo '<a style="margin-right: 1%" href="' . base_url() . 'index.php/os/editar/' . $r->idOs . '" class="btn-nwe3" title="Editar OS"><i class="bx bx-edit"></i></a>';
-                                }
-                                if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dOs') && $editavel) {
-                                    echo '<a href="#modal-excluir" role="button" data-toggle="modal" os="' . $r->idOs . '" class="btn-nwe4" title="Excluir OS"><i class="bx bx-trash-alt"></i></a>  ';
-                                }
-                                echo '</td>';
-                                echo '</tr>';
-                            } ?>
+                            echo '<td>';
+                            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) {
+                                echo '<a href="' . base_url() . 'index.php/os/visualizar/' . $r->idOs . '" style="margin-right: 1%" class="btn-nwe" title="Ver mais detalhes"><i class="bx bx-show bx-xs"></i></a>';
+                            }
+                            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eOs')) {
+                                echo '<a href="' . base_url() . 'index.php/os/editar/' . $r->idOs . '" style="margin-right: 1%" class="btn-nwe3" title="Editar O.S"><i class="bx bx-edit bx-xs"></i></a>';
+                            }
+                            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dOs')) {
+                                echo '<a href="#modal-excluir" role="button" data-toggle="modal" os="' . $r->idOs . '" style="margin-right: 1%" class="btn-nwe4" title="Excluir O.S"><i class="bx bx-trash-alt bx-xs"></i></a>';
+                            }
+                            echo '</td>';
+                            echo '</tr>';
+                        } ?>
                     </tbody>
                 </table>
             </div>
@@ -193,7 +141,7 @@
             </div>
             <div class="modal-body">
                 <input type="hidden" id="idOs" name="id" value="" />
-                <h5 style="text-align: center">Deseja realmente excluir esta OS?</h5>
+                <h5 style="text-align: center">Deseja realmente excluir esta O.S?</h5>
             </div>
             <div class="modal-footer" style="display:flex;justify-content: center">
                 <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true">
@@ -205,6 +153,12 @@
 </div>
 
 <script type="text/javascript">
+    $(document).ready(function() {
+    $("#dataInicial, #dataFinal").datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+});
+
     $(document).ready(function() {
         $(document).on('click', 'a', function(event) {
             var os = $(this).attr('os');
@@ -238,4 +192,5 @@
             dateFormat: 'dd/mm/yy'
         });
     });
+    
 </script>

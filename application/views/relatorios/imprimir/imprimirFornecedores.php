@@ -29,24 +29,22 @@
                                 <thead>
                                     <tr>
                                         <th width="480" style="font-size: 15px">Nome</th>
-                                        <th width="170" style="font-size: 15px">Documento</th>
-                                        <th width="150" style="font-size: 15px">Telefone</th>
+                                        <th width="170" style="font-size: 15px">CNPJ</th>
+                                        <th width="150" style="font-size: 15px">Telefone Comercial</th>
                                         <th width="200" style="font-size: 15px">Email</th>
                                         <th width="200" style="font-size: 15px">Cidade</th>
-                                        <th width="200" style="font-size: 15px">Status</th>
                                         <th width="120" style="font-size: 15px">Cadastro</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($clientes as $c) : ?>
-                                    <?php $dataCadastro = date('d/m/Y', strtotime($c->dataCadastro)) ?>
+                                    <?php foreach ($fornecedores as $f) : ?>
+                                    <?php $dataCadastro = date('d/m/Y', strtotime($f->dataCadastro)) ?>
                                     <tr>
-                                        <td><?= $c->nomeCliente ?></td>
-                                        <td align="center"><?= $c->documento ?></td>
-                                        <td align="center"><?= $c->telefone ?></td>
-                                        <td align="center"><?= $c->email ?></td>
-                                        <td align="center"><?= $c->cidade ?></td>
-                                        <td align="center"><?= $c->status ?></td>
+                                        <td><?= $f->nomeFornecedor ?></td>
+                                        <td align="center"><?= $f->cnpj ?></td>
+                                        <td align="center"><?= $f->telefone_comercial ?></td>
+                                        <td align="center"><?= $f->email ?></td>
+                                        <td align="center"><?= $f->cidade ?></td>
                                         <td align="center"><?= $dataCadastro ?></td>
                                     </tr>
                                     <?php endforeach ?>

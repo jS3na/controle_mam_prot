@@ -33,7 +33,7 @@
                     <option value="Orçamento">Prospcção</option>
                     <option value="Finalizado">Finalizado</option>
                     <option value="Cancelado">Cancelado</option>
-                    <option value="Aguardando Peças">Aguardando</option>
+                    <option value="Aguardando">Aguardando</option>
                     <option value="Aprovado">Aprovado</option>
                 </select>
             </div>

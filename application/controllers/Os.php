@@ -21,60 +21,34 @@ class Os extends MY_Controller
 
     public function gerenciar()
     {
-        $this->load->library('pagination');
-        $this->load->model('mapos_model');
-
-        $where_array = [];
-
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para visualizar O.S.');
+            redirect(base_url());
+        }
+    
         $pesquisa = $this->input->get('pesquisa');
         $status = $this->input->get('status');
-        $inputDe = $this->input->get('data');
-        $inputAte = $this->input->get('data2');
-
-        if ($pesquisa) {
-            $where_array['pesquisa'] = $pesquisa;
-        }
-        if ($status) {
-            $where_array['status'] = $status;
-        }
-        if ($inputDe) {
-            $de = explode('/', $inputDe);
-            $de = $de[2] . '-' . $de[1] . '-' . $de[0];
-
-            $where_array['de'] = $de;
-        }
-        if ($inputAte) {
-            $ate = explode('/', $inputAte);
-            $ate = $ate[2] . '-' . $ate[1] . '-' . $ate[0];
-
-            $where_array['ate'] = $ate;
-        }
-
+        $dataInicial = $this->input->get('dataInicial');
+        $dataFinal = $this->input->get('dataFinal');
+    
+        $this->load->library('pagination');
+    
         $this->data['configuration']['base_url'] = site_url('os/gerenciar/');
-        $this->data['configuration']['total_rows'] = $this->os_model->count('os');
-        if(count($where_array) > 0) {
-            $this->data['configuration']['suffix'] = "?pesquisa={$pesquisa}&status={$status}&data={$inputDe}&data2={$inputAte}";
-            $this->data['configuration']['first_url'] = base_url("index.php/os/gerenciar")."\?pesquisa={$pesquisa}&status={$status}&data={$inputDe}&data2={$inputAte}";
-        }
-
+        $this->data['configuration']['total_rows'] = $this->os_model->count('os', $pesquisa, $status, $dataInicial, $dataFinal);
+    
+        $this->data['configuration']['suffix'] = "?pesquisa={$pesquisa}&status={$status}&dataInicial={$dataInicial}&dataFinal={$dataFinal}";
+        $this->data['configuration']['first_url'] = base_url("index.php/os") . "?pesquisa={$pesquisa}&status={$status}&dataInicial={$dataInicial}&dataFinal={$dataFinal}";
+    
         $this->pagination->initialize($this->data['configuration']);
-
-        $this->data['results'] = $this->os_model->getOs(
-            'os',
-            'os.*,
-            COALESCE((SELECT SUM(produtos_os.preco * produtos_os.quantidade ) FROM produtos_os WHERE produtos_os.os_id = os.idOs), 0) totalProdutos,
-            COALESCE((SELECT SUM(servicos_os.preco * servicos_os.quantidade ) FROM servicos_os WHERE servicos_os.os_id = os.idOs), 0) totalServicos',
-            $where_array,
-            $this->data['configuration']['per_page'],
-            $this->uri->segment(3)
-        );
-
-        $this->data['texto_de_notificacao'] = $this->data['configuration']['notifica_whats'];
-        $this->data['emitente'] = $this->mapos_model->getEmitente();
+    
+        $this->data['results'] = $this->os_model->get('os', '*', $pesquisa, $status, $dataInicial, $dataFinal, $this->data['configuration']['per_page'], $this->uri->segment(3));
+    
         $this->data['view'] = 'os/os';
-
+    
         return $this->layout();
     }
+    
+    
 
     public function adicionar()
     {
@@ -119,13 +93,15 @@ class Os extends MY_Controller
                 'dataFinal' => $dataFinal,
                 'garantia' => set_value('garantia'),
                 'garantias_id' => $termoGarantiaId,
-                'descricaoProduto' => $this->input->post('descricaoProduto'),
+                'descricao_os' => $this->input->post('descricao_os'),
                 'defeito' => $this->input->post('defeito'),
-                'status' => set_value('status'),
+                'status_os' => set_value('status'),
                 'observacoes' => $this->input->post('observacoes'),
                 'laudoTecnico' => $this->input->post('laudoTecnico'),
                 'faturado' => 0,
             ];
+
+            log_message('debug', 'Valor de descricao_os: ' . $data['descricao_os']);
 
             if (is_numeric($id = $this->os_model->add('os', $data, true))) {
                 $this->load->model('mapos_model');
@@ -162,7 +138,7 @@ class Os extends MY_Controller
                     $this->enviarOsPorEmail($idOs, $remetentes, 'Ordem de Serviço - Criada');
                 }
 
-                $this->session->set_flashdata('success', 'Prospcção adicionada com sucesso, você pode adicionar serviços a essa Prospcção na aba de Serviços!');
+                $this->session->set_flashdata('success', 'O.S adicionada com sucesso, você pode adicionar serviços a essa O.S na aba de Serviços!');
                 log_info('Adicionou uma OS. ID: ' . $id);
                 redirect(site_url('os/editar/') . $id);
             } else {
@@ -220,9 +196,9 @@ class Os extends MY_Controller
                 'dataFinal' => $dataFinal,
                 'garantia' => $this->input->post('garantia'),
                 'garantias_id' => $termoGarantiaId,
-                'descricaoProduto' => $this->input->post('descricaoProduto'),
+                'descricao_os' => strip_tags($this->input->post('descricao_os')),
                 'defeito' => $this->input->post('defeito'),
-                'status' => $this->input->post('status'),
+                'status_os' => $this->input->post('status'),
                 'observacoes' => $this->input->post('observacoes'),
                 'laudoTecnico' => $this->input->post('laudoTecnico'),
                 'usuarios_id' => $this->input->post('usuarios_id'),
@@ -232,11 +208,11 @@ class Os extends MY_Controller
 
             //Verifica para poder fazer a devolução do produto para o estoque caso OS seja cancelada.
 
-            if (strtolower($this->input->post('status')) == 'cancelado' && strtolower($os->status) != 'cancelado') {
+            if (strtolower($this->input->post('status')) == 'cancelado' && strtolower($os->status_os) != 'cancelado') {
                 $this->devolucaoEstoque($this->input->post('idOs'));
             }
 
-            if (strtolower($os->status) == 'cancelado' && strtolower($this->input->post('status')) != 'cancelado') {
+            if (strtolower($os->status_os) == 'cancelado' && strtolower($this->input->post('status')) != 'cancelado') {
                 $this->debitarEstoque($this->input->post('idOs'));
             }
 
@@ -275,7 +251,7 @@ class Os extends MY_Controller
                     $this->enviarOsPorEmail($idOs, $remetentes, 'Ordem de Serviço - Editada');
                 }
 
-                $this->session->set_flashdata('success', 'Os editada com sucesso!');
+                $this->session->set_flashdata('success', 'O.S editada com sucesso!');
                 log_info('Alterou uma OS. ID: ' . $this->input->post('idOs'));
                 redirect(site_url('os/editar/') . $this->input->post('idOs'));
             } else {

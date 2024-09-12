@@ -107,7 +107,7 @@ $periodo = $this->input->get('periodo');
                         <tr>
                             <th>#</th>
                             <th>Tipo</th>
-                            <th>Cliente / Fornecedor</th>
+                            <th>Clientes / Fornecedor</th>
                             <th>Descrição</th>
                             <th>Vencimento</th>
                             <th>Status</th>

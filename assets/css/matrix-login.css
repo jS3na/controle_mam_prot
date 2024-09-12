@@ -50,7 +50,9 @@ body * {
 
 #newlog .title01 {
   padding-left: 6px;
-  width       : 135px;
+  width: 135px;
+  padding-bottom: 18px;
+  padding-top: 1px;
 }
 
 #mcell {

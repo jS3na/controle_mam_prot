@@ -10,7 +10,7 @@ $config['app_version'] = '4.47.0';
 /**
  * Nome do sistema
  */
-$config['app_name'] = $_ENV['APP_NAME'] ?? 'OS';
+$config['app_name'] = 'ManTech';
 
 /**
  * Descrição do sistema
@@ -23,7 +23,9 @@ $config['app_subname'] = $_ENV['APP_SUBNAME'] ?? 'Sistema de Controle de Ordens 
 date_default_timezone_set($_ENV['APP_TIMEZONE'] ?? 'America/Sao_Paulo');
 
 
-$config['base_url'] = 'http://10.10.86.67/';
+$config['base_url'] = $_ENV['APP_BASEURL'] ?? 'http://localhost/os/';
+
+//$config['base_url'] = 'http:/home/vol10_1/infinityfree.com/if0_37196295/';
 
 
 $config['index_page'] = 'index.php';

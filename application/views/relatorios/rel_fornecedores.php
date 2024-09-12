@@ -9,10 +9,10 @@
             </div>
             <div class="widget-content">
                 <ul style="flex-direction: row;" class="site-stats">
-                    <li><a href="<?php echo base_url() ?>index.php/relatorios/clientesRapid" target="_blank"><i
-                                    class="fas fa-users"></i> <small>Todos os Clientes - pdf</small></a></li>
-                    <li><a href="<?php echo base_url() ?>index.php/relatorios/clientesRapid?format=xls" target="_blank"><i
-                                    class="fas fa-users"></i> <small>Todos os Clientes - xls</small></a></li>
+                    <li><a href="<?php echo base_url() ?>index.php/relatorios/fornecedoresRapid" target="_blank"><i
+                                    class="fas fa-users"></i> <small>Todos os Fornecedores - pdf</small></a></li>
+                    <li><a href="<?php echo base_url() ?>index.php/relatorios/fornecedoresRapid?format=xls" target="_blank"><i
+                                    class="fas fa-users"></i> <small>Todos os Fornecedores - xls</small></a></li>
                 </ul>
             </div>
         </div>
@@ -28,7 +28,7 @@
             </div>
             <div class="widget-content">
                 <div class="span12 well">
-                    <form target="_blank" action="<?php echo base_url() ?>index.php/relatorios/clientesCustom"
+                    <form target="_blank" action="<?php echo base_url() ?>index.php/relatorios/fornecedoresCustom"
                           method="get">
                         <div class="span4">
                             <label for="">Cadastrado de:</label>

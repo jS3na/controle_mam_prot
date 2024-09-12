@@ -12,13 +12,13 @@
     <div class="span12">
         <div class="widget-box">
             <div class="widget-title">
-                <h5>Cadastro de OS</h5>
+                <h5>Adicionar Nova O.S</h5>
             </div>
             <div class="widget-content nopadding tab-content">
                 <div class="span12" id="divProdutosServicos" style=" margin-left: 0">
 
                     <ul class="nav nav-tabs">
-                        <li class="active" id="tabDetalhes"><a href="#tab1" data-toggle="tab">Detalhes da OS</a></li>
+                        <li class="active" id="tabDetalhes"><a href="#tab1" data-toggle="tab">Cliente</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab1">
@@ -35,22 +35,18 @@
                                             <input id="clientes_id" class="span12" type="hidden" name="clientes_id" value="" />
                                         </div>
                                         <div class="span6">
-                                            <label for="tecnico">Provedor / Responsável<span class="required">*</span></label>
+                                            <label for="tecnico">Responsável<span class="required">*</span></label>
                                             <input id="tecnico" class="span12" type="text" name="tecnico" value="<?= $this->session->userdata('nome_admin'); ?>" />
                                             <input id="usuarios_id" class="span12" type="hidden" name="usuarios_id" value="<?= $this->session->userdata('id_admin'); ?>" />
                                         </div>
                                     </div>
-                                    <div class="span12" style="padding: 1%; margin-left: 0">
+                                    <div class="span12" style="padding: 1%; margin-left: 0"> 
                                         <div class="span3">
-                                            <label for="status">Status<span class="required">*</span></label>
+                                            <label for="status">Status do Cliente<span class="required">*</span></label>
                                             <select class="span12" name="status" id="status" value="">
-                                                <option value="Orçamento">Prospcção</option>
-                                                <option value="Aberto">Aberto</option>
-                                                <option value="Em Andamento">Em Andamento</option>
-                                                <option value="Finalizado">Finalizado</option>
-                                                <option value="Cancelado">Cancelado</option>
-                                                <option value="Aguardando Peças">Aguardando</option>
-                                                <option value="Aprovado">Aprovado</option>
+                                                <option value="pendencia_cliente">Pendência Cliente</option>
+                                                <option value="inviabilidade_tecnica">Inviabilidade Técnica</option>
+                                                <option value="escola_nao_autorizou">Escola Não Autorizou</option>
                                             </select>
                                         </div>
                                         <div class="span3">
@@ -61,22 +57,24 @@
                                             <label for="dataFinal">Data Final<span class="required">*</span></label>
                                             <input id="dataFinal" autocomplete="off" class="span12 datepicker" type="text" name="dataFinal" value="" />
                                         </div>
-                                        <div class="span3">
+
+                                        <!--<div class="span3">
                                             <label for="garantia">Garantia (dias)</label>
                                             <input id="garantia" type="number" placeholder="Status s/g inserir nº/0" min="0" max="9999" class="span12" name="garantia" value="" />
                                             <?php echo form_error('garantia'); ?>
                                             <label for="termoGarantia">Termo Garantia</label>
                                             <input id="termoGarantia" class="span12" type="text" name="termoGarantia" value="" />
                                             <input id="garantias_id" class="span12" type="hidden" name="garantias_id" value="" />
-                                        </div>
+                                        </div>-->
+
                                     </div>
                                     <div class="span6" style="padding: 1%; margin-left: 0">
-                                        <label for="descricaoProduto">
-                                            <h4>Descrição Produto/Serviço</h4>
+                                        <label for="descricao_os">
+                                            <h4>Descrição Detalhada (opcional)</h4>
                                         </label>
-                                        <textarea class="span12 editor" name="descricaoProduto" id="descricaoProduto" cols="30" rows="5"></textarea>
+                                        <textarea class="span12 editor" name="descricao_os" id="descricao_os" cols="30" rows="5"></textarea>
                                     </div>
-                                    <div class="span6" style="padding: 1%; margin-left: 0">
+                                    <!--<div class="span6" style="padding: 1%; margin-left: 0">
                                         <label for="defeito">
                                             <h4>Defeito</h4>
                                         </label>
@@ -93,7 +91,7 @@
                                             <h4>Laudo Técnico</h4>
                                         </label>
                                         <textarea class="span12 editor" name="laudoTecnico" id="laudoTecnico" cols="30" rows="5"></textarea>
-                                    </div>
+                                    </div>-->
                                     <div class="span12" style="padding: 1%; margin-left: 0">
                                         <div class="span6 offset3" style="display:flex">
                                             <button class="button btn btn-success" id="btnContinuar">
@@ -107,7 +105,7 @@
                         </div>
                     </div>
                 </div>
-                .
+                
             </div>
         </div>
     </div>
@@ -147,9 +145,6 @@
                 dataInicial: {
                     required: true
                 },
-                dataFinal: {
-                    required: true
-                }
 
             },
             messages: {
@@ -162,9 +157,6 @@
                 dataInicial: {
                     required: 'Campo Requerido.'
                 },
-                dataFinal: {
-                    required: 'Campo Requerido.'
-                }
             },
             errorClass: "help-inline",
             errorElement: "span",

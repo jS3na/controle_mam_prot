@@ -83,7 +83,7 @@
                 <span class="icon">
                     <i class="fas fa-user"></i>
                 </span>
-                <h5>Cadastro de Cliente</h5>
+                <h5>Cadastro de Clientes</h5>
             </div>
             <?php if ($custom_error != '') {
                 echo '<div class="alert alert-danger">' . $custom_error . '</div>';
@@ -99,15 +99,9 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label for="nomeCliente" class="control-label">Nome/Razão Social<span class="required">*</span></label>
+                            <label for="nomeCliente" class="control-label">Circuito + Nome <span class="required">*</span></label>
                             <div class="controls">
                                 <input id="nomeCliente" type="text" name="nomeCliente" value="<?php echo set_value('nomeCliente'); ?>" />
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label for="contato" class="control-label">Contato:</label>
-                            <div class="controls">
-                                <input class="contato" type="text" name="contato" value="<?php echo set_value('contato'); ?>" />
                             </div>
                         </div>
                         <div class="control-group">
@@ -117,17 +111,12 @@
                             </div>
                         </div>
                         <div class="control-group">
-                            <label for="celular" class="control-label">Celular</label>
-                            <div class="controls">
-                                <input id="celular" type="text" name="celular" value="<?php echo set_value('celular'); ?>" />
-                            </div>
-                        </div>
-                        <div class="control-group">
                             <label for="email" class="control-label">Email</label>
                             <div class="controls">
                                 <input id="email" type="text" name="email" value="<?php echo set_value('email'); ?>" />
                             </div>
                         </div>
+                        <!--
                         <div class="control-group">
                             <label for="senha" class="control-label">Senha</label>
                             <div class="controls">
@@ -144,6 +133,7 @@
                                 </label>
                             </div>
                         </div>
+                        -->
                     </div>
 
                     <div class="span6">
@@ -190,6 +180,35 @@
                                     <option value="">Selecione...</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="control-group" class="control-label">
+                            <label for="status" class="control-label">Status</label>
+                            <div class="controls">
+                                <select id="status" name="status">
+                                    <option value="">Selecione...</option>
+                                    <option value="INSTALADO">INSTALADO</option>
+                                    <option value="NÃO INSTALADO">NÃO INSTALADO</option>
+                                    <option value="FECHADO">FECHADO</option>
+                                    <option value="COTADO">COTADO</option>
+                                    <option value="EM ANÁLISE">EM ANÁLISE</option>
+                                    <option value="AGUARDANDO COTAÇÃO">AGUARDANDO COTAÇÃO</option>
+                                    <option value="SEM RETORNO">SEM RETORNO</option>
+                                    <option value="EM NEGOCIAÇÃO">EM NEGOCIAÇÃO</option>
+                                    <option value="VIABILIZADO">VIABILIZADO</option>
+                                    <option value="AGUARDANDO INSTALAÇÃO">AGUARDANDO INSTALAÇÃO</option>
+                                    <option value="AGUARDANDO CONTRATAÇÃO">AGUARDANDO CONTRATAÇÃO</option>
+                                    <option value="CANCELADO">CANCELADO</option>
+                                    <option value="RADIO">RADIO</option>
+                                    <option value="VALOR ALTO">VALOR ALTO</option>
+                                    <option value="COTANDO">COTANDO</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="span6" style="padding: 1%; margin-left: 0">
+                            <label for="descricao">
+                                <h4>Descrição (opcional)</h4>
+                            </label>
+                            <textarea class="span12 editor" name="descricao" id="descricao" cols="30" rows="5"></textarea>
                         </div>
                     </div>
                 </div>

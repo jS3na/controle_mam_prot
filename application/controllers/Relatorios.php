@@ -107,16 +107,6 @@ class Relatorios extends MY_Controller
 
             $writer->writeSheetHeader('Sheet1', $cabecalho);
             foreach ($clientes as $cliente) {
-                if ($cliente['fornecedor']) {
-                    $cliente['fornecedor'] = 'sim';
-                } else {
-                    $cliente['fornecedor'] = 'não';
-                }
-                if ($cliente['pessoa_fisica']) {
-                    $cliente['pessoa_fisica'] = 'sim';
-                } else {
-                    $cliente['pessoa_fisica'] = 'não';
-                }
                 $writer->writeSheetRow('Sheet1', $cliente);
             }
 
@@ -136,6 +126,92 @@ class Relatorios extends MY_Controller
 
         $html = $this->load->view('relatorios/imprimir/imprimirClientes', $data, true);
         pdf_create($html, 'relatorio_clientes' . date('d/m/y'), true);
+    }
+
+    public function fornecedores()
+    {
+        if (! $this->permission->checkPermission($this->session->userdata('permissao'), 'rCliente')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para gerar relatórios de fornecedores.');
+            redirect(base_url());
+        }
+        $this->data['view'] = 'relatorios/rel_fornecedores';
+
+        return $this->layout();
+    }
+
+    public function fornecedoresCustom()
+    {
+        if (! $this->permission->checkPermission($this->session->userdata('permissao'), 'rCliente')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para gerar relatórios de fornecedores.');
+            redirect(base_url());
+        }
+
+        $dataInicial = $this->input->get('dataInicial');
+        $dataFinal = $this->input->get('dataFinal');
+
+        $data['dataInicial'] = date('d/m/Y', strtotime($dataInicial));
+        $data['dataFinal'] = date('d/m/Y', strtotime($dataFinal));
+
+        $data['fornecedores'] = $this->Relatorios_model->fornecedoresCustom($dataInicial, $dataFinal);
+        $data['emitente'] = $this->Mapos_model->getEmitente();
+        $data['title'] = 'Relatório de Fornecedores Customizado';
+        $data['topo'] = $this->load->view('relatorios/imprimir/imprimirTopo', $data, true);
+
+        $this->load->helper('mpdf');
+        $html = $this->load->view('relatorios/imprimir/imprimirFornecedores', $data, true);
+        pdf_create($html, 'relatorio_fornecedores' . date('d/m/y'), true);
+    }
+
+    public function fornecedoresRapid()
+    {
+        if (! $this->permission->checkPermission($this->session->userdata('permissao'), 'rCliente')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para gerar relatórios de fornecedores.');
+            redirect(base_url());
+        }
+
+        $format = $this->input->get('format');
+
+        if ($format == 'xls') {
+            $fornecedores = $this->Relatorios_model->fornecedoresRapid($array = true);
+            $cabecalho = [
+                'Código' => 'integer',
+                'Nome' => 'string',
+                'Documento' => 'string',
+                'Telefone Comercial' => 'string',
+                'E-mail' => 'string',
+                'Data de Cadastro' => 'YYYY-MM-DD',
+                'Rua' => 'string',
+                'Número' => 'string',
+                'Complemento' => 'string',
+                'Bairro' => 'string',
+                'Cidade' => 'string',
+                'Estado' => 'string',
+                'CEP' => 'string',
+            ];
+
+            $writer = new XLSXWriter();
+
+            $writer->writeSheetHeader('Sheet1', $cabecalho);
+            foreach ($fornecedores as $fornecedor) {
+                $writer->writeSheetRow('Sheet1', $fornecedor);
+            }
+
+            $arquivo = $writer->writeToString();
+            $this->load->helper('download');
+            force_download('relatorio_fornecedores.xlsx', $arquivo);
+
+            return;
+        }
+
+        $data['fornecedores'] = $this->Relatorios_model->fornecedoresdRapid();
+        $data['emitente'] = $this->Mapos_model->getEmitente();
+        $data['title'] = 'Relatório de Fornecedores';
+        $data['topo'] = $this->load->view('relatorios/imprimir/imprimirTopo', $data, true);
+
+        $this->load->helper('mpdf');
+
+        $html = $this->load->view('relatorios/imprimir/imprimirFornecedores', $data, true);
+        pdf_create($html, 'relatorio_fornecedores' . date('d/m/y'), true);
     }
 
     public function produtosRapid()

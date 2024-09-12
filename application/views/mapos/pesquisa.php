@@ -11,14 +11,14 @@
         </form>
     </div>
     <div class="span12" style="margin-left: 0; margin-top: 0">
-        <!--Produtoss-->
+        <!--Fornecedores-->
         <div class="span6" style="margin-left: 0; margin-top: 0">
             <div class="widget-box" style="min-height: 200px">
                 <div class="widget-title" style="margin: -20px 0 0">
                     <span class="icon">
                         <i class="fas fa-shopping-bag"></i>
                     </span>
-                    <h5>Produtos</h5>
+                    <h5>Fornecedores</h5>
                 </div>
                 <div class="widget-content nopadding tab-content">
                     <table class="table table-bordered ">
@@ -26,28 +26,28 @@
                         <tr>
                             <th>#</th>
                             <th>Nome</th>
-                            <th>Preço</th>
-                            <th>Estoque</th>
+                            <th>CNPJ</th>
+                            <th>Cidade</th>
                             <th></th>
                         </tr>
                         </thead>
                         <tbody>
                         <?php
-                        if ($produtos == null) {
-                            echo '<tr><td colspan="4">Nenhum produto foi encontrado.</td></tr>';
+                        if ($fornecedores == null) {
+                            echo '<tr><td colspan="4">Nenhum fornecedor foi encontrado.</td></tr>';
                         }
-                        foreach ($produtos as $r) {
+                        foreach ($fornecedores as $r) {
                             echo '<tr>';
-                            echo '<td>' . $r->idProdutos . '</td>';
-                            echo '<td>' . $r->descricao . '</td>';
-                            echo '<td>' . $r->precoVenda . '</td>';
-                            echo '<td>' . $r->estoque . '</td>';
+                            echo '<td>' . $r->idFornecedores . '</td>';
+                            echo '<td>' . $r->nomeFornecedor . '</td>';
+                            echo '<td>' . $r->cnpj . '</td>';
+                            echo '<td>' . $r->cidade . '</td>';
                             echo '<td>';
-                            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vProduto')) {
-                                echo '<a style="margin-right: 1%" href="' . base_url() . 'index.php/produtos/visualizar/' . $r->idProdutos . '" class="btn-nwe" title="Ver mais detalhes"><i class="bx bx-show"></i></a>';
+                            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente')) {
+                                echo '<a style="margin-right: 1%" href="' . base_url() . 'index.php/fornecedores/visualizar/' . $r->idFornecedores . '" class="btn-nwe" title="Ver mais detalhes"><i class="bx bx-show"></i></a>';
                             }
-                            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eProduto')) {
-                                echo '<a href="' . base_url() . 'index.php/produtos/editar/' . $r->idProdutos . '" class="btn-nwe3" title="Editar produto"><i class="bx bx-edit"></i></a>';
+                            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
+                                echo '<a href="' . base_url() . 'index.php/fornecedores/editar/' . $r->idFornecedores . '" class="btn-nwe3" title="Editar produto"><i class="bx bx-edit"></i></a>';
                             }
                             echo '</td>';
                             echo '</tr>';
@@ -75,7 +75,8 @@
                             <th>#</th>
                             <th>Nome</th>
                             <th>CPF/CNPJ</th>
-                            <th>Cliente / Fornecedor</th>
+                            <th>Telefone</th>
+                            <th>Cidade</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -89,8 +90,8 @@
                             echo '<td>' . $r->idClientes . '</td>';
                             echo '<td>' . $r->nomeCliente . '</td>';
                             echo '<td>' . $r->documento . '</td>';
-                            $cor = ($r->fornecedor ? '#CDB380' : '#CD0000');
-                            echo '<td><span class="badge" style="background-color: ' . $cor . '; border-color: ' . $cor . '">' . ($r->fornecedor ? 'Fornecedor' : 'Cliente') . '</span> </td>';
+                            echo '<td>' . $r->telefone . '</td>';
+                            echo '<td>' . $r->cidade . '</td>';
                             echo '<td>';
                             if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente')) {
                                 echo '<a style="margin-right: 1%" href="' . base_url() . 'index.php/clientes/visualizar/' . $r->idClientes . '" class="btn tip-top" title="Ver mais detalhes"><i class="fas fa-eye"></i></a>';
@@ -110,7 +111,8 @@
             </div>
         </div>
     </div>
-    <!--Serviços-->
+    
+    <!--Serviços
     <div class="span6" style="margin-left: 0">
         <div class="widget-box" style="min-height: 200px">
             <div class="widget-title" style="margin: -20px 0 0">
@@ -153,8 +155,8 @@
                 </table>
             </div>
         </div>
-    </div>
-    <!--Ordens de Serviço-->
+    </div>-->
+    <!--Ordens de Serviço
     <div class="span6">
         <div class="widget-box" style="min-height: 200px">
             <div class="widget-title" style="margin: -20px 0 0">
@@ -204,5 +206,5 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div>-->
 </div>

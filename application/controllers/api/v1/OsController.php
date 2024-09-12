@@ -315,7 +315,7 @@ class OsController extends REST_Controller
 
             $this->response([
                 'status' => true,
-                'message' => 'OS editada com sucesso!',
+                'message' => 'Prospção editada com sucesso!',
                 'result' => $os,
             ], REST_Controller::HTTP_OK);
         }

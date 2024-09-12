@@ -59,7 +59,7 @@ $parse_cpfcnpj = $this->input->get('c');
                                             <img src="<?php echo base_url() ?>assets/img/logoprimeiro.png">
                                         </div>
                                         <div class="title01">
-                                            <img src="<?php echo base_url() ?>assets/img/logoprimeiro.png">
+                                            <img src="<?php echo base_url() ?>assets/img/logomantech.jpg">
                                         </div>
                                     </div>
                                     <div id="mcell">Versão: <?= $this->config->item('app_version'); ?></div>
