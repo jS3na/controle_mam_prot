@@ -112,7 +112,7 @@
                                 <select id="parcelas" name="parcelas">
                                     <option value="">Selecione...</option>
                                     <option value="12">12</option>
-                                    <option value="24">24</option>
+                                    <!--<option value="24">24</option>-->
                                 </select>
                             </div>
                         </div>
@@ -134,6 +134,8 @@
                                 <input id="valorTotal" type="number" name="valorTotal" value="<?php echo set_value('valorTotal'); ?>" />
                             </div>
                         </div>
+
+                        <!--
                         <div class="control-group" class="control-label">
                             <label for="responsavel" class="control-label">Responsável</label>
                             <div class="controls">
@@ -144,6 +146,7 @@
                                 </select>
                             </div>
                         </div>
+                        -->
 
                     </div>
 

@@ -47,19 +47,23 @@ class Clientes_model extends CI_Model
         return $query->result();
     }
 
-    public function getFinanceiroCliente($idCliente)
+    public function getAllArquivos($where = '', $idReferencia)
     {
-
         $this->db->select('*');
-        $this->db->from('financeiro_cliente');
-        $this->db->where('idCliente', $idCliente);
-        $query = $this->db->get();
-
-        if ($query->num_rows() > 0) {
-            return $query->result();
-        } else {
-            return false;
+        $this->db->from('documentos');
+        $this->db->where('categoria', 'clientes');
+        $this->db->where('idReferencia', $idReferencia);
+        if ($where) {
+            $this->db->where($where);
         }
+    
+        $query = $this->db->get();
+        $result = $query->result(); // Retorna um array de resultados
+    
+        $json_results = json_encode($result);
+        echo '<script>console.log("RESULTS: ' . $json_results . '");</script>';
+    
+        return $result;
     }
 
     public function getFornecedorCliente($idCliente)

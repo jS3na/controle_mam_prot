@@ -204,62 +204,6 @@ class Clientes extends MY_Controller
         return $this->layout();
     }
 
-    public function gerarFinanceiro()
-    {
-        echo "<script>console.log('entrou');</script>";
-    
-        // Verifica permissão
-        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
-            $this->session->set_flashdata('error', 'Você não tem permissão para gerar financeiros');
-            redirect(base_url());
-        }
-    
-        // Carrega a biblioteca de validação de formulário
-        $this->load->library('form_validation');
-        $this->data['custom_error'] = '';
-    
-        // Verifica a validação do formulário
-        if ($this->form_validation->run('gerarFinanceiro') == false) {
-            $this->data['custom_error'] = (validation_errors() ? '<div class="form_error"> Preencha os campos corretamente </div>' : false);
-        } else {
-
-            $vencimento = $this->input->post('vencimento');
-
-            try {
-                $vencimento = explode('/', $vencimento);
-                $vencimento = $vencimento[2] . '-' . $vencimento[1] . '-' . $vencimento[0];
-            } catch (Exception $e) {
-                $vencimento = date('Y/m/d');
-                $dataFinal = date('Y/m/d');
-            }
-    
-            $data = [
-                'idCliente' => set_value('idCliente'),
-                'parcelas' => set_value('parcelas'),
-                'vencimento' => $vencimento,
-                'taxaInstalacao' => set_value('taxaInstalacao'),
-                'valorTotal' => set_value('valorTotal'),
-                'responsavel' => set_value('responsavel'),
-            ];
-
-            if ($this->clientes_model->add('financeiro_cliente', $data) == true) {
-                $this->session->set_flashdata('success', 'Financeiro gerado com sucesso!');
-                log_info('Gerou um financeiro a um cliente.');
-                redirect(site_url('clientes/visualizar/' . $data['idCliente']));
-            } else {
-                $this->data['custom_error'] = '<div class="form_error"><p>Ocorreu um erro.</p></div>';
-            }
-
-        }
-    
-        // Carrega os dados do cliente e fornecedor
-        $this->data['result'] = $this->clientes_model->getById($this->uri->segment(3));
-    
-        $this->data['view'] = 'clientes/gerarFinanceiro';
-    
-        return $this->layout();
-    }
-
     public function autoCompleteFornecedor()
     {
 
@@ -368,10 +312,9 @@ class Clientes extends MY_Controller
             $this->data['fornecedor_by_id'] = null;
         }
 
-        $this->data['financeiro_cliente'] = $this->clientes_model->getFinanceiroCliente($this->data['result']->idClientes);
-
         $this->data['results'] = $this->clientes_model->getOsByCliente($this->uri->segment(3));
         $this->data['result_vendas'] = $this->clientes_model->getAllVendasByClient($this->uri->segment(3));
+        $this->data['results_arquivos_financeiro'] = $this->clientes_model->getAllArquivos('', $this->data['result']->idClientes);
         $this->data['view'] = 'clientes/visualizar';
 
         return $this->layout();
