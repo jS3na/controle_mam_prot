@@ -129,6 +129,18 @@
                                 <input id="email" type="text" name="email" value="<?php echo $result->email; ?>" />
                             </div>
                         </div>
+                        <div class="control-group">
+                            <label for="sla_manutencao" class="control-label">SLA de Manutenção</label>
+                            <div class="controls">
+                                <input id="sla_manutencao" type="time" name="sla_manutencao" value="<?php echo $result->sla_manutencao; ?>" />
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label for="sla_instalacao" class="control-label">SLA de Instalação</label>
+                            <div class="controls">
+                                <input id="sla_instalacao" type="time" name="sla_instalacao" value="<?php echo $result->sla_instalacao; ?>" />
+                            </div>
+                        </div>
                     </div>
 
                     <div class="span6">

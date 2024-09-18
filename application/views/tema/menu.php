@@ -117,7 +117,7 @@
                             <span class="title-tooltip">Garantias</span>
                         </a>
                     </li>
-                <?php } ?>-->
+                <?php } ?>
 
                 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vArquivo')) { ?>
                     <li class="<?php if (isset($menuArquivos)) {
@@ -129,6 +129,7 @@
                         </a>
                     </li>
                 <?php } ?>
+                -->
                 
 
                 <?php /* if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vLancamento')) { ?>

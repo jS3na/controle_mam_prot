@@ -11,7 +11,7 @@
         <h5>Fornecedores</h5>
     </div>
     <div class="span12" style="margin-left: 0">
-        <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aCliente')) { ?>
+        <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aFornecedor')) { ?>
             <div class="span3">
                 <a href="<?= base_url() ?>index.php/fornecedores/adicionar" class="button btn btn-mini btn-success"
                     style="max-width: 165px">
@@ -74,14 +74,14 @@
                         echo '<td>' . $r->cidade . '</td>';
 
                         echo '<td>';
-                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente')) {
+                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vFornecedor')) {
                             echo '<a href="' . base_url() . 'index.php/fornecedores/visualizar/' . $r->idFornecedores . '" style="margin-right: 1%" class="btn-nwe" title="Ver mais detalhes"><i class="bx bx-show bx-xs"></i></a>';
                             //echo '<a href="' . base_url() . 'index.php/mine?e=' . $r->email . '" target="new" style="margin-right: 1%" class="btn-nwe2" title="Área do Fornecedor"><i class="bx bx-key bx-xs"></i></a>';
                         }
-                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
+                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eFornecedor')) {
                             echo '<a href="' . base_url() . 'index.php/fornecedores/editar/' . $r->idFornecedores . '" style="margin-right: 1%" class="btn-nwe3" title="Editar Fornecedor"><i class="bx bx-edit bx-xs"></i></a>';
                         }
-                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dCliente')) {
+                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dFornecedor')) {
                             echo '<a href="#modal-excluir" role="button" data-toggle="modal" fornecedor="' . $r->idFornecedores . '" style="margin-right: 1%" class="btn-nwe4" title="Excluir Fornecedor"><i class="bx bx-trash-alt bx-xs"></i></a>';
                         }
                         echo '</td>';

@@ -21,7 +21,7 @@ class Fornecedores extends MY_Controller
 
     public function gerenciar()
     {
-        if (! $this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente')) {
+        if (! $this->permission->checkPermission($this->session->userdata('permissao'), 'vFornecedor')) {
             $this->session->set_flashdata('error', 'Você não tem permissão para visualizar fornecedores.');
             redirect(base_url());
         }
@@ -49,7 +49,7 @@ class Fornecedores extends MY_Controller
     public function adicionar()
     {
 
-        if (! $this->permission->checkPermission($this->session->userdata('permissao'), 'aCliente')) {
+        if (! $this->permission->checkPermission($this->session->userdata('permissao'), 'aFornecedor')) {
             $this->session->set_flashdata('error', 'Você não tem permissão para adicionar fornecedores.');
             redirect(base_url());
         }
@@ -70,28 +70,46 @@ class Fornecedores extends MY_Controller
         if ($this->form_validation->run('fornecedores') == false) {
             $this->data['custom_error'] = (validation_errors() ? '<div class="form_error">' . validation_errors() . '</div>' : false);
         } else {
+
+            $rua = set_value('rua');
+            $numero = set_value('numero');
+            $complemento = set_value('complemento');
+            $bairro = set_value('bairro');
+            $cidade = set_value('cidade');
+            $estado = set_value('estado');
+            $cep = set_value('cep');
+
             $data = [
                 'nomeFornecedor' => set_value('nomeFornecedor'),
                 'cnpj' => set_value('cnpj'),
                 'descricao' => set_value('descricao'),
+                'sla_manutencao' => set_value('sla_manutencao'),
+                'sla_instalacao' => set_value('sla_instalacao'),
                 'telefone_comercial' => set_value('telefone_comercial'),
                 'telefone_financeiro' => set_value('telefone_financeiro'),
                 'telefone_suporte' => set_value('telefone_suporte'),
                 'email' => set_value('email'),
                 //'senha' => password_hash($senhaFornecedor, PASSWORD_DEFAULT),
-                'rua' => set_value('rua'),
-                'numero' => set_value('numero'),
-                'complemento' => set_value('complemento'),
-                'bairro' => set_value('bairro'),
-                'cidade' => set_value('cidade'),
-                //'estado' => set_value('estado'),
-                'cep' => set_value('cep'),
                 'dataCadastro' => date('Y-m-d'),
             ];
 
             if ($this->fornecedores_model->add('fornecedores', $data) == true) {
+                $fornecedorId = $this->db->insert_id();
+                $dataEndereco = [
+                    'idFornecedor' => $fornecedorId,
+                    'rua' => $rua,
+                    'numero' => $numero,
+                    'complemento' => $complemento,
+                    'bairro' => $bairro,
+                    'cidade' => $cidade,
+                    'estado' => $estado,
+                    'cep' => $cep,
+                ];
+
+                $this->fornecedores_model->add('fornecedor_endereco', $dataEndereco);
                 $this->session->set_flashdata('success', 'Fornecedor adicionado com sucesso!');
                 log_info('Adicionou um fornecedor.');
+
                 redirect(site_url('fornecedores/'));
             } else {
                 $this->data['custom_error'] = '<div class="form_error"><p>Ocorreu um erro.</p></div>';
@@ -109,8 +127,8 @@ class Fornecedores extends MY_Controller
             $this->session->set_flashdata('error', 'Item não pode ser encontrado, parâmetro não foi passado corretamente.');
             redirect('mapos');
         }
-
-        if (! $this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
+        
+        if (! $this->permission->checkPermission($this->session->userdata('permissao'), 'eFornecedor')) {
             $this->session->set_flashdata('error', 'Você não tem permissão para editar fornecedores.');
             redirect(base_url());
         }
@@ -133,6 +151,8 @@ class Fornecedores extends MY_Controller
                     'telefone_financeiro' => $this->input->post('telefone_financeiro'),
                     'telefone_suporte' => $this->input->post('telefone_suporte'),
                     'email' => $this->input->post('email'),
+                    'sla_manutencao' => $this->input->post('sla_manutencao'),
+                    'sla_instalacao' => $this->input->post('sla_instalacao'),
                     'rua' => $this->input->post('rua'),
                     'numero' => $this->input->post('numero'),
                     'complemento' => $this->input->post('complemento'),
@@ -150,6 +170,8 @@ class Fornecedores extends MY_Controller
                     'telefone_financeiro' => $this->input->post('telefone_financeiro'),
                     'telefone_suporte' => $this->input->post('telefone_suporte'),
                     'email' => $this->input->post('email'),
+                    'sla_manutencao' => $this->input->post('sla_manutencao'),
+                    'sla_instalacao' => $this->input->post('sla_instalacao'),
                     'rua' => $this->input->post('rua'),
                     'numero' => $this->input->post('numero'),
                     'complemento' => $this->input->post('complemento'),
@@ -182,7 +204,7 @@ class Fornecedores extends MY_Controller
         redirect('mapos');
     }
 
-    if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente')) {
+    if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'vFornecedor')) {
         $this->session->set_flashdata('error', 'Você não tem permissão para visualizar fornecedores.');
         redirect(base_url());
     }
@@ -190,8 +212,9 @@ class Fornecedores extends MY_Controller
     $this->data['custom_error'] = '';
     $this->data['result'] = $this->fornecedores_model->getById($this->uri->segment(3));
     $this->data['clientes_vinculados'] = $this->fornecedores_model->getClientesVinculados($this->data['result']->idFornecedores);
+    $this->data['fornecedor_enderecos'] = $this->fornecedores_model->getFornecedorEnderecoById($this->data['result']->idFornecedores);
 
-    $clienteIds = array_column($this->data['clientes_vinculados'], 'idCliente'); // Extrair IDs dos clientes vinculados
+    $clienteIds = array_column($this->data['clientes_vinculados'], 'idFornecedor'); // Extrair IDs dos clientes vinculados
 
     if (!empty($clienteIds)) {
         $this->data['clientes_by_id'] = $this->fornecedores_model->getClientesByIds($clienteIds);
@@ -208,7 +231,7 @@ class Fornecedores extends MY_Controller
 
     public function excluir()
     {
-        if (! $this->permission->checkPermission($this->session->userdata('permissao'), 'dCliente')) {
+        if (! $this->permission->checkPermission($this->session->userdata('permissao'), 'dFornecedor')) {
             $this->session->set_flashdata('error', 'Você não tem permissão para excluir fornecedores.');
             redirect(base_url());
         }

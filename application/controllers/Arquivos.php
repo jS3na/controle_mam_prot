@@ -202,14 +202,17 @@ class Arquivos extends MY_Controller
         $file = $this->arquivos_model->getById($id);
         $this->db->where('idDocumentos', $id);
         if ($this->db->delete('documentos')) {
+
+            $this->uri->segment(3) ? $idCliente = $this->uri->segment(3) : $idCliente = '';
+
             $path = $file->path;
             unlink($path);
             $this->session->set_flashdata('success', 'Arquivo excluido com sucesso!');
-            log_info('Removeu um arquivo. ID: ' . $id);
+            log_info('Removeu um arquivo do cliente com id: ' . $idCliente);
         } else {
             $this->session->set_flashdata('error', 'Ocorreu um erro ao tentar excluir o arquivo.');
         }
-        redirect(site_url('arquivos'));
+        redirect(site_url('clientes'));
     }
 
     public function do_upload()

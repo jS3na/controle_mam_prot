@@ -41,7 +41,6 @@ class Fornecedores_model extends CI_Model
         return $result; // Retorna todos os resultados
     }
     
-    
     public function getClientesByIds($ids)
     {
         $this->db->select('*');
@@ -56,8 +55,20 @@ class Fornecedores_model extends CI_Model
         
         return $result; // Retorna todos os resultados
     }
-    
-    
+
+    public function getFornecedorEnderecoById($idFornecedor)
+    {
+        $this->db->select('*');
+        $this->db->from('fornecedor_endereco');
+        $this->db->where_in('idFornecedor', $idFornecedor);
+        $query = $this->db->get();
+        
+        $result = $query->result();
+        
+        echo '<script>console.log("Endereços por IDs: ", ' . json_encode($result) . ');</script>';
+        
+        return $result;
+    }
 
     public function getById($id)
     {
@@ -69,6 +80,8 @@ class Fornecedores_model extends CI_Model
 
     public function add($table, $data)
     {
+
+        echo '<script>console.log("entrou");<script>';
         $this->db->insert($table, $data);
         if ($this->db->affected_rows() == '1') {
             return $this->db->insert_id($table);

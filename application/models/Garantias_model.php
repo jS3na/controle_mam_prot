@@ -112,7 +112,7 @@ class Garantias_model extends CI_Model
 
     public function autoCompleteCliente($q)
     {
-        $this->db->select('*');d
+        $this->db->select('*');
         $this->db->limit(5);
         $this->db->like('nomeCliente', $q);
         $query = $this->db->get('clientes');
@@ -123,7 +123,7 @@ class Garantias_model extends CI_Model
             echo json_encode($row_set);
         }
     }
-
+    
     public function autoCompleteUsuario($q)
     {
         $this->db->select('*');
