@@ -550,7 +550,7 @@ class Mapos extends MY_Controller {
             $status
         );
         $events = array_map(function ($os) {
-            switch ($os->status) {
+            switch ($os->status_os) {
                 case 'Aberto':
                     $cor = '#00cd00';
                     break;
@@ -594,7 +594,7 @@ class Mapos extends MY_Controller {
                     'dataInicial' => '<b>Data Inicial:</b> ' . date('d/m/Y', strtotime($os->dataInicial)),
                     'dataFinal' => '<b>Data Final:</b> ' . date('d/m/Y', strtotime($os->dataFinal)),
                     'garantia' => '<b>Garantia:</b> ' . $os->garantia . ' dias',
-                    'status' => '<b>Status da OS:</b> ' . $os->status,
+                    'status' => '<b>Status da OS:</b> ' . $os->status_os,
                     'description' => '<b>Descrição/Produto:</b> ' . strip_tags(html_entity_decode($os->descricaoProduto)),
                     'defeito' => '<b>Defeito:</b> ' . strip_tags(html_entity_decode($os->defeito)),
                     'observacoes' => '<b>Observações:</b> ' . strip_tags(html_entity_decode($os->observacoes)),

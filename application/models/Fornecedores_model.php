@@ -11,20 +11,25 @@ class Fornecedores_model extends CI_Model
     {
         $this->db->select($fields);
         $this->db->from($table);
+        
+        $this->db->join('fornecedor_endereco as en', 'fornecedores.idFornecedores = en.idFornecedor', 'inner');
+        
         $this->db->order_by('idFornecedores', 'desc');
         $this->db->limit($perpage, $start);
+        
         if ($where) {
             $this->db->like('nomeFornecedor', $where);
             $this->db->or_like('cnpj', $where);
-            $this->db->or_like('cidade', $where);
+            $this->db->or_like('en.cidade', $where);
         }
-
+    
         $query = $this->db->get();
-
-        $result = ! $one ? $query->result() : $query->row();
-
+    
+        $result = !$one ? $query->result() : $query->row();
+    
         return $result;
     }
+    
 
     public function getClientesVinculados($idFornecedor)
     {

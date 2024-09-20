@@ -48,7 +48,6 @@
                         <th>Telefone Financeiro</th>
                         <th>Telefone Suporte</th>
                         <th>Email</th>
-                        <th>Cidade</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -71,7 +70,6 @@
                         echo '<td>' . $r->telefone_financeiro . '</td>';
                         echo '<td>' . $r->telefone_suporte . '</td>';
                         echo '<td>' . $r->email . '</td>';
-                        echo '<td>' . $r->cidade . '</td>';
 
                         echo '<td>';
                         if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vFornecedor')) {

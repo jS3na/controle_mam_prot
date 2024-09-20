@@ -115,10 +115,20 @@ class Clientes_model extends CI_Model
         return $query->result();
     }
 
-    public function aprovarParcela($idParcela)
+    public function aprovarParcela($idParcela, $meioPagamento, $valorJuros)
     {
         $this->db->where('idParcelas', $idParcela);
         $this->db->set('pago', 1);
+        $this->db->set('meio_pagamento', $meioPagamento);
+        $this->db->set('data_pagamento', date('Y-m-d'));
+
+        if ($valorJuros > 0) {
+            $this->db->set('valorPago', 'valor + ' . (float)$valorJuros, FALSE);
+        }
+        else{
+            $this->db->set('valorPago','valor', FALSE);
+        }
+    
         $this->db->update('parcelas');
     }
 

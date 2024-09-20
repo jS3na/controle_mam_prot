@@ -44,6 +44,18 @@ $config = [
             'rules' => 'required|trim',
         ],
     ],
+    'adicionarParcelaUnica' => [
+        [
+            'field' => 'vencimento',
+            'label' => 'vencimento',
+            'rules' => 'required|trim',
+        ],
+        [
+            'field' => 'valorParcela',
+            'label' => 'valorParcela',
+            'rules' => 'required|trim',
+        ],
+    ],
     'fornecedores' => [
         [
             'field' => 'nomeFornecedor',
@@ -98,6 +110,13 @@ $config = [
             'label' => 'CEP',
             'rules' => 'trim',
         ],
+    ],
+    'adicionarEnderecoFornecedor' => [
+        [
+            'field' => 'cidade',
+            'label' => 'cidade',
+            'rules' => 'required|trim',
+        ]
     ],
     'servicos' => [
         [

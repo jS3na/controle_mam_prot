@@ -265,29 +265,28 @@ class Clientes extends MY_Controller
 
     public function gerarFinanceiro()
     {
-        echo "<script>console.log('entrou');</script>";
-    
+
         // Verifica permissão
         if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
             $this->session->set_flashdata('error', 'Você não tem permissão para gerar financeiros');
             redirect(base_url());
         }
-    
+
         // Carrega a biblioteca de validação de formulário
         $this->load->library('form_validation');
         $this->data['custom_error'] = '';
-    
+
         // Verifica a validação do formulário
         if ($this->form_validation->run('gerarFinanceiro') == false) {
             $this->data['custom_error'] = (validation_errors() ? '<div class="form_error"> Preencha os campos corretamente </div>' : false);
         } else {
-    
+
             $vencimento = $this->input->post('vencimento');
             $parcelas = $this->input->post('parcelas');
             $idCliente = $this->input->post('idCliente');
             $taxaInstalacao = $this->input->post('taxaInstalacao');
             $valorTotal = $this->input->post('valorTotal');
-    
+
             // Convertendo a data do formato 'd/m/Y' para 'Y-m-d'
             try {
                 $vencimento = DateTime::createFromFormat('d/m/Y', $vencimento);
@@ -300,7 +299,7 @@ class Clientes extends MY_Controller
                 // Se houver erro, usa a data atual
                 $vencimentoFormatado = date('Y-m-d');
             }
-    
+
             $data = [
                 'idCliente' => $idCliente,
                 'parcelas' => $parcelas,
@@ -308,40 +307,40 @@ class Clientes extends MY_Controller
                 'taxaInstalacao' => $taxaInstalacao,
                 'valorTotal' => $valorTotal,
             ];
-    
+
             if ($this->clientes_model->add('financeiro_cliente', $data) == true) {
-    
+
                 $valorPorParcela = $valorTotal / $parcelas;
-    
+
                 $vencimento = DateTime::createFromFormat('Y-m-d', $vencimentoFormatado);
-    
+
                 for ($i = 0; $i < $parcelas; $i++) {
                     $vencimento->modify('+1 month');
                     $vencimentoFormatado = $vencimento->format('Y-m-d'); // Use o formato 'Y-m-d' para o banco de dados
                     $valorAtual = $i == 0 ? $valorPorParcela + $taxaInstalacao : $valorPorParcela;
-    
+
                     $dataParcela = [
                         'idCliente' => $idCliente,
                         'valor' => $valorAtual,
                         'vencimento' => $vencimentoFormatado, // Certifique-se de usar o formato correto
                     ];
-    
+
                     $this->clientes_model->add('parcelas', $dataParcela);
                 }
-    
+
                 $this->session->set_flashdata('success', 'Financeiro gerado com sucesso!');
                 log_info('Gerou um financeiro a um cliente.');
                 redirect(site_url('clientes/visualizar/' . $data['idCliente']));
             } else {
                 $this->data['custom_error'] = '<div class="form_error"><p>Ocorreu um erro.</p></div>';
             }
-    
+
         }
-    
+
         // Carrega os dados do cliente
         $this->data['result'] = $this->clientes_model->getById($this->uri->segment(3));
         $this->data['view'] = 'clientes/gerarFinanceiro';
-    
+
         return $this->layout();
     }
 
@@ -353,19 +352,97 @@ class Clientes extends MY_Controller
         }
 
         $idParcela = $this->input->post('idParcela');
+        $meio_pagamento = $this->input->post('meio_pagamento');
+        $valorJuros = $this->input->post('valorJuros');
+
         if ($idParcela == null) {
             $this->session->set_flashdata('error', 'Erro ao tentar aprovar parcela.');
             redirect(site_url('clientes/'));
         }
 
-        $this->clientes_model->aprovarParcela($idParcela);
+        $this->clientes_model->aprovarParcela($idParcela, $meio_pagamento, $valorJuros);
         log_info('Aprovou uma parcela. ID' . $idParcela);
 
         $this->session->set_flashdata('success', 'Parcela aprovada com sucesso!');
         redirect(site_url('clientes/visualizar/' . $this->uri->segment(3)));
     }
-    
 
+    public function adicionarParcelaUnica()
+    {
+
+        // Verifica permissão
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para adicionar parcelas');
+            redirect(base_url());
+        }
+
+        // Carrega a biblioteca de validação de formulário
+        $this->load->library('form_validation');
+        $this->data['custom_error'] = '';
+
+        // Verifica a validação do formulário
+        if ($this->form_validation->run('adicionarParcelaUnica') == false) {
+            $this->data['custom_error'] = (validation_errors() ? '<div class="form_error"> Preencha os campos corretamente </div>' : false);
+        } else {
+
+            $vencimento = $this->input->post('vencimento');
+
+            // Convertendo a data do formato 'd/m/Y' para 'Y-m-d'
+            try {
+                $vencimento = DateTime::createFromFormat('d/m/Y', $vencimento);
+                if (!$vencimento) {
+                    throw new Exception('Data inválida');
+                }
+                // Formatando a data para o banco de dados
+                $vencimentoFormatado = $vencimento->format('Y-m-d');
+            } catch (Exception $e) {
+                // Se houver erro, usa a data atual
+                $vencimentoFormatado = date('Y-m-d');
+            }
+
+            $data = [
+                'idCliente' => $this->uri->segment(3),
+                'vencimento' => $vencimentoFormatado,
+                'valor' => $this->input->post('valorParcela'),
+            ];
+
+            if ($this->clientes_model->add('parcelas', $data) == true) {
+
+                $this->session->set_flashdata('success', 'Parcela adicionada com sucesso!');
+                log_info('Adicionou uma parcela única ao cliente: ' . $data['idCliente']);
+                redirect(site_url('clientes/visualizar/' . $data['idCliente']));
+            } else {
+                $this->data['custom_error'] = '<div class="form_error"><p>Ocorreu um erro.</p></div>';
+            }
+
+        }
+
+        // Carrega os dados do cliente
+        $this->data['result'] = $this->clientes_model->getById($this->uri->segment(3));
+
+        return $this->layout();
+    }
+
+    public function excluirFinanceiro()
+    {
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'dCliente')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para excluir clientes.');
+            redirect(base_url());
+        }
+
+        $idCliente = $this->uri->segment(3);
+        if ($idCliente == null) {
+            $this->session->set_flashdata('error', 'Erro ao tentar excluir financeiro.');
+            redirect(site_url('clientes/gerenciar/'));
+        }
+
+        $this->clientes_model->delete('financeiro_cliente', 'idCliente', $idCliente);
+        $this->clientes_model->delete('parcelas', 'idCliente', $idCliente);
+        log_info('Removeu um financeiro do cliente: ' . $idCliente);
+
+        $this->session->set_flashdata('success', 'Financeiro excluido com sucesso!');
+        redirect(site_url('clientes/gerenciar/'));
+    }
 
     public function adicionarLog()
     {

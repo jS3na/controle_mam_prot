@@ -322,6 +322,35 @@
                         <div class="modal-body">
                             <input type="hidden" id="idParcela" name="idParcela" value="" />
                             <h5 style="text-align: center">Deseja realmente registrar essa parcela como paga?</h5>
+
+                            <div class="control-group">
+                                <label for="meio_pagamento" class="control-label">Meio de Pagamento</label>
+                                <div class="controls">
+                                    <select id="meio_pagamento" name="meio_pagamento">
+                                        <option value="">Selecione...</option>
+                                        <option value="Boleto">Boleto</option>
+                                        <option value="Dinheiro">Dinheiro</option>
+                                        <option value="Cartão de Crédito">Cartão de Crédito</option>
+                                        <option value="Pix">Pix</option>
+                                        <option value="DDA">DDA</option>
+                                    </select>
+                                </div>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="temJuros">
+                                        <input type="checkbox" id="temJuros" name="temJuros" onclick="toggleJuros()">
+                                        Tem Juros
+                                    </label>
+                                </div>
+
+                                <div class="control-group" id="campoJuros" style="display: none;">
+                                    <label for="valorJuros" class="control-label">Valor do Juros</label>
+                                    <div class="controls">
+                                        <input type="number" id="valorJuros" name="valorJuros">
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                         <div class="modal-footer" style="display:flex;justify-content: center">
                             <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"><span
@@ -330,6 +359,69 @@
                             <button class="button btn btn-success"><span class="button__icon"><i
                                         class='bx bx-check'></i></span> <span
                                     class="button__text2">Aprovar</span></button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="modal-excluir-financeiro" class="modal hide fade" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel" aria-hidden="true">
+                    <?php $url_excluir_financeiro = base_url('index.php/clientes/excluirFinanceiro/' . $result->idClientes); ?>
+                    <form action="<?php echo $url_excluir_financeiro; ?>" method="post">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h5 id="myModalLabel">Excluir Financeiro</h5>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="idParcela" name="idParcela" value="" />
+                            <h5 style="text-align: center">Deseja realmente excluir esse Financeiro?</h5>
+                        </div>
+                        <div class="modal-footer" style="display:flex;justify-content: center">
+                            <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"><span
+                                    class="button__icon"><i class="bx bx-x"></i></span><span
+                                    class="button__text2">Cancelar</span></button>
+                            <button class="button btn btn-danger"><span class="button__icon"><i
+                                        class='bx bx-trash'></i></span> <span
+                                    class="button__text2">Excluir</span></button>
+                        </div>
+                    </form>
+                </div>
+
+                <div id="modal-nova-parcela" class="modal hide fade" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel" aria-hidden="true">
+                    <?php $url_parcela_unica = base_url('index.php/clientes/adicionarParcelaUnica/' . $result->idClientes); ?>
+                    <form id="formReceita" action="<?php echo $url_parcela_unica ?>" method="post">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h3 id="myModalLabel">Adicionar Nova Parcela</h3>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="control-group">
+                                <label for="vencimento" class="control-label">Vencimento *</label>
+                                <div class="controls">
+                                    <input id="vencimento" autocomplete="off" class="datepicker" type="text"
+                                        name="vencimento" />
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <label for="valorParcela" class="control-label">Valor *</label>
+                                <div class="controls">
+                                    <input id="valorParcela" type="number" name="valorParcela" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer" style="display:flex;justify-content: right">
+                            <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"
+                                style="min-width: 110px">
+                                <span class="button__icon"><i class="bx bx-x"></i></span>
+                                <span class="button__text2">Cancelar
+                                </span>
+                            </button>
+                            <button class="button btn btn-success" style="min-width: 110px">
+                                <span class="button__icon"><i class='bx bx-check'></i></span><span
+                                    class="button__text2">Adicionar</span></button>
                         </div>
                     </form>
                 </div>
@@ -349,6 +441,9 @@
                                         <th>Valor</th>
                                         <th>Vencimento</th>
                                         <th>Pago</th>
+                                        <th>Valor Pago</th>
+                                        <th>Meio de pagamento</th>
+                                        <th>Data do pagamento</th>
                                         <th>Ações</th>
                                     </tr>
                                 </thead>
@@ -365,6 +460,9 @@
                                         <th>Valor</th>
                                         <th>Vencimento</th>
                                         <th>Pago</th>
+                                        <th>Valor Pago</th>
+                                        <th>Meio de pagamento</th>
+                                        <th>Data do pagamento</th>
                                         <th>Ações</th>
                                     </tr>
                                 </thead>
@@ -375,8 +473,29 @@
                                         ?>
                                         <tr class="alert <?php echo $rowClass; ?>">
                                             <td><?php echo $parc->valor; ?></td>
-                                            <td><?php echo $parc->vencimento; ?></td>
+                                            <td>
+                                                <?php
+                                                if (!empty($parc->data_pagamento) && $parc->vencimento != '0000-00-00') {
+                                                    echo date('d/m/Y', strtotime($parc->vencimento));
+                                                } else {
+                                                    echo '';
+                                                }
+                                                ?>
+                                            </td>
+
                                             <td><?php echo $parc->pago == 1 ? 'Sim' : 'Não'; ?></td>
+                                            <td><?php echo $parc->valorPago; ?></td>
+                                            <td><?php echo $parc->meio_pagamento; ?></td>
+                                            <td>
+                                                <?php
+                                                if (!empty($parc->data_pagamento) && $parc->data_pagamento != '0000-00-00') {
+                                                    echo date('d/m/Y', strtotime($parc->data_pagamento));
+                                                } else {
+                                                    echo '';
+                                                }
+                                                ?>
+                                            </td>
+
                                             <td>
                                                 <?php if ($parc->pago == 0) { ?>
                                                     <a href="#modal-aprovar-parcela" role="button" data-toggle="modal"
@@ -394,20 +513,25 @@
 
                     </div>
                     <div class="modal-footer" style="display:flex;justify-content: right">
-                        <button class="button btn btn-warning" id="cancelar_nova_receita" data-dismiss="modal"
-                            aria-hidden="true" style="min-width: 110px">
-                            <span class="button__icon"><i class="bx bx-x"></i></span><span
-                                class="button__text2">Cancelar</span></button>
+                        <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"
+                            style="min-width: 110px">
+                            <span class="button__icon"><i class="bx bx-x"></i></span>
+                            <span class="button__text2">Cancelar
+                            </span>
+                        </button>
+                        <a data-dismiss="modal" href="#modal-nova-parcela" data-toggle="modal" role="button"
+                            class="button btn btn-mini btn-primary" style="width: 230px">
+                            <span class="button__icon"><i class="bx bx-plus"></i></span><span class="button__text2"
+                                title="Adicionar Parcela">Adicionar Parcela</span></a>
                     </div>
                 </div>
 
-                <?php if ($this->session->userdata('nome_admin') == "Admin") { ?>
                     <div class="accordion-group widget-box">
                         <div class="accordion-heading">
                             <div class="widget-title">
                                 <a data-parent="#collapse-group" href="#collapseGSix" data-toggle="collapse">
                                     <span><i class='bx bx-money-withdraw icon-cli'></i></span>
-                                    <h5 style="padding-left: 28px">Financeiro (EM MANUTENÇÃO)</h5>
+                                    <h5 style="padding-left: 28px">Financeiro</h5>
                                 </a>
                             </div>
                         </div>
@@ -415,7 +539,7 @@
                             <?php
                             if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente') && !$financeiro_cliente) {
                                 $url = base_url('index.php/clientes/gerarFinanceiro/' . $result->idClientes);
-                                echo '<div style="margin: 1.2rem">
+                                echo '<div style="margin: 0.7rem">
                                             <a href="' . $url . '"title="Gerar Financeiro">
                                                 <button type="button" class="button btn btn-mini btn-success">
                                                     <span class="button__icon"><i class="bx bx-plus"></i></span>
@@ -426,9 +550,11 @@
                                     ';
                             }
                             if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente') && $financeiro_cliente) {
-                                echo '<div class="" style="margin: 1.2rem">
+                                echo '<div class="" style="margin: 0.7rem; gap: 10px; display: flex; flex-direction: row">
                                             <a href="#modalParcelas" data-toggle="modal" role="button" class="button btn btn-mini btn-success" style="width: 230px">
                                                 <span class="button__icon"><i class="bx bx-qr-scan"></i></span><span class="button__text2" title="Visualizar Parcelas">Visualizar Parcelas</span></a>
+                                            <a href="#modal-excluir-financeiro" data-toggle="modal" role="button" class="button btn btn-mini btn-danger" style="width: 230px">
+                                                <span class="button__icon"><i class="bx bx-trash"></i></span><span class="button__text2" title="Excluir Financeiro">Excluir Financeiro</span></a>
                                         </div>
                                     ';
                             }
@@ -481,7 +607,6 @@
                             </div>
                         </div>
                     </div>
-                <?php } ?>
 
                 <div class="accordion-group widget-box">
                     <div class="accordion-heading">
@@ -577,10 +702,10 @@
                                                                 <?php endif ?>
 
                                                                 <?php /*if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eArquivo')): ?>
-                                                           <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
-                                                               class="btn-nwe3" title="Editar"><i
-                                                                   class="bx bx-edit"></i></a>
-                                                       <?php endif*/ ?>
+                                            <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
+                                                class="btn-nwe3" title="Editar"><i
+                                                    class="bx bx-edit"></i></a>
+                                        <?php endif*/ ?>
 
                                                                 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dArquivo')): ?>
                                                                     <a href="#modal-excluir" style="margin-right: 1%"
@@ -732,10 +857,10 @@
                                                                 <?php endif ?>
 
                                                                 <?php /*if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eArquivo')): ?>
-                                                           <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
-                                                               class="btn-nwe3" title="Editar"><i
-                                                                   class="bx bx-edit"></i></a>
-                                                       <?php endif*/ ?>
+                                            <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
+                                                class="btn-nwe3" title="Editar"><i
+                                                    class="bx bx-edit"></i></a>
+                                        <?php endif*/ ?>
 
                                                                 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dArquivo')): ?>
                                                                     <a href="#modal-excluir" style="margin-right: 1%"
@@ -887,10 +1012,10 @@
                                                                 <?php endif ?>
 
                                                                 <?php /*if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eArquivo')): ?>
-                                                           <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
-                                                               class="btn-nwe3" title="Editar"><i
-                                                                   class="bx bx-edit"></i></a>
-                                                       <?php endif */ ?>
+                                            <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
+                                                class="btn-nwe3" title="Editar"><i
+                                                    class="bx bx-edit"></i></a>
+                                        <?php endif */ ?>
 
                                                                 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dArquivo')): ?>
                                                                     <a href="#modal-excluir" style="margin-right: 1%"
@@ -970,4 +1095,14 @@
             $('#idParcela').val(parcela);
         });
     });
+
+    function toggleJuros() {
+        var checkbox = document.getElementById('temJuros');
+        var campoJuros = document.getElementById('campoJuros');
+        if (checkbox.checked) {
+            campoJuros.style.display = 'block';
+        } else {
+            campoJuros.style.display = 'none';
+        }
+    }
 </script>

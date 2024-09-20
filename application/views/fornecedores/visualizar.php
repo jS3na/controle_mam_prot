@@ -179,6 +179,21 @@
                     </div>
                     <div class="collapse accordion-body" id="collapseGFive">
 
+                        <?php
+                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eFornecedor')) {
+                            $url = base_url('index.php/fornecedores/adicionarEndereco/' . $result->idFornecedores);
+                            echo '<div style="margin: 1.2rem">
+                                        <a href="' . $url . '"title="Adicionar Log">
+                                            <button type="button" class="button btn btn-mini btn-success">
+                                                <span class="button__icon"><i class="bx bx-plus"></i></span>
+                                                <span class="button__text2">Adicionar Endereço</span>
+                                            </button>
+                                        </a>
+                                    </div>
+                                ';
+                        }
+                        ?>
+
                         <div class="widget-content">
                             <!-- Aba de Logs -->
                             <div id="tab4" class="tab-pane" style="min-height: 300px">
