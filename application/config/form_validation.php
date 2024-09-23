@@ -196,11 +196,6 @@ $config = [
             'rules' => 'required|trim',
         ],
         [
-            'field' => 'dataFinal',
-            'label' => 'DataFinal',
-            'rules' => 'trim|required',
-        ],
-        [
             'field' => 'garantia',
             'label' => 'Garantia',
             'rules' => 'trim|numeric',
@@ -224,7 +219,7 @@ $config = [
             'rules' => 'trim',
         ],
         [
-            'field' => 'status',
+            'field' => 'status_os',
             'label' => 'Status',
             'rules' => 'required|trim',
         ],

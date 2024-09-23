@@ -36,9 +36,12 @@
                 <!--<input type="text" name="pesquisa" id="pesquisa" placeholder="Buscar por Nome, Doc, Email ou Telefone..." class="form-control" value="<?= $this->input->get('pesquisa') ?>">-->
                 <select name="status" id="status" style="width: 100%;">
                     <option value="">Todos os Status</option>
-                    <option value="pendencia_cliente" <?= $this->input->get('status') == 'pendencia_cliente' ? 'selected' : '' ?>>Pendência Cliente</option>
-                    <option value="inviabilidade_tecnica" <?= $this->input->get('status') == 'inviabilidade_tecnica' ? 'selected' : '' ?>>Inviabilidade Técnica</option>
-                    <option value="escola_nao_autorizou" <?= $this->input->get('status') == 'escola_nao_autorizou' ? 'selected' : '' ?>>Escola Não Autorizou</option>
+                    <option value="Pendência Cliente" <?= $this->input->get('status_os') == 'Pendência Cliente' ? 'selected' : '' ?>>Pendência Cliente</option>
+                    <option value="Pendência Provedor" <?= $this->input->get('status_os') == 'Pendência Provedor' ? 'selected' : '' ?>>Pendência Provedor</option>
+                    <option value="Inviabilidade Técnica" <?= $this->input->get('status_os') == 'Inviabilidade Técnica' ? 'selected' : '' ?>>Inviabilidade Técnica</option>
+                    <option value="Escola Não Autorizou" <?= $this->input->get('status_os') == 'Escola Não Autorizou' ? 'selected' : '' ?>>Escola Não Autorizou</option>
+                    <option value="Instalação Em Andamento" <?= $this->input->get('status_os') == 'Instalação Em Andamento' ? 'selected' : '' ?>>Instalação Em Andamento</option>
+                    <option value="Instalação" <?= $this->input->get('status_os') == 'Instalação' ? 'selected' : '' ?>>Instalação</option>
                 </select>
                 <input type="text" name="dataInicial" id="dataInicial" placeholder="Data Inicial (YYYY-MM-DD)" class="form-control" value="<?= $this->input->get('dataInicial') ?>">
                 <input type="text" name="dataFinal" id="dataFinal" placeholder="Data Final (YYYY-MM-DD)" class="form-control" value="<?= $this->input->get('dataFinal') ?>">
@@ -62,10 +65,6 @@
                             <th class="ph1">Responsável</th>
                             <th>Data Inicial</th>
                             <th class="ph2">Data Final</th>
-                            <th class="ph3">####</th>
-                            <th>Valor Total</th>
-                            <th>Valor com Desconto</th>
-                            <th class="ph4">Valor Faturado</th>
                             <th>Status</th>
                             <th>Ações</th>
                         </tr>
@@ -91,25 +90,7 @@
                             echo '<td>' . $r->nome . '</td>';
                             echo '<td>' . $dataInicialFormatada  . '</td>';
                             echo '<td>' . $dataFinalFormatada  . '</td>';
-                            echo '<td></td>';
-                            echo '<td>' . $r->valorTotal . '</td>';
-                            echo '<td>' . $r->valor_desconto . '</td>';
-                            echo '<td>' . $r->faturado . '</td>';
-
-                            switch($r->status_os){
-                                case 'pendencia_cliente':
-                                    echo '<td>Pendência Cliente</td>';
-                                    break;
-                                case 'inviabilidade_tecnica':
-                                    echo '<td>Inviabilidade Técnica</td>';
-                                    break;
-                                case 'escola_nao_autorizou':
-                                    echo '<td>Escola Não Autorizou</td>';
-                                    break;
-                                default:
-                                    echo '<td>Escola Não Autorizou</td>';
-                                    break;
-                            }
+                            echo '<td>' . $r->status_os  . '</td>';
 
                             echo '<td>';
                             if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) {

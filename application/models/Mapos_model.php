@@ -135,40 +135,6 @@ class Mapos_model extends CI_Model
         return $this->db->get()->result();
     }
 
-    public function getOsEscolaNaoAutorizou()
-    {
-        $this->db->select('os.*, clientes.nomeCliente');
-        $this->db->from('os');
-        $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
-        $this->db->where('os.status_os', 'escola_nao_autorizou');
-        $this->db->limit(10);
-
-        return $this->db->get()->result();
-    }
-    
-    public function getOsPendenciaCliente()
-    {
-        $this->db->select('os.*, clientes.nomeCliente');
-        $this->db->from('os');
-        $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
-        $this->db->where('os.status_os', 'pendencia_cliente');
-        $this->db->limit(10);
-
-        return $this->db->get()->result();
-    }
-
-    public function getOsInviabilidadeTecnica()
-    {
-        $this->db->select('os.*, clientes.nomeCliente');
-        $this->db->from('os');
-        $this->db->join('clientes', 'clientes.idClientes = os.clientes_id');
-        $this->db->where('os.status_os', 'inviabilidade_tecnica');
-        $this->db->order_by('os.idOs', 'DESC');
-        $this->db->limit(10);
-
-        return $this->db->get()->result();
-    }
-
     public function getOsStatus($status)
     {
         $this->db->select('os.*, clientes.nomeCliente');

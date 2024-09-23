@@ -14,6 +14,7 @@
             <div class="widget-title" style="margin: -20px 0 0">
                 <span class="icon"><i class="fas fa-diagnoses"></i></span>
                 <h5>Editar O.S</h5>
+                <!--
                 <div class="buttons">
                     <?php if ($result->faturado == 0) { ?>
                         <a href="#modal-faturar" id="btn-faturar" role="button" data-toggle="modal" class="button btn btn-mini btn-danger">
@@ -56,9 +57,11 @@
                         <span class="button__icon"><i class="bx bx-envelope"></i></span> <span class="button__text">Via E-mail</span>
                     </a>
                 </div>
+                -->
             </div>
             <div class="widget-content nopadding tab-content">
                 <div class="span12" id="divProdutosServicos" style=" margin-left: 0">
+                    <!--
                     <ul class="nav nav-tabs">
                         <li class="active" id="tabDetalhes"><a href="#tab1" data-toggle="tab">Detalhes da O.S</a></li>
                         <li id="tabDesconto"><a href="#tab2" data-toggle="tab">Desconto</a></li>
@@ -67,6 +70,7 @@
                         <li id="tabAnexos"><a href="#tab5" data-toggle="tab">Anexos</a></li>
                         <li id="tabAnotacoes"><a href="#tab6" data-toggle="tab">Anotações</a></li>
                     </ul>
+                    -->
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab1">
                             <div class="span12" id="divCadastrarOs">
@@ -88,11 +92,14 @@
                                     </div>
                                     <div class="span12" style="padding: 1%; margin-left: 0">
                                         <div class="span3">
-                                            <label for="status">Status<span class="required">*</span></label>
-                                            <select class="span12" name="status" id="status" value="">
-                                                <option <?php if ($result->status_os == 'pendencia_cliente') { echo 'selected'; } ?> value="pendencia_cliente">Pendência Cliente</option>
-                                                <option <?php if ($result->status_os == 'inviabilidade_tecnica') { echo 'selected'; } ?> value="inviabilidade_tecnica">Inviabilidade Técnica</option>
-                                                <option <?php if ($result->status_os == 'escola_nao_autorizou') { echo 'selected'; } ?> value="escola_nao_autorizou">Escola Não Autorizou</option>
+                                            <label for="status_os">Status<span class="required">*</span></label>
+                                            <select class="span12" name="status_os" id="status_os" value="">
+                                                <option <?php if ($result->status_os == 'Pendência Cliente') { echo 'selected'; } ?> value="Pendência Cliente">Pendência Cliente</option>
+                                                <option <?php if ($result->status_os == 'Pendência Provedor') { echo 'selected'; } ?> value="Pendência Provedor">Pendência Provedor</option>
+                                                <option <?php if ($result->status_os == 'Inviabilidade Técnica') { echo 'selected'; } ?> value="Inviabilidade Técnica">Inviabilidade Técnica</option>
+                                                <option <?php if ($result->status_os == 'Escola Não Autorizou') { echo 'selected'; } ?> value="Escola Não Autorizou">Escola Não Autorizou</option>
+                                                <option <?php if ($result->status_os == 'Instalação Em Andamento') { echo 'selected'; } ?> value="Instalação Em Andamento">Instalação Em Andamento</option>
+                                                <option <?php if ($result->status_os == 'Instalação') { echo 'selected'; } ?> value="Instalação">Instalação</option>
                                             </select>
                                         </div>
                                         <div class="span3">

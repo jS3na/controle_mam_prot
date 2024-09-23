@@ -14,9 +14,12 @@ class Mapos extends MY_Controller {
         $this->data['vendasstatus'] = $this->mapos_model->getVendasStatus($vstatus);
         $this->data['lancamentos'] = $this->mapos_model->getLancamentos();
         $this->data['ordens'] = $this->mapos_model->getAllOs();
-        $this->data['ordens_pendencia_cliente'] = $this->mapos_model->getOsPendenciaCliente();
-        $this->data['ordens_inviabilidade_tecnica'] = $this->mapos_model->getOsInviabilidadeTecnica();
-        $this->data['ordens_escola_nao_autorizou'] = $this->mapos_model->getOsEscolaNaoAutorizou();
+        $this->data['ordens_pendencia_cliente'] = $this->mapos_model->getOsStatus('Pendência Cliente');
+        $this->data['ordens_pendencia_provedor'] = $this->mapos_model->getOsStatus('Pendência Provedor');
+        $this->data['ordens_inviabilidade_tecnica'] = $this->mapos_model->getOsStatus('Inviabilidade Técnica');
+        $this->data['ordens_escola_nao_autorizou'] = $this->mapos_model->getOsStatus('Escola Não Trabalhou');
+        $this->data['ordens_instalacao_em_andamento'] = $this->mapos_model->getOsStatus('Instalação Em Andamento');
+        $this->data['ordens_instalacao'] = $this->mapos_model->getOsStatus('Instalação');
         $this->data['produtos'] = $this->mapos_model->getProdutosMinimo();
         $this->data['os'] = $this->mapos_model->getOsEstatisticas();
         $this->data['estatisticas_financeiro'] = $this->mapos_model->getEstatisticasFinanceiro();
@@ -540,43 +543,30 @@ class Mapos extends MY_Controller {
             redirect(base_url());
         }
         $this->load->model('os_model');
-        $status = $this->input->get('status') ?: null;
+        $status_os = $this->input->get('status_os') ?: null;
         $start = $this->input->get('start') ?: null;
         $end = $this->input->get('end') ?: null;
+
+        //echo '<script>console.log(' . json_encode($status_os) . ');</script>';
 
         $allOs = $this->mapos_model->calendario(
             $start,
             $end,
-            $status
+            $status_os
         );
         $events = array_map(function ($os) {
             switch ($os->status_os) {
-                case 'Aberto':
+                case 'Pendência Cliente':
                     $cor = '#00cd00';
                     break;
-                case 'Negociação':
+                case 'Inviabilidade Técnica':
                     $cor = '#AEB404';
                     break;
-                case 'Em Andamento':
+                case 'Escola Não Autorizou':
                     $cor = '#436eee';
                     break;
-                case 'Orçamento':
+                case 'Instalação':
                     $cor = '#CDB380';
-                    break;
-                case 'Cancelado':
-                    $cor = '#CD0000';
-                    break;
-                case 'Finalizado':
-                    $cor = '#256';
-                    break;
-                case 'Faturado':
-                    $cor = '#B266FF';
-                    break;
-                case 'Aguardando Peças':
-                    $cor = '#FF7F00';
-                    break;
-                case 'Aprovado':
-                    $cor = '#808080';
                     break;
                 default:
                     $cor = '#E0E4CC';
@@ -585,7 +575,7 @@ class Mapos extends MY_Controller {
 
             return [
                 'title' => "OS: {$os->idOs}, Cliente: {$os->nomeCliente}",
-                'start' => $os->dataFinal,
+                'start' => $os->dataInicial,
                 'end' => $os->dataFinal,
                 'color' => $cor,
                 'extendedProps' => [
@@ -595,7 +585,7 @@ class Mapos extends MY_Controller {
                     'dataFinal' => '<b>Data Final:</b> ' . date('d/m/Y', strtotime($os->dataFinal)),
                     'garantia' => '<b>Garantia:</b> ' . $os->garantia . ' dias',
                     'status' => '<b>Status da OS:</b> ' . $os->status_os,
-                    'description' => '<b>Descrição/Produto:</b> ' . strip_tags(html_entity_decode($os->descricaoProduto)),
+                    'description' => '<b>Descrição:</b> ' . strip_tags(html_entity_decode($os->descricao_os)),
                     'defeito' => '<b>Defeito:</b> ' . strip_tags(html_entity_decode($os->defeito)),
                     'observacoes' => '<b>Observações:</b> ' . strip_tags(html_entity_decode($os->observacoes)),
                     'total' => '<b>Valor Total:</b> R$ ' . number_format($os->totalProdutos + $os->totalServicos, 2, ',', '.'),

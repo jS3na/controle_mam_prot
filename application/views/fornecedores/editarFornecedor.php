@@ -142,44 +142,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="span6">
-                        <div class="control-group" class="control-label">
-                            <label for="cep" class="control-label">CEP</label>
-                            <div class="controls">
-                                <input id="cep" type="text" name="cep" value="<?php echo $result->cep; ?>" />
-                            </div>
-                        </div>
-                        <div class="control-group" class="control-label">
-                            <label for="rua" class="control-label">Rua</label>
-                            <div class="controls">
-                                <input id="rua" type="text" name="rua" value="<?php echo $result->rua; ?>" />
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label for="numero" class="control-label">Número</label>
-                            <div class="controls">
-                                <input id="numero" type="text" name="numero" value="<?php echo $result->numero; ?>" />
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label for="complemento" class="control-label">Complemento</label>
-                            <div class="controls">
-                                <input id="complemento" type="text" name="complemento" value="<?php echo $result->complemento; ?>" />
-                            </div>
-                        </div>
-                        <div class="control-group" class="control-label">
-                            <label for="bairro" class="control-label">Bairro</label>
-                            <div class="controls">
-                                <input id="bairro" type="text" name="bairro" value="<?php echo $result->bairro; ?>" />
-                            </div>
-                        </div>
-                        <div class="control-group" class="control-label">
-                            <label for="cidade" class="control-label">Cidade</label>
-                            <div class="controls">
-                                <input id="cidade" type="text" name="cidade" value="<?php echo $result->cidade; ?>" />
-                            </div>
-                        </div>
+                
                         <div class="span6" style="padding: 1%; margin-left: 0">
                             <label for="descricao"><h4>Descrição</h4></label>
                             <textarea class="span12 editor" name="descricao" id="descricao" cols="30" rows="5"><?php echo $result->descricao ?></textarea>
@@ -227,16 +190,6 @@
             }
         });
 
-        $.getJSON('<?php echo base_url() ?>assets/json/estados.json', function(data) {
-            for (i in data.estados) {
-                $('#estado').append(new Option(data.estados[i].nome, data.estados[i].sigla));
-            }
-            var curState = '<?php echo $result->estado; ?>';
-            if (curState) {
-                $("#estado option[value=" + curState + "]").prop("selected", true);
-            }
-
-        });
         $('#formFornecedor').validate({
             rules: {
                 nomeFornecedor: {

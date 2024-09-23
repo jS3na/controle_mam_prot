@@ -13,6 +13,8 @@ class Fornecedores_model extends CI_Model
         $this->db->from($table);
         
         $this->db->join('fornecedor_endereco as en', 'fornecedores.idFornecedores = en.idFornecedor', 'inner');
+
+        $this->db->group_by('idFornecedores');
         
         $this->db->order_by('idFornecedores', 'desc');
         $this->db->limit($perpage, $start);
@@ -24,6 +26,8 @@ class Fornecedores_model extends CI_Model
         }
     
         $query = $this->db->get();
+
+        echo '<script>console.log(' . json_encode($this->db->last_query()) . ');</script>';
     
         $result = !$one ? $query->result() : $query->row();
     

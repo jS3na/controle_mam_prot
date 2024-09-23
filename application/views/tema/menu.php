@@ -84,7 +84,9 @@
                     </li>
                 <?php } */ ?>
 
-                <!--<?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vVenda')) { ?>
+                <!--
+
+                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vVenda')) { ?>
                     <li class="<?php if (isset($menuVendas)) {
                         echo 'active';
                     }; ?>">
@@ -95,7 +97,9 @@
                     </li>
                 <?php } ?>
 
-                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) { ?>
+                -->
+
+                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs') && $this->session->userdata('nome_admin') == 'Admin') { ?>
                     <li class="<?php if (isset($menuOs)) {
                         echo 'active';
                     }; ?>">
@@ -105,8 +109,6 @@
                         </a>
                     </li>
                 <?php } ?>
-
-                -->
 
                 <!--<?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vGarantia')) { ?>
                     <li class="<?php if (isset($menuGarantia)) {

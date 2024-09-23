@@ -297,12 +297,6 @@
                                                     <?php echo $fornecedor->email ?>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td style="text-align: right"><strong>Cidade</strong></td>
-                                                <td>
-                                                    <?php echo $fornecedor->cidade ?>
-                                                </td>
-                                            </tr>
                                         <?php } ?>
                                     <?php } ?>
                                 </tbody>

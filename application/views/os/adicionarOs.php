@@ -42,11 +42,14 @@
                                     </div>
                                     <div class="span12" style="padding: 1%; margin-left: 0"> 
                                         <div class="span3">
-                                            <label for="status">Status do Cliente<span class="required">*</span></label>
-                                            <select class="span12" name="status" id="status" value="">
-                                                <option value="pendencia_cliente">Pendência Cliente</option>
-                                                <option value="inviabilidade_tecnica">Inviabilidade Técnica</option>
-                                                <option value="escola_nao_autorizou">Escola Não Autorizou</option>
+                                            <label for="status_os">Status do Cliente<span class="required">*</span></label>
+                                            <select class="span12" name="status_os" id="status_os" value="">
+                                                <option value="Pendência Cliente">Pendência Cliente</option>
+                                                <option value="Pendência Provedor">Pendência Provedor</option>
+                                                <option value="Inviabilidade Técnica">Inviabilidade Técnica</option>
+                                                <option value="Escola Não Autorizou">Escola Não Autorizou</option>
+                                                <option value="Instalação Em Andamento">Instalação Em Andamento</option>
+                                                <option value="Instalação">Instalação</option>
                                             </select>
                                         </div>
                                         <div class="span3">

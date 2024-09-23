@@ -62,67 +62,67 @@
     <?php endif ?>
 
     <?php /* if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vServico')) : ?>
-   <li class="card">
-       <div class="grid-blak">
-           <a href="<?= site_url('servicos') ?>">
-               <div class="numbers">Serviços</div>
-               <div class="cardName">F3</div>
-           </a>
-       </div>
-       <a href="<?= site_url('servicos') ?>">
-           <div class="lord-icon03">
-               <i class='bx bx-wrench iconBx03'></i>
-           </div>
-       </a>
-   </li>
+<li class="card">
+<div class="grid-blak">
+ <a href="<?= site_url('servicos') ?>">
+     <div class="numbers">Serviços</div>
+     <div class="cardName">F3</div>
+ </a>
+</div>
+<a href="<?= site_url('servicos') ?>">
+ <div class="lord-icon03">
+     <i class='bx bx-wrench iconBx03'></i>
+ </div>
+</a>
+</li>
 <?php endif ?>
 
 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) : ?>
-   <li class="card">
-       <div class="grid-blak">
-           <a href="<?= site_url('os') ?>">
-               <div class="numbers N-tittle">Ordens</div>
-               <div class="cardName">F3</div>
-           </a>
-       </div>
-       <a href="<?= site_url('os') ?>">
-           <div class="lord-icon04">
-               <i class='bx bx-file iconBx04'></i>
-           </div>
-       </a>
-   </li>
+<li class="card">
+<div class="grid-blak">
+ <a href="<?= site_url('os') ?>">
+     <div class="numbers N-tittle">Ordens</div>
+     <div class="cardName">F3</div>
+ </a>
+</div>
+<a href="<?= site_url('os') ?>">
+ <div class="lord-icon04">
+     <i class='bx bx-file iconBx04'></i>
+ </div>
+</a>
+</li>
 <?php endif ?>
 
 <?php /* if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vVenda')) : ?>
-   <li class="card">
-       <div class="grid-blak">
-           <a href="<?= site_url('vendas/') ?>">
-               <div class="numbers N-tittle">Vendas</div>
-               <div class="cardName">F6</div>
-           </a>
-       </div>
-       <a href="<?= site_url('vendas/') ?>">
-       <div class="lord-icon05">
-           <i class='bx bx-cart-alt iconBx05'></i></span>
-       </div>
-       </a>
-   </li>
+<li class="card">
+<div class="grid-blak">
+ <a href="<?= site_url('vendas/') ?>">
+     <div class="numbers N-tittle">Vendas</div>
+     <div class="cardName">F6</div>
+ </a>
+</div>
+<a href="<?= site_url('vendas/') ?>">
+<div class="lord-icon05">
+ <i class='bx bx-cart-alt iconBx05'></i></span>
+</div>
+</a>
+</li>
 <?php endif ?>
 
 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vLancamento')) : ?>
-   <li class="card">
-       <div class="grid-blak">
-           <a href="<?= site_url('financeiro/lancamentos') ?>">
-               <div class="numbers N-tittle">Lançamentos</div>
-               <div class="cardName">F7</div>
-           </a>
-       </div>
-       <a href="<?= site_url('financeiro/lancamentos') ?>">
-       <div class="lord-icon06">
-           <i class="bx bx-bar-chart-alt-2 iconBx06"></i>
-       </div>
-       </a>
-   </li>
+<li class="card">
+<div class="grid-blak">
+ <a href="<?= site_url('financeiro/lancamentos') ?>">
+     <div class="numbers N-tittle">Lançamentos</div>
+     <div class="cardName">F7</div>
+ </a>
+</div>
+<a href="<?= site_url('financeiro/lancamentos') ?>">
+<div class="lord-icon06">
+ <i class="bx bx-bar-chart-alt-2 iconBx06"></i>
+</div>
+</a>
+</li>
 <?php endif */ ?>
 </ul>
 <!--End-Action boxes-->
@@ -143,9 +143,10 @@
                                 <select style="padding-left: 30px" class="span12" name="statusOsGet" id="statusOsGet"
                                     value="">
                                     <option value="">Todos os Status</option>
-                                    <option value="pendencia_cliente">Pendência Cliente</option>
-                                    <option value="inviabilidade_tecnica">Inviabilidade Técnica</option>
-                                    <option value="escola_nao_autorizou">Escola Não Autorizou</option>
+                                    <option value="Pendência Cliente">Pendência Cliente</option>
+                                    <option value="Inviabilidade Técnica">Inviabilidade Técnica</option>
+                                    <option value="Escola Não Autorizou">Escola Não Autorizou</option>
+                                    <option value="Instalação">Instalação</option>
                                 </select>
                                 <button type="button" class="btn-xs" id="btn-calendar"><i
                                         class="bx bx-search iconX2"></i></button>
@@ -225,7 +226,7 @@
                         </div>
                     </a>
 
-                    <!-- responsavel por fazer complementar a variavel "$financeiro_mes_dia->" de receita e despesa
+                    responsavel por fazer complementar a variavel "$financeiro_mes_dia->" de receita e despesa
                     <?php if ($estatisticas_financeiro != null) {
                         if ($estatisticas_financeiro->total_receita != null || $estatisticas_financeiro->total_despesa != null || $estatisticas_financeiro->total_receita_pendente != null || $estatisticas_financeiro->total_despesa_pendente != null) { ?>
 
@@ -259,262 +260,11 @@
     </div>
 </div>
 
-<!-- Fim new widget right -->
-
-<?php if ($estatisticas_financeiro != null) {
-    if ($estatisticas_financeiro->total_receita != null || $estatisticas_financeiro->total_despesa != null || $estatisticas_financeiro->total_receita_pendente != null || $estatisticas_financeiro->total_despesa_pendente != null) { ?>
-
-        <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'rFinanceiro')): ?>
-            <!-- Start Charts -->
-            <div class="new-balance">
-                <div class="widget-box0">
-                    <div class="widget-title2">
-                        <h5 class="cardHeader">Balanço Mensal do Ano</h5>
-                        <form method="get" style="display:flex;margin-right:18px;justify-content:flex-end">
-                            <input type="number" name="year"
-                                style="width:65px;margin-left:17px;margin-bottom:25px;margin-top:10px;padding-left: 35px"
-                                value="<?php echo intval(preg_replace('/[^0-9]/', '', $this->input->get('year'))) ?: date('Y') ?>">
-                            <button type="submit" class="btn-xsx"><i class='bx bx-search iconX'></i></button>
-                        </form>
-                    </div>
-                    <div class="widget-content" style="padding:10px 25px 5px 25px">
-                        <div class="row-fluid" style="margin-top:-35px;">
-                            <div class="span12">
-                                <canvas id="myChart" style="overflow-x: scroll;margin-left: -14px"></canvas>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="widget-box-statist">
-                    <h5 class="cardHeader">Estatísticas Financeira</h5>
-                    <div class="widget-content" style="padding:10px;margin:25px 0 0">
-                        <canvas id="statusOS"> </canvas>
-                    </div>
-                </div>
-            </div>
-        <?php endif ?>
-
-        <script type="text/javascript">
-            if (window.outerWidth > 2000) {
-                Chart.defaults.font.size = 15;
-            };
-            if (window.outerWidth < 2000 && window.outerWidth > 1367) {
-                Chart.defaults.font.size = 11;
-            };
-            if (window.outerWidth < 1367 && window.outerWidth > 480) {
-                Chart.defaults.font.size = 9.5;
-            };
-            if (window.outerWidth < 480) {
-                Chart.defaults.font.size = 8.5;
-            };
-
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var StatusOS = document.getElementById('statusOS').getContext('2d');
-
-            var myChart = new Chart(ctx, {
-                data: {
-                    labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
-                    datasets: [{
-                        label: 'Receita Líquida',
-                        data: [<?php echo ($financeiro_mes->VALOR_JAN_REC - $financeiro_mes->VALOR_JAN_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_FEV_REC - $financeiro_mes->VALOR_FEV_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_MAR_REC - $financeiro_mes->VALOR_MAR_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_ABR_REC - $financeiro_mes->VALOR_ABR_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_MAI_REC - $financeiro_mes->VALOR_MAI_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_JUN_REC - $financeiro_mes->VALOR_JUN_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_JUL_REC - $financeiro_mes->VALOR_JUL_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_AGO_REC - $financeiro_mes->VALOR_AGO_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_SET_REC - $financeiro_mes->VALOR_SET_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_OUT_REC - $financeiro_mes->VALOR_OUT_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_NOV_REC - $financeiro_mes->VALOR_NOV_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_DEZ_REC - $financeiro_mes->VALOR_DEZ_DES); ?>
-                        ],
-
-                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
-                        borderRadius: 15,
-                    },
-
-                    {
-                        label: 'Receita Bruta',
-                        data: [<?php echo ($financeiro_mes->VALOR_JAN_REC); ?>,
-                            <?php echo ($financeiro_mes->VALOR_FEV_REC); ?>,
-                            <?php echo ($financeiro_mes->VALOR_MAR_REC); ?>,
-                            <?php echo ($financeiro_mes->VALOR_ABR_REC); ?>,
-                            <?php echo ($financeiro_mes->VALOR_MAI_REC); ?>,
-                            <?php echo ($financeiro_mes->VALOR_JUN_REC); ?>,
-                            <?php echo ($financeiro_mes->VALOR_JUL_REC); ?>,
-                            <?php echo ($financeiro_mes->VALOR_AGO_REC); ?>,
-                            <?php echo ($financeiro_mes->VALOR_SET_REC); ?>,
-                            <?php echo ($financeiro_mes->VALOR_OUT_REC); ?>,
-                            <?php echo ($financeiro_mes->VALOR_NOV_REC); ?>,
-                            <?php echo ($financeiro_mes->VALOR_DEZ_REC); ?>
-                        ],
-
-                        backgroundColor: 'rgba(255, 206, 86, 0.5)',
-                        borderRadius: 15,
-                    },
-
-                    {
-                        label: 'Despesas',
-                        data: [<?php echo ($financeiro_mes->VALOR_JAN_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_FEV_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_MAR_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_ABR_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_MAI_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_JUN_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_JUL_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_AGO_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_SET_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_OUT_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_NOV_DES); ?>,
-                            <?php echo ($financeiro_mes->VALOR_DEZ_DES); ?>
-                        ],
-
-                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-                        borderRadius: 15,
-                    },
-
-                    {
-                        label: 'Inadimplência',
-                        data: [<?php echo ($financeiro_mesinadipl->VALOR_JAN_REC); ?>,
-                            <?php echo ($financeiro_mesinadipl->VALOR_FEV_REC); ?>,
-                            <?php echo ($financeiro_mesinadipl->VALOR_MAR_REC); ?>,
-                            <?php echo ($financeiro_mesinadipl->VALOR_ABR_REC); ?>,
-                            <?php echo ($financeiro_mesinadipl->VALOR_MAI_REC); ?>,
-                            <?php echo ($financeiro_mesinadipl->VALOR_JUN_REC); ?>,
-                            <?php echo ($financeiro_mesinadipl->VALOR_JUL_REC); ?>,
-                            <?php echo ($financeiro_mesinadipl->VALOR_AGO_REC); ?>,
-                            <?php echo ($financeiro_mesinadipl->VALOR_SET_REC); ?>,
-                            <?php echo ($financeiro_mesinadipl->VALOR_OUT_REC); ?>,
-                            <?php echo ($financeiro_mesinadipl->VALOR_NOV_REC); ?>,
-                            <?php echo ($financeiro_mesinadipl->VALOR_DEZ_REC); ?>
-                        ],
-
-                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                        borderRadius: 15,
-                    }
-                    ]
-
-                },
-                // configuração
-                type: 'bar',
-                options: {
-                    locale: 'pt-BR',
-                    scales: {
-                        y: {
-                            ticks: {
-                                callback: (value, index, values) => {
-                                    return new Intl.NumberFormat('pt-BR', {
-                                        style: 'currency',
-                                        currency: 'BRL',
-                                        maximumSignificantDidits: 1
-                                    }).format(value);
-                                }
-                            }
-                        },
-                        x: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Meses'
-                            }
-                        }
-                    },
-
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                beforeTitle: function (context) {
-                                    return 'Referente ao mês de';
-                                }
-                            }
-                        },
-
-                        legend: {
-                            position: "bottom",
-                            labels: {
-                                usePointStyle: true,
-                            }
-                        }
-                    }
-                }
-            });
-
-            var myChart = new Chart(statusOS, {
-                data: {
-                    labels: [
-                        'Receita total', 'Receita pendente',
-                        'Previsto em caixa', 'Despesa total',
-                        'Despesa pendente', 'Previsto a entrar'
-                    ],
-                    datasets: [{
-                        label: 'Total',
-                        data: [
-                            <?php echo ($estatisticas_financeiro->total_receita != null) ? $estatisticas_financeiro->total_receita : '0.00'; ?>,
-                            <?php echo ($estatisticas_financeiro->total_receita_pendente != null) ? $estatisticas_financeiro->total_receita_pendente : '0.00'; ?>,
-                            <?php echo ($estatisticas_financeiro->total_receita - $estatisticas_financeiro->total_despesa); ?>,
-                            <?php echo ($estatisticas_financeiro->total_despesa != null) ? $estatisticas_financeiro->total_despesa : '0.00'; ?>,
-                            <?php echo ($estatisticas_financeiro->total_despesa_pendente != null) ? $estatisticas_financeiro->total_despesa_pendente : '0.00'; ?>,
-                            <?php echo ($estatisticas_financeiro->total_receita_pendente - $estatisticas_financeiro->total_despesa_pendente); ?>
-                        ],
-
-                        backgroundColor: [
-                            'rgba(75, 192, 192, 0.5)',
-                            'rgba(54, 162, 235, 0.5)',
-                            'rgba(255, 206, 86, 0.5)',
-                            'rgba(255, 99, 132, 0.5)',
-                            'rgba(255, 159, 64, 0.5)',
-                            'rgba(153, 102, 255, 0.5)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-
-                // configuração
-                type: 'polarArea',
-                options: {
-                    locale: 'pt-BR',
-                    scales: {
-                        r: {
-                            ticks: {
-                                callback: (value, index, values) => {
-                                    return new Intl.NumberFormat('pt-BR', {
-                                        style: 'currency',
-                                        currency: 'BRL',
-                                        maximumSignificantDidits: 1
-                                    }).format(value);
-                                }
-                            },
-                            beginAtZero: true,
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            position: "bottom",
-                            labels: {
-                                usePointStyle: true,
-
-                            }
-                        }
-                    }
-                }
-            });
-
-            function responsiveFonts() {
-                myChart.update();
-            }
-        </script>
-    <?php }
-} ?>
-</div>
-</div>
-
-<!-- Start Staus OS
+<!-- Start Staus OS -->
 <div class="span12A" style="margin-left: 0">
     <div class="widget-box0 widbox-blak">
         <div>
-            <h5 class="cardHeader">Ordens de Serviços Em Pendência Cliente.</h5>
+            <h5 class="cardHeader">Ordens de Serviços Em Pendência Cliente</h5>
         </div>
         <div class="widget-content">
             <table class="table table-bordered">
@@ -531,20 +281,7 @@
                     <?php if ($ordens_pendencia_cliente != null): ?>
                         <?php foreach ($ordens_pendencia_cliente as $o): ?>
                             <?php
-                            switch ($o->status_os) {
-                                case 'pendencia_cliente':
-                                    $cor = '#00cd00';
-                                    break;
-                                case 'inviabilidade_tecnica':
-                                    $cor = '#436eee';
-                                    break;
-                                case 'escola_nao_autorizou':
-                                    $cor = '#CDB380';
-                                    break;
-                                default:
-                                    $cor = '#E0E4CC';
-                                    break;
-                            }
+                            $cor = '#00cd00';
                             ?>
                             <tr>
                                 <td>
@@ -562,12 +299,14 @@
                                 } ?></td>
 
                                 <td>
-                                    <span class="badge" style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status_os ?></span>
+                                    <span class="badge"
+                                        style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status_os ?></span>
                                 </td>
 
                                 <td>
                                     <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')): ?>
-                                        <a href="<?= base_url() ?>index.php/os/visualizar/<?= $o->idOs ?>" class="btn-nwe tip-top" title="Visualizar">
+                                        <a href="<?= base_url() ?>index.php/os/visualizar/<?= $o->idOs ?>" class="btn-nwe tip-top"
+                                            title="Visualizar">
                                             <i class="bx bx-show"></i> </a>
                                     <?php endif ?>
                                 </td>
@@ -582,7 +321,67 @@
             </table>
         </div>
     </div>
-    
+
+    <div class="widget-box0 widbox-blak">
+        <div>
+            <h5 class="cardHeader">Ordens de Serviços Em Pendência Provedor</h5>
+        </div>
+        <div class="widget-content">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Cliente</th>
+                        <th>Data Final</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($ordens_pendencia_provedor != null): ?>
+                        <?php foreach ($ordens_pendencia_provedor as $o): ?>
+                            <?php
+                            $cor = '#00cd00';
+                            ?>
+                            <tr>
+                                <td>
+                                    <?= $o->idOs ?>
+                                </td>
+
+                                <td class="cli1">
+                                    <?= $o->nomeCliente ?>
+                                </td>
+
+                                <td><?php if ($o->dataFinal != null) {
+                                    echo date('d/m/Y', strtotime($o->dataFinal));
+                                } else {
+                                    echo "";
+                                } ?></td>
+
+                                <td>
+                                    <span class="badge"
+                                        style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status_os ?></span>
+                                </td>
+
+                                <td>
+                                    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')): ?>
+                                        <a href="<?= base_url() ?>index.php/os/visualizar/<?= $o->idOs ?>" class="btn-nwe tip-top"
+                                            title="Visualizar">
+                                            <i class="bx bx-show"></i> </a>
+                                    <?php endif ?>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="5">Nenhuma OS em Pendência Cliente.</td>
+                        </tr>
+                    <?php endif ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <div class="widget-box0 widbox-blak">
         <div>
             <h5 class="cardHeader">Ordens de Serviços Em Inviabilidade Técnica</h5>
@@ -602,20 +401,7 @@
                     <?php if ($ordens_inviabilidade_tecnica != null): ?>
                         <?php foreach ($ordens_inviabilidade_tecnica as $o): ?>
                             <?php
-                            switch ($o->status_os) {
-                                case 'pendencia_cliente':
-                                    $cor = '#00cd00';
-                                    break;
-                                case 'inviabilidade_tecnica':
-                                    $cor = '#436eee';
-                                    break;
-                                case 'escola_nao_autorizou':
-                                    $cor = '#CDB380';
-                                    break;
-                                default:
-                                    $cor = '#E0E4CC';
-                                    break;
-                            }
+                            $cor = '#AEB404';
                             ?>
                             <tr>
                                 <td>
@@ -631,14 +417,16 @@
                                 } else {
                                     echo "";
                                 } ?></td>
-                                
+
                                 <td>
-                                    <span class="badge" style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status_os ?></span>
+                                    <span class="badge"
+                                        style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status_os ?></span>
                                 </td>
 
                                 <td>
                                     <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')): ?>
-                                        <a href="<?= base_url() ?>index.php/os/visualizar/<?= $o->idOs ?>" class="btn-nwe tip-top" title="Visualizar">
+                                        <a href="<?= base_url() ?>index.php/os/visualizar/<?= $o->idOs ?>" class="btn-nwe tip-top"
+                                            title="Visualizar">
                                             <i class="bx bx-show"></i> </a>
                                     <?php endif ?>
                                 </td>
@@ -653,7 +441,6 @@
             </table>
         </div>
     </div>
-
 
     <div class="widget-box0 widbox-blak">
         <div>
@@ -674,20 +461,7 @@
                     <?php if ($ordens_escola_nao_autorizou != null): ?>
                         <?php foreach ($ordens_escola_nao_autorizou as $o): ?>
                             <?php
-                            switch ($o->status_os) {
-                                case 'pendencia_cliente':
-                                    $cor = '#00cd00';
-                                    break;
-                                case 'inviabilidade_tecnica':
-                                    $cor = '#436eee';
-                                    break;
-                                case 'escola_nao_autorizou':
-                                    $cor = '#CDB380';
-                                    break;
-                                default:
-                                    $cor = '#E0E4CC';
-                                    break;
-                            }
+                            $cor = '#436eee';
                             ?>
                             <tr>
                                 <td>
@@ -703,14 +477,16 @@
                                 } else {
                                     echo "";
                                 } ?></td>
-                                
+
                                 <td>
-                                    <span class="badge" style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status_os ?></span>
+                                    <span class="badge"
+                                        style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status_os ?></span>
                                 </td>
 
                                 <td>
                                     <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')): ?>
-                                        <a href="<?= base_url() ?>index.php/os/visualizar/<?= $o->idOs ?>" class="btn-nwe tip-top" title="Visualizar">
+                                        <a href="<?= base_url() ?>index.php/os/visualizar/<?= $o->idOs ?>" class="btn-nwe tip-top"
+                                            title="Visualizar">
                                             <i class="bx bx-show"></i> </a>
                                     <?php endif ?>
                                 </td>
@@ -728,83 +504,116 @@
 
     <div class="widget-box0 widbox-blak">
         <div>
-            <h5 class="cardHeader">Status de Vendas</h5>
+            <h5 class="cardHeader">Ordens de Serviços Em Instalação Em Andamento</h5>
         </div>
         <div class="widget-content">
-            <table class="table table-bordered lanc-table">
+            <table class="table table-bordered">
                 <thead>
                     <tr>
-                        <th class="numero-col">N°</th>
-                        <th class="cliente-col">Cliente</th>
-                        <th class="data-final-col">Data da Venda</th>
-                        <th class="status-col">Status</th>
-                        <th class="acoes-col">Ações</th>
+                        <th>N°</th>
+                        <th>Cliente</th>
+                        <th>Data Final</th>
+                        <th>Status</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php if ($vendasstatus != null): ?>
-                        <?php foreach ($vendasstatus as $v): ?>
+                    <?php if ($ordens_instalacao_em_andamento != null): ?>
+                        <?php foreach ($ordens_instalacao_em_andamento as $o): ?>
                             <?php
-                            switch ($v->status) {
-                                case 'Aberto':
-                                    $cor = '#00cd00';
-                                    break;
-                                case 'Em Andamento':
-                                    $cor = '#436eee';
-                                    break;
-                                case 'Orçamento':
-                                    $cor = '#CDB380';
-                                    break;
-                                case 'Negociação':
-                                    $cor = '#AEB404';
-                                    break;
-                                case 'Cancelado':
-                                    $cor = '#CD0000';
-                                    break;
-                                case 'Finalizado':
-                                    $cor = '#256';
-                                    break;
-                                case 'Faturado':
-                                    $cor = '#B266FF';
-                                    break;
-                                case 'Aguardando Peças':
-                                    $cor = '#FF7F00';
-                                    break;
-                                case 'Aprovado':
-                                    $cor = '#808080';
-                                    break;
-                                default:
-                                    $cor = '#E0E4CC';
-                                    break;
-                            }
+                            $cor = '#436eee';
                             ?>
                             <tr>
                                 <td>
-                                    <?= $v->idVendas ?>
+                                    <?= $o->idOs ?>
                                 </td>
 
                                 <td class="cli1">
-                                    <?= $v->nomeCliente ?>
+                                    <?= $o->nomeCliente ?>
                                 </td>
+
+                                <td><?php if ($o->dataFinal != null) {
+                                    echo date('d/m/Y', strtotime($o->dataFinal));
+                                } else {
+                                    echo "";
+                                } ?></td>
+
                                 <td>
-                                    <?= date('d/m/Y', strtotime($v->dataVenda)) ?>
+                                    <span class="badge"
+                                        style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status_os ?></span>
                                 </td>
-                                
-                                    <td>
-                                        <span class="badge" style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $v->status ?></span>
-                                    </td>
+
                                 <td>
-                                    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vVenda')): ?>
-                                        <a href="<?= base_url() ?>index.php/vendas/visualizar/<?= $v->idVendas ?>" class="btn-nwe tip-top" title="Visualizar">
+                                    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')): ?>
+                                        <a href="<?= base_url() ?>index.php/os/visualizar/<?= $o->idOs ?>" class="btn-nwe tip-top"
+                                            title="Visualizar">
                                             <i class="bx bx-show"></i> </a>
-                                   
                                     <?php endif ?>
                                 </td>
                             </tr>
                         <?php endforeach ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="5">Nenhuma Venda.</td>
+                            <td colspan="5">Nenhuma OS em Instalação Em Andamento.</td>
+                        </tr>
+                    <?php endif ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="widget-box0 widbox-blak">
+        <div>
+            <h5 class="cardHeader">Ordens de Serviços Em Instalação</h5>
+        </div>
+        <div class="widget-content">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Cliente</th>
+                        <th>Data Final</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($ordens_instalacao != null): ?>
+                        <?php foreach ($ordens_instalacao as $o): ?>
+                            <?php
+                            $cor = '#436eee';
+                            ?>
+                            <tr>
+                                <td>
+                                    <?= $o->idOs ?>
+                                </td>
+
+                                <td class="cli1">
+                                    <?= $o->nomeCliente ?>
+                                </td>
+
+                                <td><?php if ($o->dataFinal != null) {
+                                    echo date('d/m/Y', strtotime($o->dataFinal));
+                                } else {
+                                    echo "";
+                                } ?></td>
+
+                                <td>
+                                    <span class="badge"
+                                        style="background-color: <?= $cor ?>; border-color: <?= $cor ?>;"><?= $o->status_os ?></span>
+                                </td>
+
+                                <td>
+                                    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')): ?>
+                                        <a href="<?= base_url() ?>index.php/os/visualizar/<?= $o->idOs ?>" class="btn-nwe tip-top"
+                                            title="Visualizar">
+                                            <i class="bx bx-show"></i> </a>
+                                    <?php endif ?>
+                                </td>
+                            </tr>
+                        <?php endforeach ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="5">Nenhuma OS em que a Escola Não Autorizou.</td>
                         </tr>
                     <?php endif ?>
                 </tbody>
@@ -812,110 +621,8 @@
         </div>
     </div>
 
-    <div class="widget-box0 widbox-blak">
-        <div>
-            <h5 class="cardHeader">Últimos Lançamentos Pendentes</h5>
-        </div>
-        <div class="widget-content">
-            <table class="table table-bordered lanc-table">
-                <thead>
-                    <tr>
-                        <th class="tipo-col">Tipo</th>
-                        <th class="cliente-col">Cliente/Fornecedor</th>
-                        <th class="descricao-col">Descrição</th>
-                        <th class="vencimento-col">Vencimento</th>
-                        <th class="valor-col">V.T. Faturado</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (!empty($lancamentos)): ?>
-                        <?php foreach ($lancamentos as $lancamento): ?>
-                            <tr>
-                                <td>
-                                    <?php if ($lancamento->tipo == 'receita'): ?>
-                                        <span class="label label-success"><b><?php echo ucfirst($lancamento->tipo); ?></b></span>
-                                    <?php elseif ($lancamento->tipo == 'despesa'): ?>
-                                        <span class="label label-important"><b><?php echo ucfirst($lancamento->tipo); ?></b></span>
-                                    <?php else: ?>
-                                        <?php echo ucfirst($lancamento->tipo); ?>
-                                    <?php endif; ?>
-                                </td>
-                                <td class="text-truncate"><?php echo $lancamento->cliente_fornecedor; ?></td>
-                                <td class="text-truncate"><?php echo $lancamento->descricao; ?></td>
-                                <td><?php echo date_format(date_create($lancamento->data_vencimento), 'd/m/Y'); ?></td>
-                                <td>R$ <?php echo number_format($lancamento->valor_desconto, 2, ',', '.'); ?></td>
-                            </tr>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <tr>
-                            <td colspan="5">Nenhum lançamento encontrado.</td>
-                        </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="AAA">
-        <div class="widget-box0 widbox-blak">
-            <div>
-                <h5 class="cardHeader">Produtos Com Estoque Mínimo</h5>
-            </div>
-            <div class="widget-content">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Cod.</th>
-                            <th>Produto</th>
-                            <th>Preço de Venda</th>
-                            <th>Estoque</th>
-                            <th class="ph3">Estoque Mínimo</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php if ($produtos != null): ?>
-                            <?php foreach ($produtos as $p): ?>
-                                <tr>
-                                    <td>
-                                        <?= $p->idProdutos ?>
-                                    </td>
-                                    <td class="cli1">
-                                        <?= $p->descricao ?>
-                                    </td>
-                                    <td>R$
-                                        <?= $p->precoVenda ?>
-                                    </td>
-                                    <td>
-                                        <?= $p->estoque ?>
-                                    </td>
-                                    <td class="ph3">
-                                        <?= $p->estoqueMinimo ?>
-                                    </td>
-                                    <td>
-                                        <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eProduto')): ?>
-                                            <a href="<?= base_url() ?>index.php/produtos/editar/<?= $p->idProdutos ?>" class="btn-nwe3 tip-top" title="Editar">
-                                                <i class="bx bx-edit"></i>
-                                            </a>
-                                            <a href="#atualizar-estoque" role="button" data-toggle="modal" produto="<?= $p->idProdutos ?>" estoque="<?= $p->estoque ?>" class="btn-nwe5 tip-top" title="Atualizar Estoque">
-                                                <i class="bx bx-plus-circle"></i></a>
-                                        <?php endif; ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach ?>
-                        <?php else: ?>
-                            <tr>
-                                <td colspan="6">Nenhum produto com estoque baixo.</td>
-                            </tr>
-                        <?php endif ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-                        
 </div>
- Fim Staus OS -->
+<!-- Fim Staus OS -->
 
 <!-- Modal Status OS Calendar -->
 <div id="calendarModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -930,14 +637,8 @@
         <h5 id="modalCliente" class="modal-cliente"></h5>
         <div id="modalDataInicial" class="modal-DataInicial"></div>
         <div id="modalDataFinal" class="modal-DataFinal"></div>
-        <div id="modalGarantia" class="modal-Garantia"></div>
         <div id="modalStatus" class="modal-Status"></div>
         <div id="modalDescription" class="modal-Description"></div>
-        <div id="modalDefeito" class="modal-Defeito"></div>
-        <div id="modalObservacoes" class="modal-Observacoes"></div>
-        <div id="modalTotal" class="modal-Total"></div>
-        <div id="modalDesconto" class="modal-Total"></div>
-        <div id="modalValorFaturado" class="modal-ValorFaturado"></div>
     </div>
     <?php
     if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) {
@@ -995,14 +696,14 @@
             editable: false,
             selectable: false,
             businessHours: true,
-            dayMaxEvents: true, // allow "more" link when too many events
+            dayMaxEvents: false, // allow "more" link when too many events
             displayEventTime: false,
             events: {
                 url: "<?= base_url() . "index.php/mapos/calendario"; ?>",
                 method: 'GET',
                 extraParams: function () { // a function that returns an object
                     return {
-                        status: $("#statusOsGet").val(),
+                        status_os: $("#statusOsGet").val(),
                     };
                 },
                 failure: function () {
