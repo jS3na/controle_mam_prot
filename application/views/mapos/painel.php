@@ -177,22 +177,22 @@
 
                     <a href="<?php echo base_url(); ?>index.php/fornecedores/adicionar" class="card tip-top"
                         title="Adicionar Fornecedores">
-                        <div><i class='bx bxs-car iconBx'></i></div>
+                        <div><i class='bx bxs-car iconBx2'></i></div>
                         <div>
                             <div class="cardName2"><?= $this->db->count_all('fornecedores'); ?></div>
                             <div class="cardName">Fornecedores</div>
                         </div>
                     </a>
 
-                    <!--
-
-                    <a href="<?php echo base_url(); ?>index.php/produtos/adicionar" class="card tip-top" title="Adicionar Produtos">
-                        <div><i class='bx bxs-package iconBx2'></i></div>
+                    <a href="<?php echo base_url(); ?>index.php/os/adicionar" class="card tip-top" title="Adicionar O.S">
+                        <div><i class='bx bxs-file iconBx3'></i></div>
                         <div>
-                            <div class="cardName2"><?= $this->db->count_all('produtos'); ?></div>
-                            <div class="cardName">Produtos</div>
+                            <div class="cardName2"><?= $this->db->count_all('os'); ?></div>
+                            <div class="cardName">O.S</div>
                         </div>
                     </a>
+
+                    <!--
 
                     <a href="<?php echo base_url() ?>index.php/servicos/adicionar" class="card tip-top" title="Adicionar serviços">
                         <div><i class='bx bxs-stopwatch iconBx3'></i></div>
@@ -674,7 +674,7 @@
             },
             messages: {
                 estoque: {
-                    required: 'Campo Requerido.',
+                    required: 'Campo Requerido.', 
                     number: 'Informe um número válido.'
                 }
             },
