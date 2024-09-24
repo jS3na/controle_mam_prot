@@ -216,6 +216,33 @@
                         </div>
                     </div>
                 </div>
+
+                <div id="modal-excluir-fornecedor" class="modal hide fade" tabindex="-1" role="dialog"
+                    aria-labelledby="myModalLabel" aria-hidden="true">
+                    <?php $url_excluir_fornecedor = base_url('index.php/clientes/excluirFornecedor/' . $result->idClientes); ?>
+                    <form action="<?php echo $url_excluir_fornecedor; ?>" method="post">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                            <h5 id="myModalLabel">Remover Fornecedor</h5>
+                        </div>
+                        <div class="modal-body">
+                            <input type="hidden" id="idParcela" name="idParcela" value="" />
+                            <h5 style="text-align: center">Deseja realmente remover esse Fornecedor?</h5>
+                            <div class="control-group">
+                                <input type="hidden" name="status" value="<?php echo $result->status; ?>" />
+                            </div>
+                        </div>
+                        <div class="modal-footer" style="display:flex;justify-content: center">
+                            <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"><span
+                                    class="button__icon"><i class="bx bx-x"></i></span><span
+                                    class="button__text2">Cancelar</span></button>
+                            <button class="button btn btn-danger"><span class="button__icon"><i
+                                        class='bx bx-trash'></i></span> <span
+                                    class="button__text2">Remover</span></button>
+                        </div>
+                    </form>
+                </div>
+
                 <div class="accordion-group widget-box">
                     <div class="accordion-heading">
                         <div class="widget-title">
@@ -227,7 +254,7 @@
                     </div>
                     <div class="collapse accordion-body" id="collapseGFive">
                         <?php
-                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
+                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente') && !$fornecedor_cliente) {
                             $url = base_url('index.php/clientes/vincularFornecedor/' . $result->idClientes);
                             echo '<div style="margin: 1.2rem">
                                             <a href="' . $url . '"title="Vincular Fornecedor">
@@ -236,6 +263,13 @@
                                                     <span class="button__text2">Vincular Fornecedor</span>
                                                 </button>
                                             </a>
+                                        </div>
+                                    ';
+                        }
+                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dCliente') && $fornecedor_cliente) {
+                            echo '<div class="" style="margin: 0.7rem; gap: 10px; display: flex; flex-direction: row">
+                                            <a href="#modal-excluir-fornecedor" data-toggle="modal" role="button" class="button btn btn-mini btn-danger" style="width: 230px">
+                                                <span class="button__icon"><i class="bx bx-trash"></i></span><span class="button__text2" title="Remover Financeiro">Remover Fornecedor</span></a>
                                         </div>
                                     ';
                         }
@@ -305,6 +339,77 @@
                     </div>
                 </div>
 
+                <div class="accordion-group widget-box">
+                    <div class="accordion-heading">
+                        <div class="widget-title">
+                            <a data-parent="#collapse-group" href="#collapseGTen" data-toggle="collapse">
+                                <span><i class='bx bx-file icon-cli'></i></span>
+                                <h5 style="padding-left: 28px">Ordens</h5>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="collapse accordion-body" id="collapseGTen">
+                        <?php
+                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
+                            $url = base_url('index.php/clientes/adicionarOs/' . $result->idClientes);
+                            echo '<div style="margin: 1.2rem">
+                                        <a href="' . $url . '"title="Adicionar Os">
+                                            <button type="button" class="button btn btn-mini btn-success">
+                                                <span class="button__icon"><i class="bx bx-plus"></i></span>
+                                                <span class="button__text2">Adicionar Ordem</span>
+                                            </button>
+                                        </a>
+                                    </div>
+                                ';
+                        }
+                        ?>
+
+                        <div class="widget-content">
+                            <!-- Aba de Logs -->
+                            <div id="tab4" class="tab-pane" style="min-height: 300px">
+                                <?php if (!$os_cliente) { ?>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Data Inicial</th>
+                                                <th>Data Final</th>
+                                                <th>Status</th>
+                                                <th>Descrição</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="5">Nenhuma ordem encontrada</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                <?php } else { ?>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Data Inicial</th>
+                                                <th>Data Final</th>
+                                                <th>Status</th>
+                                                <th>Descrição</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($os_cliente as $osc) { ?>
+                                                <tr>
+                                                    <td><?php echo date('d/m/Y', strtotime($osc->dataInicial)); ?></td>
+                                                    <td><?php echo date('d/m/Y', strtotime($osc->dataFinal)); ?></td>
+                                                    <td><?php echo $osc->status_os; ?></td>
+                                                    <td><?php echo $osc->descricao_os; ?></td>
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div id="modal-aprovar-parcela" class="modal hide fade" tabindex="-1" role="dialog"
                     aria-labelledby="myModalLabel" aria-hidden="true">
                     <?php $url = base_url('index.php/clientes/aprovarParcela/' . $result->idClientes); ?>
@@ -363,11 +468,14 @@
                     <form action="<?php echo $url_excluir_financeiro; ?>" method="post">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                            <h5 id="myModalLabel">Excluir Financeiro</h5>
+                            <h5 id="myModalLabel">Remover Financeiro</h5>
                         </div>
                         <div class="modal-body">
                             <input type="hidden" id="idParcela" name="idParcela" value="" />
-                            <h5 style="text-align: center">Deseja realmente excluir esse Financeiro?</h5>
+                            <h5 style="text-align: center">Deseja realmente remover esse Financeiro?</h5>
+                            <div class="control-group">
+                                <input type="hidden" name="status" value="<?php echo $result->status; ?>" />
+                            </div>
                         </div>
                         <div class="modal-footer" style="display:flex;justify-content: center">
                             <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"><span
@@ -375,7 +483,7 @@
                                     class="button__text2">Cancelar</span></button>
                             <button class="button btn btn-danger"><span class="button__icon"><i
                                         class='bx bx-trash'></i></span> <span
-                                    class="button__text2">Excluir</span></button>
+                                    class="button__text2">Remover</span></button>
                         </div>
                     </form>
                 </div>
@@ -520,20 +628,20 @@
                     </div>
                 </div>
 
-                    <div class="accordion-group widget-box">
-                        <div class="accordion-heading">
-                            <div class="widget-title">
-                                <a data-parent="#collapse-group" href="#collapseGSix" data-toggle="collapse">
-                                    <span><i class='bx bx-money-withdraw icon-cli'></i></span>
-                                    <h5 style="padding-left: 28px">Financeiro</h5>
-                                </a>
-                            </div>
+                <div class="accordion-group widget-box">
+                    <div class="accordion-heading">
+                        <div class="widget-title">
+                            <a data-parent="#collapse-group" href="#collapseGSix" data-toggle="collapse">
+                                <span><i class='bx bx-money-withdraw icon-cli'></i></span>
+                                <h5 style="padding-left: 28px">Financeiro</h5>
+                            </a>
                         </div>
-                        <div class="collapse accordion-body" id="collapseGSix">
-                            <?php
-                            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente') && !$financeiro_cliente) {
-                                $url = base_url('index.php/clientes/gerarFinanceiro/' . $result->idClientes);
-                                echo '<div style="margin: 0.7rem">
+                    </div>
+                    <div class="collapse accordion-body" id="collapseGSix">
+                        <?php
+                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente') && !$financeiro_cliente) {
+                            $url = base_url('index.php/clientes/gerarFinanceiro/' . $result->idClientes);
+                            echo '<div style="margin: 0.7rem">
                                             <a href="' . $url . '"title="Gerar Financeiro">
                                                 <button type="button" class="button btn btn-mini btn-success">
                                                     <span class="button__icon"><i class="bx bx-plus"></i></span>
@@ -542,65 +650,65 @@
                                             </a>
                                         </div>
                                     ';
-                            }
-                            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente') && $financeiro_cliente) {
-                                echo '<div class="" style="margin: 0.7rem; gap: 10px; display: flex; flex-direction: row">
+                        }
+                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dCliente') && $financeiro_cliente) {
+                            echo '<div class="" style="margin: 0.7rem; gap: 10px; display: flex; flex-direction: row">
                                             <a href="#modalParcelas" data-toggle="modal" role="button" class="button btn btn-mini btn-success" style="width: 230px">
                                                 <span class="button__icon"><i class="bx bx-qr-scan"></i></span><span class="button__text2" title="Visualizar Parcelas">Visualizar Parcelas</span></a>
                                             <a href="#modal-excluir-financeiro" data-toggle="modal" role="button" class="button btn btn-mini btn-danger" style="width: 230px">
-                                                <span class="button__icon"><i class="bx bx-trash"></i></span><span class="button__text2" title="Excluir Financeiro">Excluir Financeiro</span></a>
+                                                <span class="button__icon"><i class="bx bx-trash"></i></span><span class="button__text2" title="Remover Financeiro">Remover Financeiro</span></a>
                                         </div>
                                     ';
-                            }
-                            ?>
-                            <div class="widget-content">
-                                <table class="table table-bordered th"
-                                    style="border: 1px solid #ddd;border-left: 1px solid #ddd">
-                                    <tbody>
+                        }
+                        ?>
+                        <div class="widget-content">
+                            <table class="table table-bordered th"
+                                style="border: 1px solid #ddd;border-left: 1px solid #ddd">
+                                <tbody>
 
-                                        <?php if ($financeiro_cliente) {
-                                            foreach ($financeiro_cliente as $fns) {
+                                    <?php if ($financeiro_cliente) {
+                                        foreach ($financeiro_cliente as $fns) {
 
-                                                $valorTotal = (float) $fns->valorTotal;
-                                                $parcelas = (float) $fns->parcelas;
+                                            $valorTotal = (float) $fns->valorTotal;
+                                            $parcelas = (float) $fns->parcelas;
 
-                                                $valorPorParcela = $parcelas > 0 ? $valorTotal / $parcelas : 0;
+                                            $valorPorParcela = $parcelas > 0 ? $valorTotal / $parcelas : 0;
 
-                                                $valorTotalFormatado = number_format($valorTotal, 2, ',', '.');
-                                                $taxaInstalacaoFormatada = number_format((float) $fns->taxaInstalacao, 2, ',', '.');
-                                                $valorPorParcelaFormatado = number_format($valorPorParcela, 2, ',', '.');
-                                                ?>
-                                                <tr>
-                                                    <td style="text-align: right; width: 30%;"><strong>Quantidade de
-                                                            parcelas</strong></td>
-                                                    <td><?php echo $fns->parcelas ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="text-align: right"><strong>Taxa de instalação</strong>
-                                                    </td>
-                                                    <td>R$ <?php echo $taxaInstalacaoFormatada ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="text-align: right"><strong>Valor Total</strong></td>
-                                                    <td>R$ <?php echo $valorTotalFormatado ?></td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="text-align: right"><strong>Valor por Parcela</strong>
-                                                    </td>
-                                                    <td>R$ <?php echo $valorPorParcelaFormatado ?></td>
-                                                </tr>
-                                            <?php }
-                                        } else { ?>
+                                            $valorTotalFormatado = number_format($valorTotal, 2, ',', '.');
+                                            $taxaInstalacaoFormatada = number_format((float) $fns->taxaInstalacao, 2, ',', '.');
+                                            $valorPorParcelaFormatado = number_format($valorPorParcela, 2, ',', '.');
+                                            ?>
                                             <tr>
-                                                <td>Nenhum financeiro foi gerado</td>
+                                                <td style="text-align: right; width: 30%;"><strong>Quantidade de
+                                                        parcelas</strong></td>
+                                                <td><?php echo $fns->parcelas ?></td>
                                             </tr>
-                                        <?php } ?>
+                                            <tr>
+                                                <td style="text-align: right"><strong>Taxa de instalação</strong>
+                                                </td>
+                                                <td>R$ <?php echo $taxaInstalacaoFormatada ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: right"><strong>Valor Total</strong></td>
+                                                <td>R$ <?php echo $valorTotalFormatado ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="text-align: right"><strong>Valor por Parcela</strong>
+                                                </td>
+                                                <td>R$ <?php echo $valorPorParcelaFormatado ?></td>
+                                            </tr>
+                                        <?php }
+                                    } else { ?>
+                                        <tr>
+                                            <td>Nenhum financeiro foi gerado</td>
+                                        </tr>
+                                    <?php } ?>
 
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
+                </div>
 
                 <div class="accordion-group widget-box">
                     <div class="accordion-heading">
@@ -696,10 +804,10 @@
                                                                 <?php endif ?>
 
                                                                 <?php /*if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eArquivo')): ?>
-                                            <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
-                                                class="btn-nwe3" title="Editar"><i
-                                                    class="bx bx-edit"></i></a>
-                                        <?php endif*/ ?>
+                                       <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
+                                           class="btn-nwe3" title="Editar"><i
+                                               class="bx bx-edit"></i></a>
+                                   <?php endif*/ ?>
 
                                                                 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dArquivo')): ?>
                                                                     <a href="#modal-excluir" style="margin-right: 1%"
@@ -851,10 +959,10 @@
                                                                 <?php endif ?>
 
                                                                 <?php /*if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eArquivo')): ?>
-                                            <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
-                                                class="btn-nwe3" title="Editar"><i
-                                                    class="bx bx-edit"></i></a>
-                                        <?php endif*/ ?>
+                                       <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
+                                           class="btn-nwe3" title="Editar"><i
+                                               class="bx bx-edit"></i></a>
+                                   <?php endif*/ ?>
 
                                                                 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dArquivo')): ?>
                                                                     <a href="#modal-excluir" style="margin-right: 1%"
@@ -1006,10 +1114,10 @@
                                                                 <?php endif ?>
 
                                                                 <?php /*if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eArquivo')): ?>
-                                            <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
-                                                class="btn-nwe3" title="Editar"><i
-                                                    class="bx bx-edit"></i></a>
-                                        <?php endif */ ?>
+                                       <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
+                                           class="btn-nwe3" title="Editar"><i
+                                               class="bx bx-edit"></i></a>
+                                   <?php endif */ ?>
 
                                                                 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dArquivo')): ?>
                                                                     <a href="#modal-excluir" style="margin-right: 1%"

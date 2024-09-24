@@ -51,10 +51,10 @@
     shortcut.add("F2", function() {
       location.href = '<?= site_url('clientes'); ?>';
     });
-    /*s
     shortcut.add("F3", function() {
       location.href = '<?= site_url('os'); ?>';
     });
+    /*
     shortcut.add("F4", function() {
       location.href = '<?= site_url('os'); ?>';
     });

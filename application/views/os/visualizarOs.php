@@ -37,7 +37,7 @@
                                     <tr>
                                         <td style="text-align: right"><strong>Descrição</strong></td>
                                         <td>
-                                            <?php echo $result->descricao ?>
+                                            <?php echo $result->descricao_os ?>
                                         </td>
                                     </tr>
                                 </tbody>

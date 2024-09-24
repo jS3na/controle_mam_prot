@@ -99,7 +99,7 @@
 
                 -->
 
-                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs') && $this->session->userdata('nome_admin') == 'Admin') { ?>
+                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) { ?>
                     <li class="<?php if (isset($menuOs)) {
                         echo 'active';
                     }; ?>">

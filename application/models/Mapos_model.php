@@ -241,6 +241,10 @@ class Mapos_model extends CI_Model
         return false;
     }
 
+    public function getEstatisticasClienteStatus($year){
+        
+    }
+
     public function getEstatisticasFinanceiroMes($year)
     {
         $numbersOnly = preg_replace('/[^0-9]/', '', $year);

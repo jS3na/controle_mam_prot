@@ -238,7 +238,6 @@ class Clientes extends MY_Controller
                     'status' => set_value('status'),
                 ];
 
-                // Adiciona o log
                 $this->clientes_model->add('logs_cliente', $dataLog);
 
                 log_info('Vinculou um cliente a um fornecedor.');
@@ -266,17 +265,14 @@ class Clientes extends MY_Controller
     public function gerarFinanceiro()
     {
 
-        // Verifica permissão
         if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
             $this->session->set_flashdata('error', 'Você não tem permissão para gerar financeiros');
             redirect(base_url());
         }
 
-        // Carrega a biblioteca de validação de formulário
         $this->load->library('form_validation');
         $this->data['custom_error'] = '';
 
-        // Verifica a validação do formulário
         if ($this->form_validation->run('gerarFinanceiro') == false) {
             $this->data['custom_error'] = (validation_errors() ? '<div class="form_error"> Preencha os campos corretamente </div>' : false);
         } else {
@@ -284,19 +280,17 @@ class Clientes extends MY_Controller
             $vencimento = $this->input->post('vencimento');
             $parcelas = $this->input->post('parcelas');
             $idCliente = $this->input->post('idCliente');
+            $status = $this->input->post('status');
             $taxaInstalacao = $this->input->post('taxaInstalacao');
             $valorTotal = $this->input->post('valorTotal');
 
-            // Convertendo a data do formato 'd/m/Y' para 'Y-m-d'
             try {
                 $vencimento = DateTime::createFromFormat('d/m/Y', $vencimento);
                 if (!$vencimento) {
                     throw new Exception('Data inválida');
                 }
-                // Formatando a data para o banco de dados
                 $vencimentoFormatado = $vencimento->format('Y-m-d');
             } catch (Exception $e) {
-                // Se houver erro, usa a data atual
                 $vencimentoFormatado = date('Y-m-d');
             }
 
@@ -316,17 +310,26 @@ class Clientes extends MY_Controller
 
                 for ($i = 0; $i < $parcelas; $i++) {
                     $vencimento->modify('+1 month');
-                    $vencimentoFormatado = $vencimento->format('Y-m-d'); // Use o formato 'Y-m-d' para o banco de dados
+                    $vencimentoFormatado = $vencimento->format('Y-m-d');
                     $valorAtual = $i == 0 ? $valorPorParcela + $taxaInstalacao : $valorPorParcela;
 
                     $dataParcela = [
                         'idCliente' => $idCliente,
                         'valor' => $valorAtual,
-                        'vencimento' => $vencimentoFormatado, // Certifique-se de usar o formato correto
+                        'vencimento' => $vencimentoFormatado,
                     ];
 
                     $this->clientes_model->add('parcelas', $dataParcela);
                 }
+
+                $dataLog = [
+                    'idCliente' => $idCliente,
+                    'usuario' => $this->session->userdata('nome_admin'),
+                    'tarefa' => 'Gerou um financeiro com ' . $parcelas . ' parcelas',
+                    'status' => $status
+                ];
+
+                $this->clientes_model->add('logs_cliente', $dataLog);
 
                 $this->session->set_flashdata('success', 'Financeiro gerado com sucesso!');
                 log_info('Gerou um financeiro a um cliente.');
@@ -431,6 +434,7 @@ class Clientes extends MY_Controller
         }
 
         $idCliente = $this->uri->segment(3);
+        $status = $this->input->post('status');
         if ($idCliente == null) {
             $this->session->set_flashdata('error', 'Erro ao tentar excluir financeiro.');
             redirect(site_url('clientes/gerenciar/'));
@@ -440,7 +444,49 @@ class Clientes extends MY_Controller
         $this->clientes_model->delete('parcelas', 'idCliente', $idCliente);
         log_info('Removeu um financeiro do cliente: ' . $idCliente);
 
-        $this->session->set_flashdata('success', 'Financeiro excluido com sucesso!');
+        $this->session->set_flashdata('success', 'Financeiro removido com sucesso!');
+
+        $dataLog = [
+            'idCliente' => $idCliente,
+            'usuario' => $this->session->userdata('nome_admin'),
+            'tarefa' => 'Removeu o financeiro',
+            'status' => $status
+        ];
+
+        $this->clientes_model->add('logs_cliente', $dataLog);
+
+        redirect(site_url('clientes/gerenciar/'));
+    }
+
+    public function excluirFornecedor()
+    {
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'dCliente')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para excluir fornecedores.');
+            redirect(base_url());
+        }
+
+        $idCliente = $this->uri->segment(3);
+        $status = $this->input->post('status');
+        if ($idCliente == null) {
+            $this->session->set_flashdata('error', 'Erro ao tentar excluir fornecedor.');
+            redirect(site_url('clientes/gerenciar/'));
+        }
+
+        $this->clientes_model->delete('fornecedor_cliente', 'idCliente', $idCliente);
+        $this->clientes_model->delete('parcelas', 'idCliente', $idCliente);
+        log_info('Removeu o fornecedor do cliente: ' . $idCliente);
+
+        $this->session->set_flashdata('success', 'Fornecedor removido com sucesso!');
+
+        $dataLog = [
+            'idCliente' => $idCliente,
+            'usuario' => $this->session->userdata('nome_admin'),
+            'tarefa' => 'Removeu o fornecedor',
+            'status' => $status
+        ];
+
+        $this->clientes_model->add('logs_cliente', $dataLog);
+
         redirect(site_url('clientes/gerenciar/'));
     }
 
@@ -591,6 +637,7 @@ class Clientes extends MY_Controller
         }
 
         $this->data['financeiro_cliente'] = $this->clientes_model->getFinanceiroCliente($this->data['result']->idClientes);
+        $this->data['os_cliente'] = $this->clientes_model->getOsCliente($this->data['result']->idClientes);
 
         $this->data['financeiro_cliente'] ? $this->data['parcelas_cliente'] = $this->clientes_model->getParcelasCliente($this->data['result']->idClientes) : $this->data['parcelas_cliente'] = false;
 

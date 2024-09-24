@@ -42,6 +42,7 @@ class Clientes_model extends CI_Model
         $this->db->from('logs_cliente');
         $this->db->where('idCliente', $idCliente);
         $this->db->order_by('data', 'desc');
+        $this->db->order_by('hora', 'desc');
         $query = $this->db->get();
         
         return $query->result();
@@ -82,6 +83,20 @@ class Clientes_model extends CI_Model
         $this->db->select('*');
         $this->db->from('financeiro_cliente');
         $this->db->where('idCliente', $idCliente);
+        $query = $this->db->get();
+
+        if ($query->num_rows() > 0) {
+            return $query->result();
+        } else {
+            return false;
+        }
+    }
+
+    public function getOsCliente($idCliente)
+    {
+        $this->db->select('*');
+        $this->db->from('os');
+        $this->db->where('clientes_id', $idCliente);
         $query = $this->db->get();
 
         if ($query->num_rows() > 0) {

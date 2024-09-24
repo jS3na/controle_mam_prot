@@ -105,6 +105,7 @@
                     <div class="span6">
                         <div class="control-group">
                             <?php echo form_hidden('idCliente', $result->idClientes) ?>
+                            <?php echo form_hidden('status', $result->status) ?>
                         </div>
                         <div class="control-group" class="control-label">
                             <label for="parcelas" class="control-label">Parcelas *</label>

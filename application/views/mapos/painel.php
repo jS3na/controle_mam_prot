@@ -61,18 +61,34 @@
         </li>
     <?php endif ?>
 
+    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')): ?>
+        <li class="card">
+            <div class="grid-blak">
+                <a href="<?= site_url('os') ?>">
+                    <div class="numbers N-tittle">Ordens</div>
+                    <div class="cardName">F3</div>
+                </a>
+            </div>
+            <a href="<?= site_url('os') ?>">
+                <div class="lord-icon04">
+                    <i class='bx bx-file iconBx04'></i>
+                </div>
+            </a>
+        </li>
+    <?php endif ?>
+
     <?php /* if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vServico')) : ?>
 <li class="card">
 <div class="grid-blak">
- <a href="<?= site_url('servicos') ?>">
-     <div class="numbers">Serviços</div>
-     <div class="cardName">F3</div>
- </a>
+<a href="<?= site_url('servicos') ?>">
+<div class="numbers">Serviços</div>
+<div class="cardName">F3</div>
+</a>
 </div>
 <a href="<?= site_url('servicos') ?>">
- <div class="lord-icon03">
-     <i class='bx bx-wrench iconBx03'></i>
- </div>
+<div class="lord-icon03">
+<i class='bx bx-wrench iconBx03'></i>
+</div>
 </a>
 </li>
 <?php endif ?>
@@ -80,15 +96,15 @@
 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) : ?>
 <li class="card">
 <div class="grid-blak">
- <a href="<?= site_url('os') ?>">
-     <div class="numbers N-tittle">Ordens</div>
-     <div class="cardName">F3</div>
- </a>
+<a href="<?= site_url('os') ?>">
+<div class="numbers N-tittle">Ordens</div>
+<div class="cardName">F3</div>
+</a>
 </div>
 <a href="<?= site_url('os') ?>">
- <div class="lord-icon04">
-     <i class='bx bx-file iconBx04'></i>
- </div>
+<div class="lord-icon04">
+<i class='bx bx-file iconBx04'></i>
+</div>
 </a>
 </li>
 <?php endif ?>
@@ -96,14 +112,14 @@
 <?php /* if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vVenda')) : ?>
 <li class="card">
 <div class="grid-blak">
- <a href="<?= site_url('vendas/') ?>">
-     <div class="numbers N-tittle">Vendas</div>
-     <div class="cardName">F6</div>
- </a>
+<a href="<?= site_url('vendas/') ?>">
+<div class="numbers N-tittle">Vendas</div>
+<div class="cardName">F6</div>
+</a>
 </div>
 <a href="<?= site_url('vendas/') ?>">
 <div class="lord-icon05">
- <i class='bx bx-cart-alt iconBx05'></i></span>
+<i class='bx bx-cart-alt iconBx05'></i></span>
 </div>
 </a>
 </li>
@@ -112,14 +128,14 @@
 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vLancamento')) : ?>
 <li class="card">
 <div class="grid-blak">
- <a href="<?= site_url('financeiro/lancamentos') ?>">
-     <div class="numbers N-tittle">Lançamentos</div>
-     <div class="cardName">F7</div>
- </a>
+<a href="<?= site_url('financeiro/lancamentos') ?>">
+<div class="numbers N-tittle">Lançamentos</div>
+<div class="cardName">F7</div>
+</a>
 </div>
 <a href="<?= site_url('financeiro/lancamentos') ?>">
 <div class="lord-icon06">
- <i class="bx bx-bar-chart-alt-2 iconBx06"></i>
+<i class="bx bx-bar-chart-alt-2 iconBx06"></i>
 </div>
 </a>
 </li>
@@ -130,33 +146,29 @@
 <div class="row-fluid" style="margin-top: 0; display: flex">
     <div class="Sspan12">
 
-        <?php if ($this->session->userdata('nome_admin') == "Admin") { ?>
-
-            <div class="widget-box2">
-                <div>
-                    <h5 class="cardHeader">Agenda</h5>
-                </div>
-                <div class="widget-content">
-                    <table>
-                        <div id='source-calendar'>
-                            <form method="post">
-                                <select style="padding-left: 30px" class="span12" name="statusOsGet" id="statusOsGet"
-                                    value="">
-                                    <option value="">Todos os Status</option>
-                                    <option value="Pendência Cliente">Pendência Cliente</option>
-                                    <option value="Inviabilidade Técnica">Inviabilidade Técnica</option>
-                                    <option value="Escola Não Autorizou">Escola Não Autorizou</option>
-                                    <option value="Instalação">Instalação</option>
-                                </select>
-                                <button type="button" class="btn-xs" id="btn-calendar"><i
-                                        class="bx bx-search iconX2"></i></button>
-                            </form>
-                        </div>
-                    </table>
-                </div>
+        <div class="widget-box2">
+            <div>
+                <h5 class="cardHeader">Agenda</h5>
             </div>
-
-        <?php } ?>
+            <div class="widget-content">
+                <table>
+                    <div id='source-calendar'>
+                        <form method="post">
+                            <select style="padding-left: 30px" class="span12" name="statusOsGet" id="statusOsGet"
+                                value="">
+                                <option value="">Todos os Status</option>
+                                <option value="Pendência Cliente">Pendência Cliente</option>
+                                <option value="Inviabilidade Técnica">Inviabilidade Técnica</option>
+                                <option value="Escola Não Autorizou">Escola Não Autorizou</option>
+                                <option value="Instalação">Instalação</option>
+                            </select>
+                            <button type="button" class="btn-xs" id="btn-calendar"><i
+                                    class="bx bx-search iconX2"></i></button>
+                        </form>
+                    </div>
+                </table>
+            </div>
+        </div>
 
         <!-- New widget right -->
         <div class="new-statisc">
@@ -166,29 +178,31 @@
                 </div>
 
                 <div class="new-bottons">
-                    <a href="<?php echo base_url(); ?>index.php/clientes/adicionar" class="card tip-top"
-                        title="Adicionar Clientes">
-                        <div><i class='bx bxs-group iconBx'></i></div>
-                        <div>
-                            <div class="cardName2"><?= $this->db->count_all('clientes'); ?></div>
-                            <div class="cardName">Clientes</div>
-                        </div>
-                    </a>
 
                     <a href="<?php echo base_url(); ?>index.php/fornecedores/adicionar" class="card tip-top"
                         title="Adicionar Fornecedores">
-                        <div><i class='bx bxs-car iconBx2'></i></div>
+                        <div><i class='bx bxs-car iconBx'></i></div>
                         <div>
                             <div class="cardName2"><?= $this->db->count_all('fornecedores'); ?></div>
-                            <div class="cardName">Fornecedores</div>
+                            <div class="cardName">Adicionar Fornecedor</div>
                         </div>
                     </a>
 
-                    <a href="<?php echo base_url(); ?>index.php/os/adicionar" class="card tip-top" title="Adicionar O.S">
+                    <a href="<?php echo base_url(); ?>index.php/clientes/adicionar" class="card tip-top"
+                        title="Adicionar Clientes">
+                        <div><i class='bx bxs-group iconBx2'></i></div>
+                        <div>
+                            <div class="cardName2"><?= $this->db->count_all('clientes'); ?></div>
+                            <div class="cardName">Adicionar Cliente</div>
+                        </div>
+                    </a>
+
+                    <a href="<?php echo base_url(); ?>index.php/os/adicionar" class="card tip-top"
+                        title="Adicionar O.S">
                         <div><i class='bx bxs-file iconBx3'></i></div>
                         <div>
                             <div class="cardName2"><?= $this->db->count_all('os'); ?></div>
-                            <div class="cardName">O.S</div>
+                            <div class="cardName">Adicionar O.S</div>
                         </div>
                     </a>
 
@@ -227,38 +241,129 @@
                     </a>
 
                     responsavel por fazer complementar a variavel "$financeiro_mes_dia->" de receita e despesa
-                    <?php if ($estatisticas_financeiro != null) {
-                        if ($estatisticas_financeiro->total_receita != null || $estatisticas_financeiro->total_despesa != null || $estatisticas_financeiro->total_receita_pendente != null || $estatisticas_financeiro->total_despesa_pendente != null) { ?>
 
-                            <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'rFinanceiro')): ?>
-                                <?php $diaRec = "VALOR_" . date('m') . "_REC";
-                                $diaDes = "VALOR_" . date('m') . "_DES"; ?>
-
-                                <a href="<?php echo base_url() ?>index.php/financeiro/lancamentos" class="card tip-top" title="Adicionar receita">
-                                    <div><i class='bx bxs-up-arrow-circle iconBx7'></i></div>
-                                    <div>
-                                        <div class="cardName1 cardName2">R$ <?php echo number_format(($financeiro_mes_dia->$diaRec - $financeiro_mes_dia->$diaDes), 2, ',', '.'); ?></div>
-                                        <div class="cardName">Receita do dia</div>
-                                    </div>
-                                </a>
-
-                                <a href="<?php echo base_url() ?>index.php/financeiro/lancamentos" class="card tip-top" title="Adiciona despesa">
-                                    <div><i class='bx bxs-down-arrow-circle iconBx8'></i></div>
-                                    <div>
-                                        <div class="cardName1 cardName2">R$ <?php echo number_format(($financeiro_mes_dia->$diaDes ? $financeiro_mes_dia->$diaDes : 0), 2, ',', '.'); ?></div>
-                                        <div class="cardName">Despesa do dia</div>
-                                    </div>
-                                </a>
-                            <?php endif ?>
-
-                    <?php }
-                    } ?>
-                    -->
+                        -->
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<?php if ($this->db->count_all('clientes') > 0) {
+    if (true) { ?>
+
+        <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'rFinanceiro')): ?>
+            <div class="new-balance">
+                <div class="widget-box0">
+                    <div class="widget-title2">
+                        <h5 class="cardHeader">Clientes por Status</h5>
+                    </div>
+                    <div class="widget-content" style="padding:10px 25px 5px 25px">
+                        <div class="row-fluid" style="margin-top:-35px;">
+                            <div class="span12">
+                                <!-- Ajuste a altura do canvas aqui -->
+                                <canvas id="myChart" width="1000" height="400"
+                                    style="overflow-x: scroll;margin-left: -14px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <?php endif ?>
+
+        <script type="text/javascript">
+
+            if (window.outerWidth > 2000) {
+                Chart.defaults.font.size = 15;
+            } else if (window.outerWidth < 2000 && window.outerWidth > 1367) {
+                Chart.defaults.font.size = 11;
+            } else if (window.outerWidth < 1367 && window.outerWidth > 480) {
+                Chart.defaults.font.size = 9.5;
+            } else if (window.outerWidth < 480) {
+                Chart.defaults.font.size = 8.5;
+            }
+
+            var ctx = document.getElementById('myChart').getContext('2d');
+
+            var clientesCount = <?php echo $this->data['clientesCount']; ?>;
+
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: Object.keys(clientesCount),
+                    datasets: [{
+                        label: 'Número de Clientes',
+                        data: Object.values(clientesCount),
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.5)', // INSTALADO
+                            'rgba(255, 99, 132, 0.5)', // NÃO INSTALADO
+                            'rgba(255, 206, 86, 0.5)', // FECHADO
+                            'rgba(54, 162, 235, 0.5)', // COTADO
+                            'rgba(153, 102, 255, 0.5)', // EM ANÁLISE
+                            'rgba(255, 159, 64, 0.5)', // AGUARDANDO COTAÇÃO
+                            'rgba(75, 192, 192, 0.5)', // SEM RETORNO
+                            'rgba(255, 205, 86, 0.5)', // EM NEGOCIAÇÃO
+                            'rgba(54, 162, 235, 0.5)', // VIABILIZADO
+                            'rgba(153, 102, 255, 0.5)', // AGUARDANDO INSTALAÇÃO
+                            'rgba(255, 159, 64, 0.5)', // AGUARDANDO CONTRATAÇÃO
+                            'rgba(255, 99, 132, 0.5)', // CANCELADO
+                            'rgba(255, 206, 86, 0.5)', // RADIO
+                            'rgba(75, 192, 192, 0.5)', // VALOR ALTO
+                            'rgba(54, 162, 235, 0.5)'  // COTANDO
+                        ],
+                        borderRadius: 15,
+                    }]
+                },
+                options: {
+                    locale: 'pt-BR',
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Número de Clientes'
+                            },
+                            ticks: {
+                                callback: (value) => {
+                                    return value;
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Status'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                beforeTitle: function (context) {
+                                    return 'Clientes:';
+                                }
+                            }
+                        },
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                usePointStyle: true,
+                            }
+                        }
+                    }
+                }
+            });
+
+            function responsiveFonts() {
+                myChart.update();
+            }
+        </script>
+
+
+
+    <?php }
+} ?>
 
 <!-- Start Staus OS -->
 <div class="span12A" style="margin-left: 0">
@@ -674,7 +779,7 @@
             },
             messages: {
                 estoque: {
-                    required: 'Campo Requerido.', 
+                    required: 'Campo Requerido.',
                     number: 'Informe um número válido.'
                 }
             },
@@ -692,11 +797,11 @@
         var srcCalendarEl = document.getElementById('source-calendar');
         var srcCalendar = new FullCalendar.Calendar(srcCalendarEl, {
             locale: 'pt-br',
-            height: 500,
+            height: 700,
             editable: false,
             selectable: false,
             businessHours: true,
-            dayMaxEvents: false, // allow "more" link when too many events
+            dayMaxEvents: true, // allow "more" link when too many events
             displayEventTime: false,
             events: {
                 url: "<?= base_url() . "index.php/mapos/calendario"; ?>",

@@ -1,5 +1,8 @@
-<?php if (!defined('BASEPATH')) { exit('No direct script access allowed'); }
-class Mapos extends MY_Controller {
+<?php if (!defined('BASEPATH')) {
+    exit('No direct script access allowed');
+}
+class Mapos extends MY_Controller
+{
     public function __construct()
     {
         parent::__construct();
@@ -13,6 +16,37 @@ class Mapos extends MY_Controller {
         $vstatus = array('Aberto', 'Em Andamento', 'Aguardando Peças', 'Aprovado', 'Orçamento');
         $this->data['vendasstatus'] = $this->mapos_model->getVendasStatus($vstatus);
         $this->data['lancamentos'] = $this->mapos_model->getLancamentos();
+
+        $statuses = [
+            'INSTALADO',
+            'NÃO INSTALADO',
+            'FECHADO',
+            'COTADO',
+            'EM ANÁLISE',
+            'AGUARDANDO COTAÇÃO',
+            'SEM RETORNO',
+            'EM NEGOCIAÇÃO',
+            'VIABILIZADO',
+            'AGUARDANDO INSTALAÇÃO',
+            'AGUARDANDO CONTRATAÇÃO',
+            'CANCELADO',
+            'RADIO',
+            'VALOR ALTO',
+            'COTANDO'
+        ];
+        
+        $clientesCount = [];
+        
+        foreach ($statuses as $status) {
+            $this->db->where('status', $status);
+            $count = $this->db->count_all_results('clientes');
+            
+            $clientesCount[$status] = $count;
+        }
+        
+        $this->data['clientesCount'] = json_encode($clientesCount);
+        
+
         $this->data['ordens'] = $this->mapos_model->getAllOs();
         $this->data['ordens_pendencia_cliente'] = $this->mapos_model->getOsStatus('Pendência Cliente');
         $this->data['ordens_pendencia_provedor'] = $this->mapos_model->getOsStatus('Pendência Provedor');
@@ -20,6 +54,7 @@ class Mapos extends MY_Controller {
         $this->data['ordens_escola_nao_autorizou'] = $this->mapos_model->getOsStatus('Escola Não Trabalhou');
         $this->data['ordens_instalacao_em_andamento'] = $this->mapos_model->getOsStatus('Instalação Em Andamento');
         $this->data['ordens_instalacao'] = $this->mapos_model->getOsStatus('Instalação');
+
         $this->data['produtos'] = $this->mapos_model->getProdutosMinimo();
         $this->data['os'] = $this->mapos_model->getOsEstatisticas();
         $this->data['estatisticas_financeiro'] = $this->mapos_model->getEstatisticasFinanceiro();
