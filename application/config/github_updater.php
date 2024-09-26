@@ -7,12 +7,12 @@ if (! defined('BASEPATH')) {
 /**
  * The user name of the git hub user who owns the repo
  */
-$config['github_user'] = 'RamonSilva20';
+$config['github_user'] = 'js3na';
 
 /**
  * The repo on GitHub we will be updating from
  */
-$config['github_repo'] = 'mapos';
+$config['github_repo'] = 'controle_mam_prot';
 
 /**
  * The branch to update from

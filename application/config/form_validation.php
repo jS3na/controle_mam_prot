@@ -25,6 +25,13 @@ $config = [
             'rules' => 'required|trim',
         ],
     ],
+    'logs_fornecedor' => [
+        [
+            'field' => 'log',
+            'label' => 'Nota',
+            'rules' => 'required|trim',
+        ],
+    ],
     'vincular' => [
         [
             'field' => 'fornecedor',
@@ -63,9 +70,9 @@ $config = [
             'rules' => 'required|trim',
         ],
         [
-            'field' => 'cnpj',
-            'label' => 'CNPJ',
-            'rules' => 'trim|verific_cpf_cnpj|unique[fornecedores.cnpj.' . get_instance()->uri->segment(3) . '.idFornecedores]',
+            'field' => 'documento',
+            'label' => 'CPF/CNPJ',
+            'rules' => 'trim|verific_cpf_cnpj|unique[fornecedores.documento.' . get_instance()->uri->segment(3) . '.idFornecedores]',
             'errors' => [
                 'verific_cpf_cnpj' => 'O campo %s não é um CPF ou CNPJ válido.',
             ],

@@ -37,7 +37,7 @@
         <h5>Clientes</h5>
     </div>
     <div class="span12" style="margin-left: 0">
-        <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aCliente')) { ?>
+        <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aCliente') && $this->session->userdata('nome_admin') == 'Admin') { ?>
             <div class="topActions">
                 <a href="<?= base_url() ?>index.php/clientes/adicionar" class="button btn btn-mini btn-success">
                     <span class="button__icon"><i class='bx bx-plus-circle'></i></span>

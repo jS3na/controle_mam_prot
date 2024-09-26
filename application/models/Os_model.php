@@ -116,6 +116,15 @@ class Os_model extends CI_Model
         return $this->db->get()->row();
     }
 
+    public function getStatusCliente($idCliente)
+    {
+        $this->db->select('*');
+        $this->db->from('clientes');
+        $this->db->where('idClientes', $idCliente);
+
+        return $this->db->get()->result();
+    }
+
     public function getByIdCobrancas($id)
     {
         $this->db->select('os.*, clientes.*, garantias.refGarantia, garantias.textoGarantia, usuarios.telefone as telefone_usuario, usuarios.email as email_usuario, usuarios.nome,cobrancas.os_id,cobrancas.idCobranca,cobrancas.status');

@@ -503,8 +503,11 @@ class Clientes extends MY_Controller
         if ($this->form_validation->run('logs_cliente') == false) {
             $this->data['custom_error'] = (validation_errors() ? '<div class="form_error">' . validation_errors() . '</div>' : false);
         } else {
+
+            $idCliente = set_value('idCliente');
+
             $data = [
-                'idCliente' => set_value('idCliente'),
+                'idCliente' => $idCliente,
                 'usuario' => set_value('usuario'),
                 'tarefa' => set_value('log'),
                 'status' => set_value('status'),
@@ -515,7 +518,7 @@ class Clientes extends MY_Controller
 
             if ($this->clientes_model->add('logs_cliente', $data) == true) {
                 $this->session->set_flashdata('success', 'Nota adicionada adicionado com sucesso!');
-                log_info('Adicionou um Log no Cliente.');
+                log_info('Adicionou um Log no Cliente: ' . $idCliente);
                 redirect(site_url('clientes/visualizar/' . $data['idCliente']));
             } else {
                 $this->data['custom_error'] = '<div class="form_error"><p>Ocorreu um erro.</p></div>';

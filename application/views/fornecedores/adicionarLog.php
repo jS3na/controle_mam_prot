@@ -89,12 +89,11 @@
             <?php if ($custom_error != '') {
                 echo '<div class="alert alert-danger">' . $custom_error . '</div>';
             } ?>
-            <form action="<?php echo current_url(); ?>" id="formCliente" method="post" class="form-horizontal">
+            <form action="<?php echo current_url(); ?>" id="formFornecedor" method="post" class="form-horizontal">
                 <div class="widget-content nopadding tab-content">
                     <div class="span6">
                         <div class="control-group">
-                            <?php echo form_hidden('idCliente', $result->idClientes) ?>
-                            <?php echo form_hidden('status', $result->status) ?>
+                            <?php echo form_hidden('idFornecedor', $result->idFornecedores) ?>
                             <?php echo form_hidden('usuario', $this->session->userdata('nome_admin')) ?>
                         </div>
                         <div class="span6" style="padding: 1%; margin-left: 0">
@@ -111,7 +110,7 @@
                         <div class="span6 offset3" style="display:flex;justify-content: center">
                             <button type="submit" class="button btn btn-primary" style="max-width: 160px">
                                 <span class="button__icon"><i class="bx bx-sync"></i></span><span class="button__text2">Adicionar</span></button>
-                            <a title="Voltar" class="button btn btn-warning" href="<?php echo site_url() ?>/clientes"><span class="button__icon"><i class="bx bx-undo"></i></span> <span class="button__text2">Voltar</span></a>
+                            <a title="Voltar" class="button btn btn-warning" href="<?php echo site_url() ?>/fornecedores"><span class="button__icon"><i class="bx bx-undo"></i></span> <span class="button__text2">Voltar</span></a>
                         </div>
                     </div>
                 </div>
@@ -121,33 +120,8 @@
 </div>
 <script src="<?php echo base_url() ?>assets/js/jquery.validate.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
-        let container = document.querySelector('div');
-        let input = document.querySelector('#senha');
-        let icon = document.querySelector('#imgSenha');
-
-        icon.addEventListener('click', function() {
-            container.classList.toggle('visible');
-            if (container.classList.contains('visible')) {
-                icon.src = '<?php echo base_url() ?>assets/img/eye-off.svg';
-                input.type = 'text';
-            } else {
-                icon.src = '<?php echo base_url() ?>assets/img/eye.svg'
-                input.type = 'password';
-            }
-        });
-
-        $.getJSON('<?php echo base_url() ?>assets/json/estados.json', function(data) {
-            for (i in data.estados) {
-                $('#estado').append(new Option(data.estados[i].nome, data.estados[i].sigla));
-            }
-            var curState = '<?php echo $result->estado; ?>';
-            if (curState) {
-                $("#estado option[value=" + curState + "]").prop("selected", true);
-            }
-
-        });
-        $('#formCliente').validate({
+        $(document).ready(function() {
+        $('#formFornecedor').validate({
 
             errorClass: "help-inline",
             errorElement: "span",

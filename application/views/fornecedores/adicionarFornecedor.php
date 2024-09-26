@@ -94,27 +94,25 @@
                 <div class="widget-content nopadding tab-content">
                     <div class="span6">
                         <div class="control-group">
-                            <label for="cnpj" class="control-label">CNPJ</label>
+                            <label for="documento" class="control-label">CNPJ</label>
                             <div class="controls">
-                                <input id="cnpj" class="cpfcnpj" type="text" name="cnpj"
-                                    value="<?php echo set_value('cnpj'); ?>" />
-                                <!--
+                                <input id="documento" class="cpfcnpj" type="text" name="documento"
+                                    value="<?php echo set_value('documento'); ?>" />
                                 <button id="buscar_info_cnpj" class="btn btn-xs" type="button">Buscar(CNPJ)</button>
-        -->
                             </div>
                         </div>
                         <div class="control-group">
                             <label for="nomeFornecedor" class="control-label">Nome/Razão Social<span
                                     class="required">*</span></label>
                             <div class="controls">
-                                <input id="nomeFornecedor" type="text" name="nomeFornecedor"
+                                <input id="nomeCliente" type="text" name="nomeFornecedor"
                                     value="<?php echo set_value('nomeFornecedor'); ?>" />
                             </div>
                         </div>
                         <div class="control-group">
                             <label for="telefone_comercial" class="control-label">Telefone Comercial</label>
                             <div class="controls">
-                                <input id="telefone_comercial" type="text" name="telefone_comercial"
+                                <input id="telefone" type="text" name="telefone_comercial"
                                     value="<?php echo set_value('telefone_comercial'); ?>" />
                             </div>
                         </div>
@@ -141,37 +139,17 @@
                         <div class="control-group">
                             <label for="sla_manutencao" class="control-label">SLA de Manutenção</label>
                             <div class="controls">
-                                <input id="sla_manutencao" type="time" name="sla_manutencao"
+                                <input placeholder="Quantidade de Horas. Ex.: 2" id="sla_manutencao" type="number" name="sla_manutencao"
                                     value="<?php echo set_value('sla_manutencao'); ?>" />
                             </div>
                         </div>
                         <div class="control-group">
                             <label for="sla_instalacao" class="control-label">SLA de Instalação</label>
                             <div class="controls">
-                                <input id="sla_instalacao" type="time" name="sla_instalacao"
+                                <input placeholder="Quantidade de Horas. Ex.: 2" id="sla_instalacao" type="number" name="sla_instalacao"
                                     value="<?php echo set_value('sla_instalacao'); ?>" />
                             </div>
                         </div>
-
-                        <!--
-                        <div class="control-group">
-                            <label for="senha" class="control-label">Senha</label>
-                            <div class="controls">
-                                <input class="form-control" id="senha" type="password" name="senha" value="<?php echo set_value('senha'); ?>" />
-                                <img id="imgSenha" src="<?php echo base_url() ?>assets/img/eye.svg" alt="">
-                            </div>
-                        </div>
-                        -->
-
-                        <!--<div class="control-group">
-                            <label class="control-label">Tipo de Fornecedor</label>
-                            <div class="controls">
-                                <label for="fornecedor" class="btn btn-default">Fornecedor
-                                    <input type="checkbox" id="fornecedor" name="fornecedor" class="badgebox" value="0">
-                                    <span class="badge">&check;</span>
-                                </label>
-                            </div>
-                        </div>-->
 
                     </div>
 

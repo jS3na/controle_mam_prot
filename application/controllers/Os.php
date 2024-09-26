@@ -135,10 +135,21 @@ class Os extends MY_Controller
                             array_push($remetentes, $os->email);
                             break;
                     }
-                    $this->enviarOsPorEmail($idOs, $remetentes, 'Ordem de Serviço - Criada');
+                    $this->enviarOsPorEmail($idOs, $remetentes, 'Ordem de Serv-iço - Criada');
                 }
 
-                $this->session->set_flashdata('success', 'O.S adicionada com sucesso, você pode adicionar serviços a essa O.S na aba de Serviços!');
+                $this->data['clienteInfo']  = $this->os_model->getStatusCliente($data['clientes_id'])[0];
+
+                $dataLog = [
+                    'idCliente' => $data['clientes_id'],
+                    'usuario' => $this->input->post('usuario'),
+                    'tarefa' => 'Adicionou uma OS com o status ' . $data['status_os'],
+                    'status' => $this->data['clienteInfo']->status
+                ];
+
+                $this->os_model->add('logs_cliente', $dataLog);
+
+                $this->session->set_flashdata('success', 'O.S adicionada com sucesso!');
                 log_info('Adicionou uma OS. ID: ' . $id);
                 redirect(site_url('os/editar/') . $id);
             } else {

@@ -1,3 +1,11 @@
+<style>
+
+    .menu-bar{
+        margin-top: 1rem
+    }
+    
+</style>
+
 <!--sidebar-menu-->
 <nav id="sidebar">
     <div id="newlog">
@@ -16,7 +24,7 @@
             </div>
         </div>
     </a>
-    <!-- Start Pesquisar-->
+    <!-- Start Pesquisar
     <li class="search-box">
         <form style="display: flex" action="<?= site_url('mapos/pesquisar') ?>">
         <button style="background:transparent;border:transparent" type="submit" class="tip-bottom" title="">
@@ -25,7 +33,7 @@
             <span class="title-tooltip">Pesquisar</span>
         </form>
     </li>
-    <!-- End Pesquisar-->
+    End Pesquisar-->
 
     <div class="menu-bar">
         <div class="menu">
@@ -58,6 +66,17 @@
                         <a class="tip-bottom" title="" href="<?= site_url('clientes') ?>"><i class='bx bx-user iconX'></i>
                             <span class="title">Clientes</span>
                             <span class="title-tooltip">Clientes</span>
+                        </a>
+                    </li>
+                <?php } ?>
+
+                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente') && $this->session->userdata('nome_admin') == 'Admin') { ?>
+                    <li class="<?php if (isset($menuStatusUsuarios)) {
+                        echo 'active';
+                    }; ?>">
+                        <a class="tip-bottom" title="" href="<?= site_url('statususuarios') ?>"><i class='bx bx-user iconX'></i>
+                            <span class="title">Status Usuários</span>
+                            <span class="title-tooltip">Status Usuários</span>
                         </a>
                     </li>
                 <?php } ?>

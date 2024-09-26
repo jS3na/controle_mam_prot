@@ -153,13 +153,12 @@ class Clientes_model extends CI_Model
         $this->db->limit(25);
         $this->db->like('nomeFornecedor', $q);
         $this->db->or_like('telefone_comercial', $q);
-        $this->db->or_like('cidade', $q);
         $query = $this->db->get('fornecedores');
         $row_set = [];
         if ($query->num_rows() > 0) {
             foreach ($query->result_array() as $row) {
                 $row_set[] = [
-                    'label' => $row['nomeFornecedor'] . ' | Telefone: ' . $row['telefone_comercial'] . ' | Cidade: ' . $row['cidade'], 
+                    'label' => $row['nomeFornecedor'] . ' | Telefone: ' . $row['telefone_comercial'], 
                     'id' => $row['idFornecedores']
                 ];
             }

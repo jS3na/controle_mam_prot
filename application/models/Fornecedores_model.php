@@ -33,7 +33,18 @@ class Fornecedores_model extends CI_Model
     
         return $result;
     }
-    
+
+    public function getLogs($idFornecedor)
+    {
+        $this->db->select('*');
+        $this->db->from('logs_fornecedor');
+        $this->db->where('idFornecedor', $idFornecedor);
+        $this->db->order_by('data', 'desc');
+        $this->db->order_by('hora', 'desc');
+        $query = $this->db->get();
+        
+        return $query->result();
+    }
 
     public function getClientesVinculados($idFornecedor)
     {

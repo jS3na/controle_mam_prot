@@ -81,7 +81,7 @@ class Fornecedores extends MY_Controller
 
             $data = [
                 'nomeFornecedor' => set_value('nomeFornecedor'),
-                'cnpj' => set_value('cnpj'),
+                'cnpj' => set_value('documento'),
                 'descricao' => set_value('descricao'),
                 'sla_manutencao' => set_value('sla_manutencao'),
                 'sla_instalacao' => set_value('sla_instalacao'),
@@ -165,6 +165,46 @@ class Fornecedores extends MY_Controller
         return $this->layout();
     }
 
+    public function adicionarLog()
+    {
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eFornecedor')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para adicionar Logs.');
+            redirect(base_url());
+        }
+
+        $this->load->library('form_validation');
+        $this->data['custom_error'] = '';
+
+        if ($this->form_validation->run('logs_fornecedor') == false) {
+            $this->data['custom_error'] = (validation_errors() ? '<div class="form_error">' . validation_errors() . '</div>' : false);
+        } else {
+
+            $idFornecedor = set_value('idFornecedor');
+
+            $data = [
+                'idFornecedor' => $idFornecedor,
+                'usuario' => set_value('usuario'),
+                'tarefa' => set_value('log'),
+                //'data' => date('Y-m-d'),
+                //'hora' => date('HH:MM:SS'),
+                //'fornecedor' => (set_value('fornecedor') == true ? 1 : 0),
+            ];
+
+            if ($this->fornecedores_model->add('logs_fornecedor', $data) == true) {
+                $this->session->set_flashdata('success', 'Nota adicionada adicionado com sucesso!');
+                log_info('Adicionou um Log no Fornecedor: ' . $idFornecedor);
+                redirect(site_url('fornecedores/visualizar/' . $idFornecedor));
+            } else {
+                $this->data['custom_error'] = '<div class="form_error"><p>Ocorreu um erro.</p></div>';
+            }
+        }
+
+        $this->data['result'] = $this->fornecedores_model->getById($this->uri->segment(3));
+        $this->data['view'] = 'fornecedores/adicionarLog';
+
+        return $this->layout();
+    }
+
     public function editar()
     {
         if (!$this->uri->segment(3) || !is_numeric($this->uri->segment(3))) {
@@ -216,13 +256,6 @@ class Fornecedores extends MY_Controller
                     'email' => $this->input->post('email'),
                     'sla_manutencao' => $this->input->post('sla_manutencao'),
                     'sla_instalacao' => $this->input->post('sla_instalacao'),
-                    'rua' => $this->input->post('rua'),
-                    'numero' => $this->input->post('numero'),
-                    'complemento' => $this->input->post('complemento'),
-                    'bairro' => $this->input->post('bairro'),
-                    'cidade' => $this->input->post('cidade'),
-                    'estado' => $this->input->post('estado'),
-                    'cep' => $this->input->post('cep'),
                 ];
             }
 
@@ -257,8 +290,9 @@ class Fornecedores extends MY_Controller
         $this->data['result'] = $this->fornecedores_model->getById($this->uri->segment(3));
         $this->data['clientes_vinculados'] = $this->fornecedores_model->getClientesVinculados($this->data['result']->idFornecedores);
         $this->data['fornecedor_enderecos'] = $this->fornecedores_model->getFornecedorEnderecoById($this->data['result']->idFornecedores);
+        $this->data['logs_fornecedores'] = $this->fornecedores_model->getLogs($this->data['result']->idFornecedores);
 
-        $clienteIds = array_column($this->data['clientes_vinculados'], 'idFornecedor'); // Extrair IDs dos clientes vinculados
+        $clienteIds = array_column($this->data['clientes_vinculados'], 'idCliente'); // Extrair IDs dos clientes vinculados
 
         if (!empty($clienteIds)) {
             $this->data['clientes_by_id'] = $this->fornecedores_model->getClientesByIds($clienteIds);

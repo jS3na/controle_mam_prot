@@ -46,6 +46,12 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td style="text-align: right"><strong>Status</strong></td>
+                                        <td>
+                                            <?php echo $result->status ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td style="text-align: right"><strong>Data de Cadastro</strong></td>
                                         <td>
                                             <?php echo date('d/m/Y', strtotime($result->dataCadastro)) ?>

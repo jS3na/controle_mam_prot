@@ -43,13 +43,13 @@
                                     <tr>
                                         <td style="text-align: right"><strong>SLA de Manutenção</strong></td>
                                         <td>
-                                            <?php echo $result->sla_manutencao ?>
+                                            <?php echo $result->sla_manutencao ? $result->sla_manutencao . ' horas' : 'Sem SLA' ?>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="text-align: right"><strong>SLA de Instalação</strong></td>
                                         <td>
-                                            <?php echo $result->sla_instalacao ?>
+                                        <?php echo $result->sla_instalacao ? $result->sla_instalacao . ' horas' : 'Sem SLA' ?>
                                         </td>
                                     </tr>
                                     <tr>
@@ -183,7 +183,7 @@
                         if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eFornecedor')) {
                             $url = base_url('index.php/fornecedores/adicionarEndereco/' . $result->idFornecedores);
                             echo '<div style="margin: 1.2rem">
-                                        <a href="' . $url . '"title="Adicionar Log">
+                                        <a href="' . $url . '"title="Adicionar Endereço">
                                             <button type="button" class="button btn btn-mini btn-success">
                                                 <span class="button__icon"><i class="bx bx-plus"></i></span>
                                                 <span class="button__text2">Adicionar Endereço</span>
@@ -239,6 +239,76 @@
                                                     <td><?php echo $fe->estado; ?></td>
                                                     <td><?php echo $fe->cep; ?></td>
                                                     <td><?php echo $fe->complemento; ?></td>
+                                                </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-group widget-box">
+                    <div class="accordion-heading">
+                        <div class="widget-title">
+                            <a data-parent="#collapse-group" href="#collapseGSix" data-toggle="collapse">
+                                <span><i class='bx bx-note icon-cli'></i></span>
+                                <h5 style="padding-left: 28px">Notas</h5>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="collapse accordion-body" id="collapseGSix">
+                        <?php
+                        if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eFornecedor')) {
+                            $url = base_url('index.php/fornecedores/adicionarLog/' . $result->idFornecedores);
+                            echo '<div style="margin: 1.2rem">
+                                        <a href="' . $url . '"title="Adicionar Log">
+                                            <button type="button" class="button btn btn-mini btn-success">
+                                                <span class="button__icon"><i class="bx bx-plus"></i></span>
+                                                <span class="button__text2">Adicionar Nota</span>
+                                            </button>
+                                        </a>
+                                    </div>
+                                ';
+                        }
+                        ?>
+
+                        <div class="widget-content">
+                            <!-- Aba de Logs -->
+                            <div id="tab4" class="tab-pane" style="min-height: 300px">
+                                <?php if (!$logs_fornecedores) { ?>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Usuário</th>
+                                                <th>Log</th>
+                                                <th>Data</th>
+                                                <th>Hora</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="5">Nenhum log encontrado</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                <?php } else { ?>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Usuário</th>
+                                                <th>Log</th>
+                                                <th>Data</th>
+                                                <th>Hora</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($logs_fornecedores as $log) { ?>
+                                                <tr>
+                                                    <td><?php echo $log->usuario; ?></td>
+                                                    <td><?php echo $log->tarefa; ?></td>
+                                                    <td><?php echo date('d/m/Y', strtotime($log->data)); ?></td>
+                                                    <td><?php echo $log->hora; ?></td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>

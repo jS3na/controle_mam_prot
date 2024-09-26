@@ -94,20 +94,24 @@
                         <div class="control-group">
                             <label for="documento" class="control-label">CPF/CNPJ</label>
                             <div class="controls">
-                                <input id="documento" class="cpfcnpj" type="text" name="documento" value="<?php echo set_value('documento'); ?>" />
+                                <input id="documento" class="cpfcnpj" type="text" name="documento"
+                                    value="<?php echo set_value('documento'); ?>" />
                                 <button id="buscar_info_cnpj" class="btn btn-xs" type="button">Buscar(CNPJ)</button>
                             </div>
                         </div>
                         <div class="control-group">
-                            <label for="nomeCliente" class="control-label">Circuito + Nome <span class="required">*</span></label>
+                            <label for="nomeCliente" class="control-label">Circuito + Nome <span
+                                    class="required">*</span></label>
                             <div class="controls">
-                                <input id="nomeCliente" type="text" name="nomeCliente" value="<?php echo set_value('nomeCliente'); ?>" />
+                                <input id="nomeCliente" type="text" name="nomeCliente"
+                                    value="<?php echo set_value('nomeCliente'); ?>" />
                             </div>
                         </div>
                         <div class="control-group">
                             <label for="telefone" class="control-label">Telefone</label>
                             <div class="controls">
-                                <input id="telefone" type="text" name="telefone" value="<?php echo set_value('telefone'); ?>" />
+                                <input id="telefone" type="text" name="telefone"
+                                    value="<?php echo set_value('telefone'); ?>" />
                             </div>
                         </div>
                         <div class="control-group">
@@ -152,32 +156,63 @@
                         <div class="control-group">
                             <label for="numero" class="control-label">Número</label>
                             <div class="controls">
-                                <input id="numero" type="text" name="numero" value="<?php echo set_value('numero'); ?>" />
+                                <input id="numero" type="text" name="numero"
+                                    value="<?php echo set_value('numero'); ?>" />
                             </div>
                         </div>
                         <div class="control-group">
                             <label for="complemento" class="control-label">Complemento</label>
                             <div class="controls">
-                                <input id="complemento" type="text" name="complemento" value="<?php echo set_value('complemento'); ?>" />
+                                <input id="complemento" type="text" name="complemento"
+                                    value="<?php echo set_value('complemento'); ?>" />
                             </div>
                         </div>
                         <div class="control-group" class="control-label">
                             <label for="bairro" class="control-label">Bairro</label>
                             <div class="controls">
-                                <input id="bairro" type="text" name="bairro" value="<?php echo set_value('bairro'); ?>" />
+                                <input id="bairro" type="text" name="bairro"
+                                    value="<?php echo set_value('bairro'); ?>" />
                             </div>
                         </div>
                         <div class="control-group" class="control-label">
                             <label for="cidade" class="control-label">Cidade</label>
                             <div class="controls">
-                                <input id="cidade" type="text" name="cidade" value="<?php echo set_value('cidade'); ?>" />
+                                <input id="cidade" type="text" name="cidade"
+                                    value="<?php echo set_value('cidade'); ?>" />
                             </div>
                         </div>
-                        <div class="control-group" class="control-label">
+                        <div class="control-group">
                             <label for="estado" class="control-label">Estado</label>
                             <div class="controls">
                                 <select id="estado" name="estado">
                                     <option value="">Selecione...</option>
+                                    <option value="AC">Acre</option>
+                                    <option value="AL">Alagoas</option>
+                                    <option value="AP">Amapá</option>
+                                    <option value="AM">Amazonas</option>
+                                    <option value="BA">Bahia</option>
+                                    <option value="CE">Ceará</option>
+                                    <option value="DF">Distrito Federal</option>
+                                    <option value="ES">Espírito Santo</option>
+                                    <option value="GO">Goiás</option>
+                                    <option value="MA">Maranhão</option>
+                                    <option value="MT">Mato Grosso</option>
+                                    <option value="MS">Mato Grosso do Sul</option>
+                                    <option value="MG">Minas Gerais</option>
+                                    <option value="PA">Pará</option>
+                                    <option value="PB">Paraíba</option>
+                                    <option value="PR">Paraná</option>
+                                    <option value="PE">Pernambuco</option>
+                                    <option value="PI">Piauí</option>
+                                    <option value="RJ">Rio de Janeiro</option>
+                                    <option value="RN">Rio Grande do Norte</option>
+                                    <option value="RS">Rio Grande do Sul</option>
+                                    <option value="RO">Rondônia</option>
+                                    <option value="RR">Roraima</option>
+                                    <option value="SC">Santa Catarina</option>
+                                    <option value="SP">São Paulo</option>
+                                    <option value="SE">Sergipe</option>
+                                    <option value="TO">Tocantins</option>
                                 </select>
                             </div>
                         </div>
@@ -208,15 +243,20 @@
                             <label for="descricao">
                                 <h4>Descrição (opcional)</h4>
                             </label>
-                            <textarea class="span12 editor" name="descricao" id="descricao" cols="30" rows="5"></textarea>
+                            <textarea class="span12 editor" name="descricao" id="descricao" cols="30"
+                                rows="5"></textarea>
                         </div>
                     </div>
                 </div>
                 <div class="form-actions">
                     <div class="span12">
                         <div class="span6 offset3" style="display:flex;justify-content: center">
-                            <button type="submit" class="button btn btn-mini btn-success"><span class="button__icon"><i class='bx bx-save'></i></span> <span class="button__text2">Salvar</span></a></button>
-                            <a title="Voltar" class="button btn btn-warning" href="<?php echo site_url() ?>/clientes"><span class="button__icon"><i class="bx bx-undo"></i></span> <span class="button__text2">Voltar</span></a>
+                            <button type="submit" class="button btn btn-mini btn-success"><span class="button__icon"><i
+                                        class='bx bx-save'></i></span> <span
+                                    class="button__text2">Salvar</span></a></button>
+                            <a title="Voltar" class="button btn btn-warning"
+                                href="<?php echo site_url() ?>/clientes"><span class="button__icon"><i
+                                        class="bx bx-undo"></i></span> <span class="button__text2">Voltar</span></a>
                         </div>
                     </div>
                 </div>
@@ -226,12 +266,12 @@
 </div>
 <script src="<?php echo base_url() ?>assets/js/jquery.validate.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         let container = document.querySelector('div');
         let input = document.querySelector('#senha');
         let icon = document.querySelector('#imgSenha');
 
-        icon.addEventListener('click', function() {
+        icon.addEventListener('click', function () {
             container.classList.toggle('visible');
             if (container.classList.contains('visible')) {
                 icon.src = '<?php echo base_url() ?>assets/img/eye-off.svg';
@@ -242,7 +282,7 @@
             }
         });
 
-        $.getJSON('<?php echo base_url() ?>assets/json/estados.json', function(data) {
+        $.getJSON('<?php echo base_url() ?>assets/json/estados.json', function (data) {
             for (i in data.estados) {
                 $('#estado').append(new Option(data.estados[i].nome, data.estados[i].sigla));
             }
@@ -266,10 +306,10 @@
 
             errorClass: "help-inline",
             errorElement: "span",
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).parents('.control-group').addClass('error');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).parents('.control-group').removeClass('error');
                 $(element).parents('.control-group').addClass('success');
             }

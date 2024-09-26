@@ -33,6 +33,7 @@
                                             <label for="cliente">Cliente<span class="required">*</span></label>
                                             <input id="cliente" class="span12" type="text" name="cliente" value="" />
                                             <input id="clientes_id" class="span12" type="hidden" name="clientes_id" value="" />
+                                            <input id="usuario" class="span12" type="hidden" name="usuario" value="<?php echo $this->session->userdata('nome_admin'); ?>" />
                                         </div>
                                         <div class="span6">
                                             <label for="tecnico">Responsável<span class="required">*</span></label>

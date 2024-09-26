@@ -94,21 +94,25 @@
                         <div class="control-group">
                             <label for="documento" class="control-label">CNPJ</label>
                             <div class="controls">
-                                <input id="documento" class="cpfcnpj" type="text" name="documento" value="<?php echo $result->documento; ?>" />
+                                <input id="documento" class="cpfcnpj" type="text" name="documento"
+                                    value="<?php echo $result->documento; ?>" />
                                 <button id="buscar_info_cnpj" class="btn btn-xs" type="button">Buscar(CNPJ)</button>
                             </div>
                         </div>
                         <div class="control-group">
                             <?php echo form_hidden('idClientes', $result->idClientes) ?>
-                            <label for="nomeCliente" class="control-label">Circuito + Nome <span class="required">*</span></label>
+                            <label for="nomeCliente" class="control-label">Circuito + Nome <span
+                                    class="required">*</span></label>
                             <div class="controls">
-                                <input id="nomeCliente" type="text" name="nomeCliente" value="<?php echo $result->nomeCliente; ?>" />
+                                <input id="nomeCliente" type="text" name="nomeCliente"
+                                    value="<?php echo $result->nomeCliente; ?>" />
                             </div>
                         </div>
                         <div class="control-group">
                             <label for="telefone" class="control-label">Telefone</label>
                             <div class="controls">
-                                <input id="telefone" type="text" name="telefone" value="<?php echo $result->telefone; ?>" />
+                                <input id="telefone" type="text" name="telefone"
+                                    value="<?php echo $result->telefone; ?>" />
                             </div>
                         </div>
                         <div class="control-group">
@@ -141,7 +145,8 @@
                         <div class="control-group">
                             <label for="complemento" class="control-label">Complemento</label>
                             <div class="controls">
-                                <input id="complemento" type="text" name="complemento" value="<?php echo $result->complemento; ?>" />
+                                <input id="complemento" type="text" name="complemento"
+                                    value="<?php echo $result->complemento; ?>" />
                             </div>
                         </div>
                         <div class="control-group" class="control-label">
@@ -156,11 +161,38 @@
                                 <input id="cidade" type="text" name="cidade" value="<?php echo $result->cidade; ?>" />
                             </div>
                         </div>
-                        <div class="control-group" class="control-label">
+                        <div class="control-group">
                             <label for="estado" class="control-label">Estado</label>
                             <div class="controls">
-                                <select id="estado" name="estado" class="">
+                                <select id="estado" name="estado">
                                     <option value="">Selecione...</option>
+                                    <option value="AC" <?php echo ($result->estado == 'AC') ? 'selected' : ''; ?>>Acre</option>
+                                    <option value="AL" <?php echo ($result->estado == 'AL') ? 'selected' : ''; ?>>Alagoas</option>
+                                    <option value="AP" <?php echo ($result->estado == 'AP') ? 'selected' : ''; ?>>Amapá</option>
+                                    <option value="AM" <?php echo ($result->estado == 'AM') ? 'selected' : ''; ?>>Amazonas</option>
+                                    <option value="BA" <?php echo ($result->estado == 'BA') ? 'selected' : ''; ?>>Bahia</option>
+                                    <option value="CE" <?php echo ($result->estado == 'CE') ? 'selected' : ''; ?>>Ceará</option>
+                                    <option value="DF" <?php echo ($result->estado == 'DF') ? 'selected' : ''; ?>>Distrito Federal</option>
+                                    <option value="ES" <?php echo ($result->estado == 'ES') ? 'selected' : ''; ?>>Espírito Santo</option>
+                                    <option value="GO" <?php echo ($result->estado == 'GO') ? 'selected' : ''; ?>>Goiás</option>
+                                    <option value="MA" <?php echo ($result->estado == 'MA') ? 'selected' : ''; ?>>Maranhão</option>
+                                    <option value="MT" <?php echo ($result->estado == 'MT') ? 'selected' : ''; ?>>Mato Grosso</option>
+                                    <option value="MS" <?php echo ($result->estado == 'MS') ? 'selected' : ''; ?>>Mato Grosso do Sul</option>
+                                    <option value="MG" <?php echo ($result->estado == 'MG') ? 'selected' : ''; ?>>Minas Gerais</option>
+                                    <option value="PA" <?php echo ($result->estado == 'PA') ? 'selected' : ''; ?>>Pará</option>
+                                    <option value="PB" <?php echo ($result->estado == 'PB') ? 'selected' : ''; ?>>Paraíba</option>
+                                    <option value="PR" <?php echo ($result->estado == 'PR') ? 'selected' : ''; ?>>Paraná</option>
+                                    <option value="PE" <?php echo ($result->estado == 'PE') ? 'selected' : ''; ?>>Pernambuco</option>
+                                    <option value="PI" <?php echo ($result->estado == 'PI') ? 'selected' : ''; ?>>Piauí</option>
+                                    <option value="RJ" <?php echo ($result->estado == 'RJ') ? 'selected' : ''; ?>>Rio de Janeiro</option>
+                                    <option value="RN" <?php echo ($result->estado == 'RN') ? 'selected' : ''; ?>>Rio Grande do Norte</option>
+                                    <option value="RS" <?php echo ($result->estado == 'RS') ? 'selected' : ''; ?>>Rio Grande do Sul</option>
+                                    <option value="RO" <?php echo ($result->estado == 'RO') ? 'selected' : ''; ?>>Rondônia</option>
+                                    <option value="RR" <?php echo ($result->estado == 'RR') ? 'selected' : ''; ?>>Roraima</option>
+                                    <option value="SC" <?php echo ($result->estado == 'SC') ? 'selected' : ''; ?>>Santa Catarina</option>
+                                    <option value="SP" <?php echo ($result->estado == 'SP') ? 'selected' : ''; ?>>São Paulo</option>
+                                    <option value="SE" <?php echo ($result->estado == 'SE') ? 'selected' : ''; ?>>Sergipe</option>
+                                    <option value="TO" <?php echo ($result->estado == 'TO') ? 'selected' : ''; ?>>Tocantins</option>
                                 </select>
                             </div>
                         </div>
@@ -172,7 +204,8 @@
                                     <option value="INSTALADO" <?php echo ($result->status == 'INSTALADO') ? 'selected' : ''; ?>>INSTALADO</option>
                                     <option value="NÃO INSTALADO" <?php echo ($result->status == 'NÃO INSTALADO') ? 'selected' : ''; ?>>NÃO INSTALADO</option>
                                     <option value="FECHADO" <?php echo ($result->status == 'FECHADO') ? 'selected' : ''; ?>>FECHADO</option>
-                                    <option value="COTADO" <?php echo ($result->status == 'COTADO') ? 'selected' : ''; ?>>COTADO</option>
+                                    <option value="COTADO" <?php echo ($result->status == 'COTADO') ? 'selected' : ''; ?>>
+                                        COTADO</option>
                                     <option value="EM ANÁLISE" <?php echo ($result->status == 'EM ANÁLISE') ? 'selected' : ''; ?>>EM ANÁLISE</option>
                                     <option value="AGUARDANDO COTAÇÃO" <?php echo ($result->status == 'AGUARDANDO COTAÇÃO') ? 'selected' : ''; ?>>AGUARDANDO COTAÇÃO</option>
                                     <option value="SEM RETORNO" <?php echo ($result->status == 'SEM RETORNO') ? 'selected' : ''; ?>>SEM RETORNO</option>
@@ -181,15 +214,19 @@
                                     <option value="AGUARDANDO INSTALAÇÃO" <?php echo ($result->status == 'AGUARDANDO INSTALAÇÃO') ? 'selected' : ''; ?>>AGUARDANDO INSTALAÇÃO</option>
                                     <option value="AGUARDANDO CONTRATAÇÃO" <?php echo ($result->status == 'AGUARDANDO CONTRATAÇÃO') ? 'selected' : ''; ?>>AGUARDANDO CONTRATAÇÃO</option>
                                     <option value="CANCELADO" <?php echo ($result->status == 'CANCELADO') ? 'selected' : ''; ?>>CANCELADO</option>
-                                    <option value="RADIO" <?php echo ($result->status == 'RADIO') ? 'selected' : ''; ?>>RADIO</option>
+                                    <option value="RADIO" <?php echo ($result->status == 'RADIO') ? 'selected' : ''; ?>>
+                                        RADIO</option>
                                     <option value="VALOR ALTO" <?php echo ($result->status == 'VALOR ALTO') ? 'selected' : ''; ?>>VALOR ALTO</option>
                                     <option value="COTANDO" <?php echo ($result->status == 'COTANDO') ? 'selected' : ''; ?>>COTANDO</option>
                                 </select>
                             </div>
                         </div>
                         <div class="span6" style="padding: 1%; margin-left: 0">
-                            <label for="descricao"><h4>Descrição</h4></label>
-                            <textarea class="span12 editor" name="descricao" id="descricao" cols="30" rows="5"><?php echo $result->descricao ?></textarea>
+                            <label for="descricao">
+                                <h4>Descrição</h4>
+                            </label>
+                            <textarea class="span12 editor" name="descricao" id="descricao" cols="30"
+                                rows="5"><?php echo $result->descricao ?></textarea>
                         </div>
 
                     </div>
@@ -198,8 +235,11 @@
                     <div class="span12">
                         <div class="span6 offset3" style="display:flex;justify-content: center">
                             <button type="submit" class="button btn btn-primary" style="max-width: 160px">
-                                <span class="button__icon"><i class="bx bx-sync"></i></span><span class="button__text2">Atualizar</span></button>
-                            <a title="Voltar" class="button btn btn-warning" href="<?php echo site_url() ?>/clientes"><span class="button__icon"><i class="bx bx-undo"></i></span> <span class="button__text2">Voltar</span></a>
+                                <span class="button__icon"><i class="bx bx-sync"></i></span><span
+                                    class="button__text2">Atualizar</span></button>
+                            <a title="Voltar" class="button btn btn-warning"
+                                href="<?php echo site_url() ?>/clientes"><span class="button__icon"><i
+                                        class="bx bx-undo"></i></span> <span class="button__text2">Voltar</span></a>
                         </div>
                     </div>
                 </div>
@@ -209,12 +249,12 @@
 </div>
 <script src="<?php echo base_url() ?>assets/js/jquery.validate.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function () {
         let container = document.querySelector('div');
         let input = document.querySelector('#senha');
         let icon = document.querySelector('#imgSenha');
 
-        icon.addEventListener('click', function() {
+        icon.addEventListener('click', function () {
             container.classList.toggle('visible');
             if (container.classList.contains('visible')) {
                 icon.src = '<?php echo base_url() ?>assets/img/eye-off.svg';
@@ -225,7 +265,7 @@
             }
         });
 
-        $.getJSON('<?php echo base_url() ?>assets/json/estados.json', function(data) {
+        $.getJSON('<?php echo base_url() ?>assets/json/estados.json', function (data) {
             for (i in data.estados) {
                 $('#estado').append(new Option(data.estados[i].nome, data.estados[i].sigla));
             }
@@ -249,10 +289,10 @@
 
             errorClass: "help-inline",
             errorElement: "span",
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).parents('.control-group').addClass('error');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).parents('.control-group').removeClass('error');
                 $(element).parents('.control-group').addClass('success');
             }

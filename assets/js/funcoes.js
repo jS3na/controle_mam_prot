@@ -153,6 +153,7 @@ $(document).ready(function () {
         if (validarCNPJ(ndocumento)) {
             //Preenche os campos com "..." enquanto consulta webservice.
             $("#nomeCliente").val("...");
+            $("#nomeFornecedor").val("...");
             $("#email").val("...");
             $("#cep").val("...");
             $("#rua").val("...");
@@ -199,6 +200,9 @@ $(document).ready(function () {
                         if ($("#nomeEmitente").val() != null) {
                             document.getElementById("nomeEmitente").focus();
                         }
+                        if ($("#nomeFornecedor").val() != null) {
+                            document.getElementById("nomeFornecedor").focus();
+                        }
                     } //end if.
                     else {
                         //CEP pesquisado não foi encontrado.
@@ -207,6 +211,9 @@ $(document).ready(function () {
                         }
                         if ($("#nomeEmitente").val() != null) {
                             $("#nomeEmitente").val("");
+                        }
+                        if ($("#nomeFornecedor").val() != null) {
+                            $("#nomeFornecedor").val("");
                         }
                         $("#cep").val("");
                         $("#email").val("");
