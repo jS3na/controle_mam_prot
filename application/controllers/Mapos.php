@@ -34,18 +34,35 @@ class Mapos extends MY_Controller
             'VALOR ALTO',
             'COTANDO'
         ];
-        
+
         $clientesCount = [];
-        
+
         foreach ($statuses as $status) {
             $this->db->where('status', $status);
             $count = $this->db->count_all_results('clientes');
-            
+
             $clientesCount[$status] = $count;
         }
-        
+
         $this->data['clientesCount'] = json_encode($clientesCount);
-        
+
+        $nonUsers = [
+            'Admin',
+        ];
+
+        $usersData = [];
+
+        foreach ($this->db->get('usuarios')->result() as $user) {
+            if (!in_array($user->nome, $nonUsers)) {
+                $usersData[$user->nome] = [
+                    'cotacoes' => $user->cotacoes,
+                    'contratos' => $user->contratos
+                ];
+            }
+        }
+
+        $this->data['usersData'] = json_encode($usersData);
+
 
         $this->data['ordens'] = $this->mapos_model->getAllOs();
         $this->data['ordens_pendencia_cliente'] = $this->mapos_model->getOsStatus('Pendência Cliente');

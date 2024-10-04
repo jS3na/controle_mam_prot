@@ -166,33 +166,60 @@
                             <div class="controls">
                                 <select id="estado" name="estado">
                                     <option value="">Selecione...</option>
-                                    <option value="AC" <?php echo ($result->estado == 'AC') ? 'selected' : ''; ?>>Acre</option>
-                                    <option value="AL" <?php echo ($result->estado == 'AL') ? 'selected' : ''; ?>>Alagoas</option>
-                                    <option value="AP" <?php echo ($result->estado == 'AP') ? 'selected' : ''; ?>>Amapá</option>
-                                    <option value="AM" <?php echo ($result->estado == 'AM') ? 'selected' : ''; ?>>Amazonas</option>
-                                    <option value="BA" <?php echo ($result->estado == 'BA') ? 'selected' : ''; ?>>Bahia</option>
-                                    <option value="CE" <?php echo ($result->estado == 'CE') ? 'selected' : ''; ?>>Ceará</option>
-                                    <option value="DF" <?php echo ($result->estado == 'DF') ? 'selected' : ''; ?>>Distrito Federal</option>
-                                    <option value="ES" <?php echo ($result->estado == 'ES') ? 'selected' : ''; ?>>Espírito Santo</option>
-                                    <option value="GO" <?php echo ($result->estado == 'GO') ? 'selected' : ''; ?>>Goiás</option>
-                                    <option value="MA" <?php echo ($result->estado == 'MA') ? 'selected' : ''; ?>>Maranhão</option>
-                                    <option value="MT" <?php echo ($result->estado == 'MT') ? 'selected' : ''; ?>>Mato Grosso</option>
-                                    <option value="MS" <?php echo ($result->estado == 'MS') ? 'selected' : ''; ?>>Mato Grosso do Sul</option>
-                                    <option value="MG" <?php echo ($result->estado == 'MG') ? 'selected' : ''; ?>>Minas Gerais</option>
-                                    <option value="PA" <?php echo ($result->estado == 'PA') ? 'selected' : ''; ?>>Pará</option>
-                                    <option value="PB" <?php echo ($result->estado == 'PB') ? 'selected' : ''; ?>>Paraíba</option>
-                                    <option value="PR" <?php echo ($result->estado == 'PR') ? 'selected' : ''; ?>>Paraná</option>
-                                    <option value="PE" <?php echo ($result->estado == 'PE') ? 'selected' : ''; ?>>Pernambuco</option>
-                                    <option value="PI" <?php echo ($result->estado == 'PI') ? 'selected' : ''; ?>>Piauí</option>
-                                    <option value="RJ" <?php echo ($result->estado == 'RJ') ? 'selected' : ''; ?>>Rio de Janeiro</option>
-                                    <option value="RN" <?php echo ($result->estado == 'RN') ? 'selected' : ''; ?>>Rio Grande do Norte</option>
-                                    <option value="RS" <?php echo ($result->estado == 'RS') ? 'selected' : ''; ?>>Rio Grande do Sul</option>
-                                    <option value="RO" <?php echo ($result->estado == 'RO') ? 'selected' : ''; ?>>Rondônia</option>
-                                    <option value="RR" <?php echo ($result->estado == 'RR') ? 'selected' : ''; ?>>Roraima</option>
-                                    <option value="SC" <?php echo ($result->estado == 'SC') ? 'selected' : ''; ?>>Santa Catarina</option>
-                                    <option value="SP" <?php echo ($result->estado == 'SP') ? 'selected' : ''; ?>>São Paulo</option>
-                                    <option value="SE" <?php echo ($result->estado == 'SE') ? 'selected' : ''; ?>>Sergipe</option>
-                                    <option value="TO" <?php echo ($result->estado == 'TO') ? 'selected' : ''; ?>>Tocantins</option>
+                                    <option value="AC" <?php echo ($result->estado == 'AC') ? 'selected' : ''; ?>>Acre
+                                    </option>
+                                    <option value="AL" <?php echo ($result->estado == 'AL') ? 'selected' : ''; ?>>Alagoas
+                                    </option>
+                                    <option value="AP" <?php echo ($result->estado == 'AP') ? 'selected' : ''; ?>>Amapá
+                                    </option>
+                                    <option value="AM" <?php echo ($result->estado == 'AM') ? 'selected' : ''; ?>>Amazonas
+                                    </option>
+                                    <option value="BA" <?php echo ($result->estado == 'BA') ? 'selected' : ''; ?>>Bahia
+                                    </option>
+                                    <option value="CE" <?php echo ($result->estado == 'CE') ? 'selected' : ''; ?>>Ceará
+                                    </option>
+                                    <option value="DF" <?php echo ($result->estado == 'DF') ? 'selected' : ''; ?>>Distrito
+                                        Federal</option>
+                                    <option value="ES" <?php echo ($result->estado == 'ES') ? 'selected' : ''; ?>>Espírito
+                                        Santo</option>
+                                    <option value="GO" <?php echo ($result->estado == 'GO') ? 'selected' : ''; ?>>Goiás
+                                    </option>
+                                    <option value="MA" <?php echo ($result->estado == 'MA') ? 'selected' : ''; ?>>Maranhão
+                                    </option>
+                                    <option value="MT" <?php echo ($result->estado == 'MT') ? 'selected' : ''; ?>>Mato
+                                        Grosso</option>
+                                    <option value="MS" <?php echo ($result->estado == 'MS') ? 'selected' : ''; ?>>Mato
+                                        Grosso do Sul</option>
+                                    <option value="MG" <?php echo ($result->estado == 'MG') ? 'selected' : ''; ?>>Minas
+                                        Gerais</option>
+                                    <option value="PA" <?php echo ($result->estado == 'PA') ? 'selected' : ''; ?>>Pará
+                                    </option>
+                                    <option value="PB" <?php echo ($result->estado == 'PB') ? 'selected' : ''; ?>>Paraíba
+                                    </option>
+                                    <option value="PR" <?php echo ($result->estado == 'PR') ? 'selected' : ''; ?>>Paraná
+                                    </option>
+                                    <option value="PE" <?php echo ($result->estado == 'PE') ? 'selected' : ''; ?>>
+                                        Pernambuco</option>
+                                    <option value="PI" <?php echo ($result->estado == 'PI') ? 'selected' : ''; ?>>Piauí
+                                    </option>
+                                    <option value="RJ" <?php echo ($result->estado == 'RJ') ? 'selected' : ''; ?>>Rio de
+                                        Janeiro</option>
+                                    <option value="RN" <?php echo ($result->estado == 'RN') ? 'selected' : ''; ?>>Rio
+                                        Grande do Norte</option>
+                                    <option value="RS" <?php echo ($result->estado == 'RS') ? 'selected' : ''; ?>>Rio
+                                        Grande do Sul</option>
+                                    <option value="RO" <?php echo ($result->estado == 'RO') ? 'selected' : ''; ?>>Rondônia
+                                    </option>
+                                    <option value="RR" <?php echo ($result->estado == 'RR') ? 'selected' : ''; ?>>Roraima
+                                    </option>
+                                    <option value="SC" <?php echo ($result->estado == 'SC') ? 'selected' : ''; ?>>Santa
+                                        Catarina</option>
+                                    <option value="SP" <?php echo ($result->estado == 'SP') ? 'selected' : ''; ?>>São
+                                        Paulo</option>
+                                    <option value="SE" <?php echo ($result->estado == 'SE') ? 'selected' : ''; ?>>Sergipe
+                                    </option>
+                                    <option value="TO" <?php echo ($result->estado == 'TO') ? 'selected' : ''; ?>>
+                                        Tocantins</option>
                                 </select>
                             </div>
                         </div>
@@ -211,8 +238,12 @@
                                     <option value="SEM RETORNO" <?php echo ($result->status == 'SEM RETORNO') ? 'selected' : ''; ?>>SEM RETORNO</option>
                                     <option value="EM NEGOCIAÇÃO" <?php echo ($result->status == 'EM NEGOCIAÇÃO') ? 'selected' : ''; ?>>EM NEGOCIAÇÃO</option>
                                     <option value="VIABILIZADO" <?php echo ($result->status == 'VIABILIZADO') ? 'selected' : ''; ?>>VIABILIZADO</option>
+                                    <option value="SEM VIABILIDADE" <?php echo ($result->status == 'SEM VIABILIDADE') ? 'selected' : ''; ?>>SEM VIABILIDADE</option>
                                     <option value="AGUARDANDO INSTALAÇÃO" <?php echo ($result->status == 'AGUARDANDO INSTALAÇÃO') ? 'selected' : ''; ?>>AGUARDANDO INSTALAÇÃO</option>
                                     <option value="AGUARDANDO CONTRATAÇÃO" <?php echo ($result->status == 'AGUARDANDO CONTRATAÇÃO') ? 'selected' : ''; ?>>AGUARDANDO CONTRATAÇÃO</option>
+                                    <option value="AGUARDANDO ASSINATURA" <?php echo ($result->status == 'AGUARDANDO ASSINATURA') ? 'selected' : ''; ?>>AGUARDANDO ASSINATURA</option>
+                                    <option value="PENDENCIA CLIENTE" <?php echo ($result->status == 'PENDENCIA CLIENTE') ? 'selected' : ''; ?>>PENDENCIA CLIENTE</option>
+                                    <option value="PENDENCIA PROVEDOR" <?php echo ($result->status == 'PENDENCIA PROVEDOR') ? 'selected' : ''; ?>>PENDENCIA PROVEDOR</option>
                                     <option value="CANCELADO" <?php echo ($result->status == 'CANCELADO') ? 'selected' : ''; ?>>CANCELADO</option>
                                     <option value="RADIO" <?php echo ($result->status == 'RADIO') ? 'selected' : ''; ?>>
                                         RADIO</option>
@@ -221,6 +252,18 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="control-group" class="control-label">
+                            <label for="etapa" class="control-label">Etapa</label>
+                            <div class="controls">
+                                <h6><?php echo $etapa_atual[$result->etapa]; ?></h6>
+                                <a href="#modal-proxima-etapa" data-toggle="modal" role="button"
+                                    class="button btn btn-mini btn-success" style="width: 230px">
+                                    <span class="button__icon"><i class="bx bx-right-arrow-alt"></i></span><span
+                                        class="button__text2" title="Próxima Etapa">Próxima Etapa</span></a>
+                            </div>
+                        </div>
+
                         <div class="span6" style="padding: 1%; margin-left: 0">
                             <label for="descricao">
                                 <h4>Descrição</h4>
@@ -244,6 +287,30 @@
                     </div>
                 </div>
             </form>
+
+            <div id="modal-proxima-etapa" class="modal hide fade" tabindex="-1" role="dialog"
+                aria-labelledby="myModalLabel" aria-hidden="true">
+                <?php $url_proxima_etapa = base_url('index.php/clientes/proximaEtapa/' . $result->idClientes . '/' . $result->etapa); ?>
+                <form action="<?php echo $url_proxima_etapa; ?>" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h5 id="myModalLabel">Promover para a próxima etapa</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p style="text-align: center">Deseja realmente promover esse Cliente de
+                            <strong><?php echo $etapa_atual[$result->etapa]; ?></strong> a
+                            <strong><?php echo $etapa_atual[$result->etapa + 1]; ?></strong>?</p>
+                    </div>
+                    <div class="modal-footer" style="display:flex;justify-content: center">
+                        <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"><span
+                                class="button__icon"><i class="bx bx-x"></i></span><span
+                                class="button__text2">Cancelar</span></button>
+                        <button class="button btn btn-success"><span class="button__icon"><i
+                                    class='bx bx-check'></i></span> <span
+                                class="button__text2">Confirmar</span></button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>

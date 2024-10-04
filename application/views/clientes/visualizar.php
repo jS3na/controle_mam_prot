@@ -52,6 +52,12 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td style="text-align: right"><strong>Etapa Atual</strong></td>
+                                        <td>
+                                            <?php echo $etapa_atual[$result->etapa] ?>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td style="text-align: right"><strong>Data de Cadastro</strong></td>
                                         <td>
                                             <?php echo date('d/m/Y', strtotime($result->dataCadastro)) ?>
@@ -262,7 +268,7 @@
                         <?php
                         if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente') && !$fornecedor_cliente) {
                             $url = base_url('index.php/clientes/vincularFornecedor/' . $result->idClientes);
-                            echo '<div style="margin: 1.2rem">
+                            echo '<div style="display: flex; flex-direction: row"> <div style="margin: 1.2rem">
                                             <a href="' . $url . '"title="Vincular Fornecedor">
                                                 <button type="button" class="button btn btn-mini btn-success">
                                                     <span class="button__icon"><i class="bx bx-plus"></i></span>
@@ -270,6 +276,16 @@
                                                 </button>
                                             </a>
                                         </div>
+                                    ';
+
+                            echo '<div style="margin: 1.2rem">
+                                            <a href="' . base_url() . 'index.php/fornecedores/adicionar" title="Criar Novo Fornecedor">
+                                                <button type="button" class="button btn btn-mini btn-primary">
+                                                    <span class="button__icon"><i class="bx bx-plus"></i></span>
+                                                    <span class="button__text2">Criar Novo Fornecedor</span>
+                                                </button>
+                                            </a>
+                                        </div> </div>
                                     ';
                         }
                         if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dCliente') && $fornecedor_cliente) {
@@ -357,7 +373,7 @@
                     <div class="collapse accordion-body" id="collapseGTen">
                         <?php
                         if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
-                            $url = base_url('index.php/clientes/adicionarOs/' . $result->idClientes);
+                            $url = base_url('index.php/os/adicionar/' . $result->nomeCliente);
                             echo '<div style="margin: 1.2rem">
                                         <a href="' . $url . '"title="Adicionar Os">
                                             <button type="button" class="button btn btn-mini btn-success">

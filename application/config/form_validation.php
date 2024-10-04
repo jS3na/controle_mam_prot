@@ -72,7 +72,7 @@ $config = [
         [
             'field' => 'documento',
             'label' => 'CPF/CNPJ',
-            'rules' => 'trim|verific_cpf_cnpj|unique[fornecedores.documento.' . get_instance()->uri->segment(3) . '.idFornecedores]',
+            'rules' => 'trim|verific_cpf_cnpj|unique[fornecedores.cnpj.' . get_instance()->uri->segment(3) . '.idFornecedores]',
             'errors' => [
                 'verific_cpf_cnpj' => 'O campo %s não é um CPF ou CNPJ válido.',
             ],
@@ -122,6 +122,18 @@ $config = [
         [
             'field' => 'cidade',
             'label' => 'cidade',
+            'rules' => 'required|trim',
+        ]
+    ],
+    'status_usuarios' => [
+        [
+            'field' => 'cotacoes',
+            'label' => 'Cotações',
+            'rules' => 'required|trim',
+        ],
+        [
+            'field' => 'contratos',
+            'label' => 'Contratos',
             'rules' => 'required|trim',
         ]
     ],

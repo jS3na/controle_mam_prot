@@ -1,9 +1,7 @@
 <style>
-
-    .menu-bar{
+    .menu-bar {
         margin-top: 1rem
     }
-    
 </style>
 
 <!--sidebar-menu-->
@@ -13,7 +11,7 @@
             <img src="<?php echo base_url() ?>assets/img/logoprimeiro.png">
         </div>-->
         <div class="title1">
-            <?= $configuration['app_theme'] == 'white' ||  $configuration['app_theme'] == 'whitegreen' ? '<img src="' . base_url() . 'assets/img/logoman2.jpg">' : '<img src="' . base_url() . 'assets/img/logoman2.jpg">'; ?>
+            <?= $configuration['app_theme'] == 'white' || $configuration['app_theme'] == 'whitegreen' ? '<img src="' . base_url() . 'assets/img/logoman2.jpg">' : '<img src="' . base_url() . 'assets/img/logoman2.jpg">'; ?>
         </div>
     </div>
     <a href="#" class="visible-phone">
@@ -41,7 +39,8 @@
             <ul class="menu-links" style="position: relative;">
                 <li class="<?php if (isset($menuPainel)) {
                     echo 'active';
-                }; ?>">
+                }
+                ; ?>">
                     <a class="tip-bottom" title="" href="<?= base_url() ?>"><i class='bx bx-home-alt iconX'></i>
                         <span class="title nav-title">Home</span>
                         <span class="title-tooltip">Início</span>
@@ -51,8 +50,10 @@
                 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente')) { ?>
                     <li class="<?php if (isset($menuFornecedores)) {
                         echo 'active';
-                    }; ?>">
-                        <a class="tip-bottom" title="" href="<?= site_url('fornecedores') ?>"><i class='bx bx-car iconX'></i>
+                    }
+                    ; ?>">
+                        <a class="tip-bottom" title="" href="<?= site_url('fornecedores') ?>"><i
+                                class='bx bx-car iconX'></i>
                             <span class="title">Fornecedores</span>
                             <span class="title-tooltip">Fornecedores</span>
                         </a>
@@ -62,66 +63,20 @@
                 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente')) { ?>
                     <li class="<?php if (isset($menuClientes)) {
                         echo 'active';
-                    }; ?>">
-                        <a class="tip-bottom" title="" href="<?= site_url('clientes') ?>"><i class='bx bx-user iconX'></i>
+                    }
+                    ; ?>">
+                        <a class="tip-bottom" title="" href="<?= site_url('clientes') ?>"><i class='bx bx-home iconX'></i>
                             <span class="title">Clientes</span>
                             <span class="title-tooltip">Clientes</span>
                         </a>
                     </li>
                 <?php } ?>
 
-                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente') && $this->session->userdata('nome_admin') == 'Admin') { ?>
-                    <li class="<?php if (isset($menuStatusUsuarios)) {
-                        echo 'active';
-                    }; ?>">
-                        <a class="tip-bottom" title="" href="<?= site_url('statususuarios') ?>"><i class='bx bx-user iconX'></i>
-                            <span class="title">Status Usuários</span>
-                            <span class="title-tooltip">Status Usuários</span>
-                        </a>
-                    </li>
-                <?php } ?>
-
-                <!--<?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vProduto')) { ?>
-                    <li class="<?php if (isset($menuProdutos)) {
-                        echo 'active';
-                    }; ?>">
-                        <a class="tip-bottom" title="" href="<?= site_url('produtos') ?>"><i class='bx bx-basket iconX'></i>
-                            <span class="title">Produtos</span>
-                            <span class="title-tooltip">Produtos</span>
-                        </a>
-                    </li>
-                <?php } ?>-->
-
-                <?php /* if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vServico')) { ?>
-                    <li class="<?php if (isset($menuServicos)) {
-                        echo 'active';
-                    }; ?>">
-                        <a class="tip-bottom" title="" href="<?= site_url('servicos') ?>"><i class='bx bx-wrench iconX'></i>
-                            <span class="title">Serviços</span>
-                            <span class="title-tooltip">Serviços</span>
-                        </a>
-                    </li>
-                <?php } */ ?>
-
-                <!--
-
-                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vVenda')) { ?>
-                    <li class="<?php if (isset($menuVendas)) {
-                        echo 'active';
-                    }; ?>">
-                        <a class="tip-bottom" title="" href="<?= site_url('vendas') ?>"><i class='bx bx-cart-alt iconX'></i></span>
-                            <span class="title">Vendas</span>
-                            <span class="title-tooltip">Vendas</span>
-                        </a>
-                    </li>
-                <?php } ?>
-
-                -->
-
                 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) { ?>
                     <li class="<?php if (isset($menuOs)) {
                         echo 'active';
-                    }; ?>">
+                    }
+                    ; ?>">
                         <a class="tip-bottom" title="" href="<?= site_url('os') ?>"><i class='bx bx-file iconX'></i>
                             <span class="title">Ordens</span>
                             <span class="title-tooltip">Ordens</span>
@@ -129,10 +84,24 @@
                     </li>
                 <?php } ?>
 
+                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente')) { ?>
+                    <li class="<?php if (isset($menuStatusUsuarios)) {
+                        echo 'active';
+                    }
+                    ; ?>">
+                        <a class="tip-bottom" title="" href="<?= site_url('statususuarios') ?>"><i
+                                class='bx bx-user iconX'></i>
+                            <span class="title">Status Usuários</span>
+                            <span class="title-tooltip">Status Usuários</span>
+                        </a>
+                    </li>
+                <?php } ?>
+
                 <!--<?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vGarantia')) { ?>
                     <li class="<?php if (isset($menuGarantia)) {
                         echo 'active';
-                    }; ?>">
+                    }
+                    ; ?>">
                         <a class="tip-bottom" title="" href="<?= site_url('garantias') ?>"><i class='bx bx-receipt iconX'></i>
                             <span class="title">Termos de Garantias</span>
                             <span class="title-tooltip">Garantias</span>
@@ -143,7 +112,8 @@
                 <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vArquivo')) { ?>
                     <li class="<?php if (isset($menuArquivos)) {
                         echo 'active';
-                    }; ?>">
+                    }
+                    ; ?>">
                         <a class="tip-bottom" title="" href="<?= site_url('arquivos') ?>"><i class='bx bx-box iconX'></i>
                             <span class="title">Arquivos</span>
                             <span class="title-tooltip">Arquivos</span>
@@ -151,28 +121,28 @@
                     </li>
                 <?php } ?>
                 -->
-                
+
 
                 <?php /* if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vLancamento')) { ?>
-                    <li class="<?php if (isset($menuLancamentos)) {
-                        echo 'active';
-                    }; ?>">
-                        <a class="tip-bottom" title="" href="<?= site_url('financeiro/lancamentos') ?>"><i class="bx bx-bar-chart-alt-2 iconX"></i>
-                            <span class="title">Lançamentos</span>
-                            <span class="title-tooltip">Lançamentos</span>
-                        </a>
-                    </li>
-                <?php } ?>
-                <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCobranca')) { ?>
-                    <li class="<?php if (isset($menuCobrancas)) {
-                        echo 'active';
-                    }; ?>">
-                        <a class="tip-bottom" title="" href="<?= site_url('cobrancas/cobrancas') ?>"><i class='bx bx-dollar-circle iconX'></i>
-                            <span class="title">Cobranças</span>
-                            <span class="title-tooltip">Cobranças</span>
-                        </a>
-                    </li>
-                <?php } */ ?>
+          <li class="<?php if (isset($menuLancamentos)) {
+              echo 'active';
+          }; ?>">
+              <a class="tip-bottom" title="" href="<?= site_url('financeiro/lancamentos') ?>"><i class="bx bx-bar-chart-alt-2 iconX"></i>
+                  <span class="title">Lançamentos</span>
+                  <span class="title-tooltip">Lançamentos</span>
+              </a>
+          </li>
+      <?php } ?>
+      <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCobranca')) { ?>
+          <li class="<?php if (isset($menuCobrancas)) {
+              echo 'active';
+          }; ?>">
+              <a class="tip-bottom" title="" href="<?= site_url('cobrancas/cobrancas') ?>"><i class='bx bx-dollar-circle iconX'></i>
+                  <span class="title">Cobranças</span>
+                  <span class="title-tooltip">Cobranças</span>
+              </a>
+          </li>
+      <?php } */ ?>
             </ul>
         </div>
 

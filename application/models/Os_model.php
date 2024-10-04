@@ -40,9 +40,6 @@ class Os_model extends CI_Model
     
         return $result;
     }
-    
-    
-    
 
     public function getOs($table, $fields, $where = [], $perpage = 0, $start = 0, $one = false, $array = 'array')
     {
@@ -116,13 +113,20 @@ class Os_model extends CI_Model
         return $this->db->get()->row();
     }
 
-    public function getStatusCliente($idCliente)
+    public function getCliente($field, $campoCliente)
     {
         $this->db->select('*');
         $this->db->from('clientes');
-        $this->db->where('idClientes', $idCliente);
+        $this->db->where($field, $campoCliente);
 
-        return $this->db->get()->result();
+        $result = $this->db->get()->result();
+
+        if (empty($result)) {
+            return false;
+        } else {
+            return $result;
+        }
+
     }
 
     public function getByIdCobrancas($id)

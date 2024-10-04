@@ -11,7 +11,7 @@ class Clientes_model extends CI_Model
     {
         $this->db->select($fields);
         $this->db->from($table);
-        $this->db->order_by('idClientes', 'desc');
+        $this->db->order_by('idClientes', 'DESC');
         $this->db->limit($perpage, $start);
 
         if ($where !== '') {
@@ -35,6 +35,26 @@ class Clientes_model extends CI_Model
 
         return $result;
     }
+
+    public function getEtapaAtual() {
+
+        $this->db->select('valor');
+        $this->db->from('configuracoes');
+        $this->db->where('config', 'clientes_status_list');
+        $query = $this->db->get();
+
+        if ($query === false) {
+            echo '<script>console.log("Erro ao executar a query.")</script>';
+            return false;
+        }
+        
+        $result = $query->row();
+        
+        $etapas = json_decode($result->valor, true);
+        
+        return $etapas;
+    }
+    
 
     public function getLogs($idCliente)
     {
@@ -61,9 +81,6 @@ class Clientes_model extends CI_Model
     
         $query = $this->db->get();
         $result = $query->result();
-    
-        $json_results = json_encode($result);
-        echo '<script>console.log("RESULTS: ' . $json_results . '");</script>';
     
         return $result;
     }
@@ -147,6 +164,14 @@ class Clientes_model extends CI_Model
         $this->db->update('parcelas');
     }
 
+    public function proximaEtapa($idCliente, $etapaAtual)
+    {
+        $this->db->where('idClientes', $idCliente);
+        $this->db->set('etapa', $etapaAtual + 1);
+    
+        $this->db->update('clientes');
+    }
+
     public function autoCompleteFornecedor($q)
     {
         $this->db->select('*');
@@ -165,8 +190,6 @@ class Clientes_model extends CI_Model
         }
         return $row_set;
     }
-    
-
 
     public function getById($id)
     {

@@ -33,6 +33,7 @@ class Clientes extends MY_Controller
 
         $this->data['configuration']['base_url'] = site_url('clientes/gerenciar/');
         $this->data['configuration']['total_rows'] = $this->clientes_model->count('clientes');
+
         if ($pesquisa) {
             $this->data['configuration']['suffix'] = "?pesquisa={$pesquisa}&status={$status}";
             $this->data['configuration']['first_url'] = base_url("index.php/clientes") . "?pesquisa={$pesquisa}&status={$status}";
@@ -611,10 +612,36 @@ class Clientes extends MY_Controller
         }
 
         $this->data['result'] = $this->clientes_model->getById($this->uri->segment(3));
+        $this->data['etapa_atual'] = $this->clientes_model->getEtapaAtual($this->data['result']->etapa);
         $this->data['view'] = 'clientes/editarCliente';
 
         return $this->layout();
     }
+
+    public function proximaEtapa()
+    {
+
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para promover clientes.');
+            redirect(base_url());
+        }
+
+        $idCliente = $this->uri->segment(3);
+        $etapaAtual = $this->uri->segment(4);
+
+        if ($idCliente == null || $etapaAtual == null) {
+            $this->session->set_flashdata('error', 'Erro ao tentar promover cliente.');
+            redirect(site_url('clientes/gerenciar/'));
+        }
+
+        $this->clientes_model->proximaEtapa($idCliente, $etapaAtual);
+        log_info('Promoveu um cliente. ID' . $idCliente);
+
+        $this->session->set_flashdata('success', 'Cliente promovido com sucesso!');
+        redirect(site_url('clientes/editar/' . $idCliente));
+
+    }
+
 
     public function visualizar()
     {
@@ -645,7 +672,7 @@ class Clientes extends MY_Controller
         $this->data['financeiro_cliente'] ? $this->data['parcelas_cliente'] = $this->clientes_model->getParcelasCliente($this->data['result']->idClientes) : $this->data['parcelas_cliente'] = false;
 
         $this->data['results'] = $this->clientes_model->getOsByCliente($this->uri->segment(3));
-        $this->data['result_vendas'] = $this->clientes_model->getAllVendasByClient($this->uri->segment(3));
+        $this->data['etapa_atual'] = $this->clientes_model->getEtapaAtual($this->data['result']->etapa);
         $this->data['results_arquivos_financeiro'] = $this->clientes_model->getAllArquivos('', $this->data['result']->idClientes, 'financeiro');
         $this->data['results_arquivos_evidencias'] = $this->clientes_model->getAllArquivos('', $this->data['result']->idClientes, 'evidencias');
         $this->data['results_arquivos_contratos'] = $this->clientes_model->getAllArquivos('', $this->data['result']->idClientes, 'contratos');

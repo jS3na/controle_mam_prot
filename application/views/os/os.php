@@ -42,6 +42,7 @@
                     <option value="Escola Não Autorizou" <?= $this->input->get('status_os') == 'Escola Não Autorizou' ? 'selected' : '' ?>>Escola Não Autorizou</option>
                     <option value="Instalação Em Andamento" <?= $this->input->get('status_os') == 'Instalação Em Andamento' ? 'selected' : '' ?>>Instalação Em Andamento</option>
                     <option value="Instalação" <?= $this->input->get('status_os') == 'Instalação' ? 'selected' : '' ?>>Instalação</option>
+                    <option value="Instalado" <?= $this->input->get('status_os') == 'Instalado' ? 'selected' : '' ?>>Instalado</option>
                 </select>
                 <input type="text" name="dataInicial" id="dataInicial" placeholder="Data Inicial (YYYY-MM-DD)" class="form-control" value="<?= $this->input->get('dataInicial') ?>">
                 <input type="text" name="dataFinal" id="dataFinal" placeholder="Data Final (YYYY-MM-DD)" class="form-control" value="<?= $this->input->get('dataFinal') ?>">

@@ -1,0 +1,13 @@
+{
+    "1": "Lead",
+    "2": "Cotação",
+    "3": "Em Contratação",
+    "4": "Aguardando Assinatura",
+    "5": "Aguardando Instalação",
+    "6": "Agendado",
+    "7": "Instalado",
+    "8": [
+      "Finalizado",
+      "Finalizado com falta de evidência"
+    ]
+  }

@@ -18,13 +18,10 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js"></script>
 
-<!-- New Bem-vindos 
 <div id="content-bemv">
     <div class="bemv">Dashboard</div>
     <div></div>
 </div>
-
--->
 
 <!--Action boxes-->
 <ul class="cardBox">
@@ -55,7 +52,7 @@
             </div>
             <a href="<?= site_url('clientes') ?>">
                 <div class="lord-icon02">
-                    <i class='bx bx-user iconBx02'></i>
+                    <i class='bx bx-home iconBx02'></i>
                 </div>
             </a>
         </li>
@@ -77,69 +74,21 @@
         </li>
     <?php endif ?>
 
-    <?php /* if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vServico')) : ?>
-<li class="card">
-<div class="grid-blak">
-<a href="<?= site_url('servicos') ?>">
-<div class="numbers">Serviços</div>
-<div class="cardName">F3</div>
-</a>
-</div>
-<a href="<?= site_url('servicos') ?>">
-<div class="lord-icon03">
-<i class='bx bx-wrench iconBx03'></i>
-</div>
-</a>
-</li>
-<?php endif ?>
-
-<?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vOs')) : ?>
-<li class="card">
-<div class="grid-blak">
-<a href="<?= site_url('os') ?>">
-<div class="numbers N-tittle">Ordens</div>
-<div class="cardName">F3</div>
-</a>
-</div>
-<a href="<?= site_url('os') ?>">
-<div class="lord-icon04">
-<i class='bx bx-file iconBx04'></i>
-</div>
-</a>
-</li>
-<?php endif ?>
-
-<?php /* if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vVenda')) : ?>
-<li class="card">
-<div class="grid-blak">
-<a href="<?= site_url('vendas/') ?>">
-<div class="numbers N-tittle">Vendas</div>
-<div class="cardName">F6</div>
-</a>
-</div>
-<a href="<?= site_url('vendas/') ?>">
-<div class="lord-icon05">
-<i class='bx bx-cart-alt iconBx05'></i></span>
-</div>
-</a>
-</li>
-<?php endif ?>
-
-<?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vLancamento')) : ?>
-<li class="card">
-<div class="grid-blak">
-<a href="<?= site_url('financeiro/lancamentos') ?>">
-<div class="numbers N-tittle">Lançamentos</div>
-<div class="cardName">F7</div>
-</a>
-</div>
-<a href="<?= site_url('financeiro/lancamentos') ?>">
-<div class="lord-icon06">
-<i class="bx bx-bar-chart-alt-2 iconBx06"></i>
-</div>
-</a>
-</li>
-<?php endif */ ?>
+    <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'vCliente')): ?>
+        <li class="card">
+            <div class="grid-blak">
+                <a href="<?= site_url('statususuarios') ?>">
+                    <div class="numbers N-tittle">Status Usuários</div>
+                    <div class="cardName">F4</div>
+                </a>
+            </div>
+            <a href="<?= site_url('statususuarios') ?>">
+                <div class="lord-icon04">
+                    <i class='bx bx-user iconBx04'></i>
+                </div>
+            </a>
+        </li>
+    <?php endif ?>
 </ul>
 <!--End-Action boxes-->
 
@@ -206,45 +155,18 @@
                         </div>
                     </a>
 
-                    <!--
-
-                    <a href="<?php echo base_url() ?>index.php/servicos/adicionar" class="card tip-top" title="Adicionar serviços">
-                        <div><i class='bx bxs-stopwatch iconBx3'></i></div>
-                        <div>
-                            <div class="cardName2"><?= $this->db->count_all('servicos'); ?></div>
-                            <div class="cardName">Serviços</div>
-                        </div>
-                    </a>
-
-                    <a href="<?php echo base_url(); ?>index.php/os/adicionar" class="card tip-top" title="Adicionar OS">
-                        <div><i class='bx bxs-spreadsheet iconBx4'></i></div>
-                        <div>
-                            <div class="cardName2"><?= $this->db->count_all('os'); ?></div>
-                            <div class="cardName">O.S</div>
-                        </div>
-                    </a>
-
-                    <a href="<?php echo base_url(); ?>index.php/garantias" class="card tip-top" title="Adicionar garantia">
-                        <div><i class='bx bxs-receipt iconBx6'></i></div>
-                        <div>
-                            <div class="cardName2"><?= $this->db->count_all('garantias'); ?></div>
-                            <div class="cardName">Garantias</div>
-                        </div>
-                    </a>
-
-                    <a href="<?php echo base_url() ?>index.php/vendas/adicionar" class="card tip-top" title="Adicionar Vendas">
-                        <div><i class='bx bxs-cart-alt iconBx5'></i></div>
-                        <div>
-                            <div class="cardName2"><?= $this->db->count_all('vendas'); ?></div>
-                            <div class="cardName">Vendas</div>
-                        </div>
-                    </a>
-
-                    responsavel por fazer complementar a variavel "$financeiro_mes_dia->" de receita e despesa
-
-                        -->
                 </div>
+
+                <?php if ($this->session->userdata('nome_admin') == 'Admin') { ?>
+
+                </div>
+                <h4>teste</h4>
+                <div>
+
+                <?php } ?>
+
             </div>
+
         </div>
     </div>
 </div>
@@ -255,14 +177,14 @@
         <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'rFinanceiro')): ?>
             <div class="new-balance">
                 <div class="widget-box0">
-                    <div class="widget-title2">
+                    <div class="widget-title2" style="margin-bottom:50px">
                         <h5 class="cardHeader">Clientes por Status</h5>
                     </div>
                     <div class="widget-content" style="padding:10px 25px 5px 25px">
                         <div class="row-fluid" style="margin-top:-35px;">
                             <div class="span12">
                                 <!-- Ajuste a altura do canvas aqui -->
-                                <canvas id="myChart" width="1000" height="400"
+                                <canvas id="myChart" width="1532" height="400"
                                     style="overflow-x: scroll;margin-left: -14px"></canvas>
                             </div>
                         </div>
@@ -359,6 +281,102 @@
                 myChart.update();
             }
         </script>
+
+
+
+    <?php }
+} ?>
+
+<?php if ($this->db->count_all('clientes') > 0) {
+    if (true) { ?>
+
+        <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'rFinanceiro')): ?>
+            <div class="new-balance">
+                <div class="widget-box0">
+                    <div class="widget-title2" style="margin-bottom:50px">
+                        <h5 class="cardHeader">Status por Usuário</h5>
+                    </div>
+                    <div class="widget-content" style="padding:10px 25px 5px 25px">
+                        <div class="row-fluid" style="margin-top:-35px;">
+                            <div class="span12">
+                                <!-- Ajuste a altura do canvas aqui -->
+                                <canvas id="myChartUsers" width="1532" height="400"
+                                    style="overflow-x: scroll;margin-left: -14px"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <?php endif ?>
+
+        <script type="text/javascript">
+            var ctx = document.getElementById('myChartUsers').getContext('2d');
+
+            var usersData = <?php echo $this->data['usersData']; ?>;
+
+            var userNames = Object.keys(usersData);
+            var cotacoes = userNames.map(function (name) { return usersData[name]['cotacoes']; });
+            var contratos = userNames.map(function (name) { return usersData[name]['contratos']; });
+
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: userNames,
+                    datasets: [{
+                        label: 'Cotações',
+                        data: cotacoes,
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderRadius: 15,
+                    },
+                    {
+                        label: 'Contratos',
+                        data: contratos,
+                        backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                        borderRadius: 15,
+                    }]
+                },
+                options: {
+                    locale: 'pt-BR',
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Quantidade'
+                            },
+                            ticks: {
+                                callback: (value) => {
+                                    return value;
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Usuários'
+                            }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                beforeTitle: function (context) {
+                                    return 'Usuário:';
+                                }
+                            }
+                        },
+                        legend: {
+                            position: "bottom",
+                            labels: {
+                                usePointStyle: true,
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+
 
 
 

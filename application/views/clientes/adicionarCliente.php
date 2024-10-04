@@ -230,8 +230,12 @@
                                     <option value="SEM RETORNO">SEM RETORNO</option>
                                     <option value="EM NEGOCIAÇÃO">EM NEGOCIAÇÃO</option>
                                     <option value="VIABILIZADO">VIABILIZADO</option>
+                                    <option value="SEM VIABILIDADE">SEM VIABILIDADE</option>
                                     <option value="AGUARDANDO INSTALAÇÃO">AGUARDANDO INSTALAÇÃO</option>
                                     <option value="AGUARDANDO CONTRATAÇÃO">AGUARDANDO CONTRATAÇÃO</option>
+                                    <option value="AGUARDANDO ASSINATURA">AGUARDANDO ASSINATURA</option>
+                                    <option value="PENDENCIA CLIENTE">PENDENCIA CLIENTE</option>
+                                    <option value="PENDENCIA PROVEDOR">PENDENCIA PROVEDOR</option>
                                     <option value="CANCELADO">CANCELADO</option>
                                     <option value="RADIO">RADIO</option>
                                     <option value="VALOR ALTO">VALOR ALTO</option>

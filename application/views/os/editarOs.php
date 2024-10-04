@@ -100,6 +100,7 @@
                                                 <option <?php if ($result->status_os == 'Escola Não Autorizou') { echo 'selected'; } ?> value="Escola Não Autorizou">Escola Não Autorizou</option>
                                                 <option <?php if ($result->status_os == 'Instalação Em Andamento') { echo 'selected'; } ?> value="Instalação Em Andamento">Instalação Em Andamento</option>
                                                 <option <?php if ($result->status_os == 'Instalação') { echo 'selected'; } ?> value="Instalação">Instalação</option>
+                                                <option <?php if ($result->status_os == 'Instalado') { echo 'selected'; } ?> value="Instalado">Instalado</option>
                                             </select>
                                         </div>
                                         <div class="span3">

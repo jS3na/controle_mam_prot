@@ -221,32 +221,46 @@ class Arquivos extends MY_Controller
             $this->session->set_flashdata('error', 'Você não tem permissão para adicionar arquivos.');
             redirect(base_url());
         }
-
+    
         $date = date('d-m-Y');
-
+    
         $config['upload_path'] = './assets/arquivos/' . $date;
-        $config['allowed_types'] = 'txt|jpg|jpeg|gif|png|pdf|PDF|JPG|JPEG|GIF|PNG';
         $config['max_size'] = 0;
         $config['max_width'] = '3000';
         $config['max_height'] = '2000';
         $config['encrypt_name'] = true;
-
+    
         if (! is_dir('./assets/arquivos/' . $date)) {
             mkdir('./assets/arquivos/' . $date, 0777, true);
         }
-
+    
         $this->load->library('upload', $config);
-
+    
         if (! $this->upload->do_upload()) {
-            $error = ['error' => $this->upload->display_errors()];
-
+            $error = $this->upload->display_errors();
+            log_info($error);
+    
             $this->session->set_flashdata('error', 'Erro ao fazer upload do arquivo, verifique se a extensão do arquivo é permitida.');
             redirect(site_url('arquivos/adicionar'));
         } else {
-            //$data = array('upload_data' => $this->upload->data());
-            return $this->upload->data();
+            $upload_data = $this->upload->data();
+    
+            $disallowed_types = ['exe', 'mp3', 'wav', 'ogg', 'flac', 'aac', 'm4a'];
+    
+            $file_extension = pathinfo($upload_data['file_name'], PATHINFO_EXTENSION);
+    
+            if (in_array(strtolower($file_extension), $disallowed_types)) {
+                // Exclui o arquivo se for um tipo não permitido
+                unlink($upload_data['full_path']); // Remove o arquivo
+                $this->session->set_flashdata('error', 'Tipo de arquivo não permitido: executáveis e arquivos de áudio não podem ser carregados.');
+                redirect(site_url('arquivos/adicionar'));
+            }
+    
+            // Se passar na validação, retorne os dados do upload
+            return $upload_data;
         }
     }
+    
 }
 
 /* End of file arquivos.php */

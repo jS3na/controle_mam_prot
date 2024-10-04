@@ -54,10 +54,10 @@
     shortcut.add("F3", function() {
       location.href = '<?= site_url('os'); ?>';
     });
-    /*
     shortcut.add("F4", function() {
-      location.href = '<?= site_url('os'); ?>';
+      location.href = '<?= site_url('statususuarios'); ?>';
     });
+    /*
     shortcut.add("F5", function() {});
     shortcut.add("F6", function() {
       location.href = '<?= site_url('vendas/adicionar'); ?>';
@@ -110,7 +110,7 @@
         </li>
         <li class="dropdown">
           <a href="#" class="tip-right dropdown-toggle" data-toggle="dropdown" title="Configurações"><i class='bx bx-cog iconN'></i><span class="text"></span></a>
-          <ul class="dropdown-menu">
+          <ul class="dropdown-menu">|
             <li><a href="<?= site_url('mapos/configurar') ?>">Sistema</a></li>
             <li><a href="<?= site_url('usuarios') ?>">Usuários</a></li>
             <li><a href="<?= site_url('mapos/emitente') ?>">Emitente</a></li>
@@ -148,7 +148,7 @@
       <section style="display:block;position:absolute;right:10px">
         <div class="profile">
           <div class="profile-img">
-            <a href="<?= site_url('mapos/minhaConta'); ?>"><img src="<?= !is_file(FCPATH . "assets/userImage/" . $this->session->userdata('url_image_user')) ?  base_url() . "assets/img/User.png" : base_url() . "assets/userImage/" . $this->session->userdata('url_image_user') ?>" alt="">
+            <a href="<?= site_url('mapos/minhaConta'); ?>"><img src="<?= !is_file(FCPATH . "assets/userImage/" . $this->session->userdata('url_image_user_admin')) ?  base_url() . "assets/img/User.png" : base_url() . "assets/userImage/" . $this->session->userdata('url_image_user_admin') ?>" alt="">
             </a>
           </div>
         </div>
