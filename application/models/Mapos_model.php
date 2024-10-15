@@ -18,9 +18,29 @@ class Mapos_model extends CI_Model
 
         $query = $this->db->get();
 
-        $result = ! $one ? $query->result() : $query->row();
+        $result = !$one ? $query->result() : $query->row();
 
         return $result;
+    }
+
+    public function getEtapas()
+    {
+
+        $this->db->select('valor');
+        $this->db->from('configuracoes');
+        $this->db->where('config', 'clientes_status_list');
+        $query = $this->db->get();
+
+        if ($query === false) {
+            echo '<script>console.log("Erro ao executar a query.")</script>';
+            return false;
+        }
+
+        $result = $query->row();
+
+        $etapas = json_decode($result->valor, true);
+
+        return $etapas;
     }
 
     public function getById($id)
@@ -146,7 +166,7 @@ class Mapos_model extends CI_Model
 
         return $this->db->get()->result();
     }
-    
+
     public function getVendasStatus($vstatus)
     {
         $this->db->select('vendas.*, clientes.nomeCliente');
@@ -175,12 +195,12 @@ class Mapos_model extends CI_Model
     {
         try {
             error_log("Entrou no método calendario");
-    
+
             // Verificar se os parâmetros são válidos
             error_log("Start: " . $start);
             error_log("End: " . $end);
             error_log("Status: " . $status);
-    
+
             $this->db->select(
                 'os.*,
                 clientes.nomeCliente,
@@ -194,16 +214,16 @@ class Mapos_model extends CI_Model
             $this->db->where('os.dataFinal >=', $start);
             $this->db->where('os.dataFinal <=', $end);
             $this->db->group_by('os.idOs');
-    
+
             if (!empty($status)) {
                 $this->db->where('os.status_os', $status);
             }
-    
+
             $result = $this->db->get()->result();
-            
+
             // Verificar o resultado da consulta
             error_log("Resultado da consulta: " . print_r($result, true));
-    
+
             return $result;
         } catch (Exception $e) {
             // Log a detailed error message for debugging
@@ -211,7 +231,7 @@ class Mapos_model extends CI_Model
             return array(); // Return an empty array or handle the error appropriately
         }
     }
-    
+
 
 
     public function getProdutosMinimo()
@@ -241,15 +261,11 @@ class Mapos_model extends CI_Model
         return false;
     }
 
-    public function getEstatisticasClienteStatus($year){
-        
-    }
-
     public function getEstatisticasFinanceiroMes($year)
     {
         $numbersOnly = preg_replace('/[^0-9]/', '', $year);
 
-        if (! $numbersOnly) {
+        if (!$numbersOnly) {
             $numbersOnly = date('Y');
         }
 
@@ -292,7 +308,7 @@ class Mapos_model extends CI_Model
     public function getEstatisticasFinanceiroDia($year)
     {
         $numbersOnly = preg_replace('/[^0-9]/', '', $year);
-        if (! $numbersOnly) {
+        if (!$numbersOnly) {
             $numbersOnly = date('Y');
         }
         $sql = '
@@ -313,7 +329,7 @@ class Mapos_model extends CI_Model
     {
         $numbersOnly = preg_replace('/[^0-9]/', '', $year);
 
-        if (! $numbersOnly) {
+        if (!$numbersOnly) {
             $numbersOnly = date('Y');
         }
 

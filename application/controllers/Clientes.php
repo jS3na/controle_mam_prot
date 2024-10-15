@@ -27,7 +27,7 @@ class Clientes extends MY_Controller
         }
 
         $pesquisa = $this->input->get('pesquisa');
-        $status = $this->input->get('status');
+        $etapa = $this->input->get('etapa');
 
         $this->load->library('pagination');
 
@@ -35,16 +35,17 @@ class Clientes extends MY_Controller
         $this->data['configuration']['total_rows'] = $this->clientes_model->count('clientes');
 
         if ($pesquisa) {
-            $this->data['configuration']['suffix'] = "?pesquisa={$pesquisa}&status={$status}";
-            $this->data['configuration']['first_url'] = base_url("index.php/clientes") . "?pesquisa={$pesquisa}&status={$status}";
-        } else if ($status) {
-            $this->data['configuration']['suffix'] = "?status={$status}";
-            $this->data['configuration']['first_url'] = base_url("index.php/clientes") . "?status={$status}";
+            $this->data['configuration']['suffix'] = "?pesquisa={$pesquisa}&etapa={$etapa}";
+            $this->data['configuration']['first_url'] = base_url("index.php/clientes") . "?pesquisa={$pesquisa}&etapa={$etapa}";
+        } else if ($etapa) {
+            $this->data['configuration']['suffix'] = "?etapa={$etapa}";
+            $this->data['configuration']['first_url'] = base_url("index.php/clientes") . "?etapa={$etapa}";
         }
 
         $this->pagination->initialize($this->data['configuration']);
 
-        $this->data['results'] = $this->clientes_model->get('clientes', '*', $pesquisa, $status, $this->data['configuration']['per_page'], $this->uri->segment(3));
+        $this->data['results'] = $this->clientes_model->get('clientes', '*', $pesquisa, $etapa, $this->data['configuration']['per_page'], $this->uri->segment(3));
+        $this->data['etapa_atual'] = $this->clientes_model->getEtapas();
 
         $this->data['view'] = 'clientes/clientes';
 
@@ -186,8 +187,8 @@ class Clientes extends MY_Controller
                 'cidade' => set_value('cidade'),
                 'estado' => set_value('estado'),
                 'cep' => set_value('cep'),
-                'status' => set_value('status'),
                 'dataCadastro' => date('Y-m-d'),
+                'responsavel' => set_value(field: 'responsavel'),
                 //'fornecedor' => (set_value('fornecedor') == true ? 1 : 0),
             ];
 
@@ -200,6 +201,7 @@ class Clientes extends MY_Controller
             }
         }
 
+        $this->data['usuarios'] = $this->clientes_model->getUsuarios();
         $this->data['view'] = 'clientes/adicionarCliente';
 
         return $this->layout();
@@ -209,17 +211,14 @@ class Clientes extends MY_Controller
     {
         echo "<script>console.log('entrou');</script>";
 
-        // Verifica permissão
         if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
             $this->session->set_flashdata('error', 'Você não tem permissão para vincular o cliente ao fornecedor.');
             redirect(base_url());
         }
 
-        // Carrega a biblioteca de validação de formulário
         $this->load->library('form_validation');
         $this->data['custom_error'] = '';
 
-        // Verifica a validação do formulário
         if ($this->form_validation->run('vincular') == false) {
             $this->data['custom_error'] = (validation_errors() ? '<div class="form_error"> Preencha o campo do Fornecedor corretamente </div>' : false);
         } else {
@@ -228,7 +227,6 @@ class Clientes extends MY_Controller
                 'idFornecedor' => set_value('idFornecedor'),
             ];
 
-            // Vincula o fornecedor e verifica se a operação foi bem-sucedida
             if ($this->clientes_model->vincularFornecedor($data['idCliente'], $data) == true) {
                 $this->session->set_flashdata('success', 'Fornecedor vinculado com sucesso!');
 
@@ -511,7 +509,7 @@ class Clientes extends MY_Controller
                 'idCliente' => $idCliente,
                 'usuario' => set_value('usuario'),
                 'tarefa' => set_value('log'),
-                'status' => set_value('status'),
+                'etapa' => set_value('etapa'),
                 //'data' => date('Y-m-d'),
                 //'hora' => date('HH:MM:SS'),
                 //'fornecedor' => (set_value('fornecedor') == true ? 1 : 0),
@@ -582,7 +580,7 @@ class Clientes extends MY_Controller
                     'cidade' => $this->input->post('cidade'),
                     'estado' => $this->input->post('estado'),
                     'cep' => $this->input->post('cep'),
-                    'status' => $this->input->post('status'),
+                    'responsavel' => $this->input->post('responsavel'),
                 ];
             } else {
                 $data = [
@@ -598,7 +596,7 @@ class Clientes extends MY_Controller
                     'cidade' => $this->input->post('cidade'),
                     'estado' => $this->input->post('estado'),
                     'cep' => $this->input->post('cep'),
-                    'status' => $this->input->post('status'),
+                    'responsavel' => $this->input->post('responsavel'),
                 ];
             }
 
@@ -612,7 +610,8 @@ class Clientes extends MY_Controller
         }
 
         $this->data['result'] = $this->clientes_model->getById($this->uri->segment(3));
-        $this->data['etapa_atual'] = $this->clientes_model->getEtapaAtual($this->data['result']->etapa);
+        $this->data['usuarios'] = $this->clientes_model->getUsuarios();
+        $this->data['etapa_atual'] = $this->clientes_model->getEtapas();
         $this->data['view'] = 'clientes/editarCliente';
 
         return $this->layout();
@@ -629,6 +628,9 @@ class Clientes extends MY_Controller
         $idCliente = $this->uri->segment(3);
         $etapaAtual = $this->uri->segment(4);
 
+        $etapa_atual_nome = $this->input->post('etapa_atual');
+        $etapa_promovida_nome = $this->input->post('etapa_promovida');
+
         if ($idCliente == null || $etapaAtual == null) {
             $this->session->set_flashdata('error', 'Erro ao tentar promover cliente.');
             redirect(site_url('clientes/gerenciar/'));
@@ -637,7 +639,129 @@ class Clientes extends MY_Controller
         $this->clientes_model->proximaEtapa($idCliente, $etapaAtual);
         log_info('Promoveu um cliente. ID' . $idCliente);
 
+        $data = [
+            'idCliente' => $idCliente,
+            'usuario' => $this->input->post('usuario'),
+            'tarefa' => "Promoveu o cliente de " . $etapa_atual_nome . ' para ' . $etapa_promovida_nome,
+            'etapa' => $etapa_promovida_nome,
+        ];
+
+        $this->clientes_model->add('logs_cliente', $data);
+
         $this->session->set_flashdata('success', 'Cliente promovido com sucesso!');
+        redirect(site_url('clientes/editar/' . $idCliente));
+
+    }
+
+    public function vincularEndereco()
+    {
+
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para vincular endereços a clientes.');
+            redirect(base_url());
+        }
+
+        $idContrato = $this->uri->segment(3);
+        $idCliente = $this->uri->segment(4);
+
+        if ($idContrato == null) {
+            $this->session->set_flashdata('error', 'Erro ao tentar vincular endereço a cliente.');
+            redirect(site_url('clientes/gerenciar/'));
+        }
+
+        $this->clientes_model->vincularEndereco($idContrato, 'vincular', null);
+        log_info('Vinculou um endereço a um cliente. ID' . $idCliente);
+
+        $data = [
+            'idCliente' => $idCliente,
+            'usuario' => $this->session->userdata("nome_admin"),
+            'tarefa' => "Vinculou um endereço ao contrato",
+        ];
+
+        $this->clientes_model->add('logs_cliente', $data);
+
+        $this->session->set_flashdata('success', 'Endereco vinculado com sucesso!');
+        redirect(site_url('clientes/visualizar/' . $idCliente));
+
+    }
+
+    public function adicionarEndereco()
+    {
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'aCliente')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para adicionar endereço a clientes.');
+            redirect(base_url());
+        }
+
+        $idContrato = $this->uri->segment(3);
+
+        //echo '<script>console.log("' . $idContrato . '");</script>';
+
+        $this->load->library('form_validation');
+        $this->data['custom_error'] = '';
+
+        if ($this->form_validation->run('adicionarEndereco') == false) {
+            $this->data['custom_error'] = (validation_errors() ? '<div class="form_error">' . validation_errors() . '</div>' : false);
+        } else {
+            $data = [
+                'rua' => set_value('rua'),
+                'numero' => set_value('numero'),
+                'complemento' => set_value('complemento'),
+                'bairro' => set_value('bairro'),
+                'cidade' => set_value('cidade'),
+                'estado' => set_value('estado'),
+                'cep' => set_value('cep'),
+            ];
+
+            if ($this->clientes_model->vincularEndereco($idContrato, 'adicionar',  $data) == true) {
+                $this->session->set_flashdata('success', 'Cliente adicionado com sucesso!');
+                log_info('Adicionou um cliente.');
+                redirect(site_url('clientes/'));
+            } else {
+                $this->data['custom_error'] = '<div class="form_error"><p>Ocorreu um erro.</p></div>';
+            }
+        }
+
+        $this->data['view'] = 'clientes/adicionarEndereco';
+
+        return $this->layout();
+    }
+
+    public function relatarPendencia()
+    {
+
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para relatar pendências de clientes.');
+            redirect(base_url());
+        }
+
+        $idCliente = $this->uri->segment(3);
+
+        $etapa_atual_nome = $this->input->post('etapa_atual');
+
+        if ($idCliente == null || $etapa_atual_nome == null) {
+            $this->session->set_flashdata('error', 'Erro ao tentar relatar pendência de cliente.');
+            redirect(site_url('clientes/gerenciar/'));
+        }
+
+        $dataPendencia = [
+            'idCliente' => $idCliente,
+            'etapaPendencia' => $etapa_atual_nome,
+            'justificativa' => $this->input->post('justificativa')
+        ];
+
+        $this->clientes_model->relatarPendencia($idCliente, $dataPendencia);
+        log_info('Relatou uma pendência a um cliente. ID' . $idCliente);
+
+        $data = [
+            'idCliente' => $idCliente,
+            'usuario' => $this->input->post('usuario'),
+            'tarefa' => "Relatou uma pendência a esse cliente",
+            'etapa' => $etapa_atual_nome,
+        ];
+
+        $this->clientes_model->add('logs_cliente', $data);
+
+        $this->session->set_flashdata('success', 'Pendência relatada com sucesso!');
         redirect(site_url('clientes/editar/' . $idCliente));
 
     }
@@ -657,22 +781,37 @@ class Clientes extends MY_Controller
 
         $this->data['custom_error'] = '';
         $this->data['result'] = $this->clientes_model->getById($this->uri->segment(3));
-        $this->data['logs_clientes'] = $this->clientes_model->getLogs($this->data['result']->idClientes);
-        $this->data['fornecedor_cliente'] = $this->clientes_model->getFornecedorCliente($this->data['result']->idClientes);
+        $this->data['contratos'] = $this->clientes_model->getContratoById($this->data['result']->idClientes);
 
-        if ($this->data['fornecedor_cliente'] && isset($this->data['fornecedor_cliente']->idFornecedor)) {
-            $this->data['fornecedor_by_id'] = $this->clientes_model->getFornecedorById($this->data['fornecedor_cliente']->idFornecedor);
-        } else {
-            $this->data['fornecedor_by_id'] = null;
+        $indexContratos = 1;
+        foreach ($this->data['contratos'] as $contrato) {
+            if ($contrato->idFinanceiro) {
+                $this->data['financeiro_cliente_' . $indexContratos] = $this->clientes_model->getFinanceiroCliente($contrato->idFinanceiro);
+            } else {
+                $this->data['financeiro_cliente_' . $indexContratos] = null;
+            }
+            if ($contrato->idFornecedor) {
+                $this->data['fornecedor_cliente_' . $indexContratos] = $this->clientes_model->getFornecedorCliente($contrato->idFornecedor);
+            } else {
+                $this->data['fornecedor_cliente_' . $indexContratos] = null;
+            }
+
+            $indexContratos++;
         }
 
-        $this->data['financeiro_cliente'] = $this->clientes_model->getFinanceiroCliente($this->data['result']->idClientes);
+        if ($this->data['result']->pendencia) {
+            $this->data['motivo_pendencia'] = $this->clientes_model->getMotivoPendencia($this->data['result']->idClientes)[0];
+        }
+
+        $this->data['logs_clientes'] = $this->clientes_model->getLogs($this->data['result']->idClientes);
+        $this->data['enderecos'] = $this->clientes_model->getEnderecos($this->data['result']->idClientes);
+
         $this->data['os_cliente'] = $this->clientes_model->getOsCliente($this->data['result']->idClientes);
 
-        $this->data['financeiro_cliente'] ? $this->data['parcelas_cliente'] = $this->clientes_model->getParcelasCliente($this->data['result']->idClientes) : $this->data['parcelas_cliente'] = false;
+        //$this->data['financeiro_cliente'] ? $this->data['parcelas_cliente'] = $this->clientes_model->getParcelasCliente($this->data['result']->idClientes) : $this->data['parcelas_cliente'] = false;
 
-        $this->data['results'] = $this->clientes_model->getOsByCliente($this->uri->segment(3));
-        $this->data['etapa_atual'] = $this->clientes_model->getEtapaAtual($this->data['result']->etapa);
+        //$this->data['results'] = $this->clientes_model->getOsByCliente($this->uri->segment(3));
+        $this->data['etapa_atual'] = $this->clientes_model->getEtapas();
         $this->data['results_arquivos_financeiro'] = $this->clientes_model->getAllArquivos('', $this->data['result']->idClientes, 'financeiro');
         $this->data['results_arquivos_evidencias'] = $this->clientes_model->getAllArquivos('', $this->data['result']->idClientes, 'evidencias');
         $this->data['results_arquivos_contratos'] = $this->clientes_model->getAllArquivos('', $this->data['result']->idClientes, 'contratos');

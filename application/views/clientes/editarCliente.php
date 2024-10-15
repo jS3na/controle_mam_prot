@@ -223,32 +223,16 @@
                                 </select>
                             </div>
                         </div>
+
                         <div class="control-group" class="control-label">
-                            <label for="status" class="control-label">Status</label>
+                            <label for="responsavel" class="control-label">Responsável</label>
                             <div class="controls">
-                                <select id="status" name="status">
+                                <select id="responsavel" name="responsavel">
                                     <option value="">Selecione...</option>
-                                    <option value="INSTALADO" <?php echo ($result->status == 'INSTALADO') ? 'selected' : ''; ?>>INSTALADO</option>
-                                    <option value="NÃO INSTALADO" <?php echo ($result->status == 'NÃO INSTALADO') ? 'selected' : ''; ?>>NÃO INSTALADO</option>
-                                    <option value="FECHADO" <?php echo ($result->status == 'FECHADO') ? 'selected' : ''; ?>>FECHADO</option>
-                                    <option value="COTADO" <?php echo ($result->status == 'COTADO') ? 'selected' : ''; ?>>
-                                        COTADO</option>
-                                    <option value="EM ANÁLISE" <?php echo ($result->status == 'EM ANÁLISE') ? 'selected' : ''; ?>>EM ANÁLISE</option>
-                                    <option value="AGUARDANDO COTAÇÃO" <?php echo ($result->status == 'AGUARDANDO COTAÇÃO') ? 'selected' : ''; ?>>AGUARDANDO COTAÇÃO</option>
-                                    <option value="SEM RETORNO" <?php echo ($result->status == 'SEM RETORNO') ? 'selected' : ''; ?>>SEM RETORNO</option>
-                                    <option value="EM NEGOCIAÇÃO" <?php echo ($result->status == 'EM NEGOCIAÇÃO') ? 'selected' : ''; ?>>EM NEGOCIAÇÃO</option>
-                                    <option value="VIABILIZADO" <?php echo ($result->status == 'VIABILIZADO') ? 'selected' : ''; ?>>VIABILIZADO</option>
-                                    <option value="SEM VIABILIDADE" <?php echo ($result->status == 'SEM VIABILIDADE') ? 'selected' : ''; ?>>SEM VIABILIDADE</option>
-                                    <option value="AGUARDANDO INSTALAÇÃO" <?php echo ($result->status == 'AGUARDANDO INSTALAÇÃO') ? 'selected' : ''; ?>>AGUARDANDO INSTALAÇÃO</option>
-                                    <option value="AGUARDANDO CONTRATAÇÃO" <?php echo ($result->status == 'AGUARDANDO CONTRATAÇÃO') ? 'selected' : ''; ?>>AGUARDANDO CONTRATAÇÃO</option>
-                                    <option value="AGUARDANDO ASSINATURA" <?php echo ($result->status == 'AGUARDANDO ASSINATURA') ? 'selected' : ''; ?>>AGUARDANDO ASSINATURA</option>
-                                    <option value="PENDENCIA CLIENTE" <?php echo ($result->status == 'PENDENCIA CLIENTE') ? 'selected' : ''; ?>>PENDENCIA CLIENTE</option>
-                                    <option value="PENDENCIA PROVEDOR" <?php echo ($result->status == 'PENDENCIA PROVEDOR') ? 'selected' : ''; ?>>PENDENCIA PROVEDOR</option>
-                                    <option value="CANCELADO" <?php echo ($result->status == 'CANCELADO') ? 'selected' : ''; ?>>CANCELADO</option>
-                                    <option value="RADIO" <?php echo ($result->status == 'RADIO') ? 'selected' : ''; ?>>
-                                        RADIO</option>
-                                    <option value="VALOR ALTO" <?php echo ($result->status == 'VALOR ALTO') ? 'selected' : ''; ?>>VALOR ALTO</option>
-                                    <option value="COTANDO" <?php echo ($result->status == 'COTANDO') ? 'selected' : ''; ?>>COTANDO</option>
+
+                                    <?php foreach($usuarios as $usuario){ ?>
+                                    <option value="<?php echo $usuario->nome ?>" <?php echo ($result->responsavel == $usuario->nome) ? 'selected' : ''; ?>><?php echo $usuario->nome ?></option>
+                                    <?php } ?>
                                 </select>
                             </div>
                         </div>
@@ -261,6 +245,10 @@
                                     class="button btn btn-mini btn-success" style="width: 230px">
                                     <span class="button__icon"><i class="bx bx-right-arrow-alt"></i></span><span
                                         class="button__text2" title="Próxima Etapa">Próxima Etapa</span></a>
+                                <a href="#modal-relatar-pendencia" data-toggle="modal" role="button"
+                                    class="button btn btn-mini btn-danger" style="width: 230px">
+                                    <span class="button__icon"><i class="bx bx-message-alt-error"></i></span><span
+                                        class="button__text2" title="Relatar Pendência">Relatar Pendência</span></a>
                             </div>
                         </div>
 
@@ -297,9 +285,15 @@
                         <h5 id="myModalLabel">Promover para a próxima etapa</h5>
                     </div>
                     <div class="modal-body">
+                        <div class="control-group">
+                            <input type="hidden" name="etapa_atual" value="<?php echo $etapa_atual[$result->etapa]; ?>" />
+                            <input type="hidden" name="etapa_promovida" value="<?php echo $etapa_atual[$result->etapa + 1]; ?>" />
+                            <input type="hidden" name="usuario" value="<?php echo $this->session->userdata['nome_admin'] ?>" />
+                        </div>
                         <p style="text-align: center">Deseja realmente promover esse Cliente de
                             <strong><?php echo $etapa_atual[$result->etapa]; ?></strong> a
-                            <strong><?php echo $etapa_atual[$result->etapa + 1]; ?></strong>?</p>
+                            <strong><?php echo $etapa_atual[$result->etapa + 1]; ?></strong>?
+                        </p>
                     </div>
                     <div class="modal-footer" style="display:flex;justify-content: center">
                         <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"><span
@@ -308,6 +302,40 @@
                         <button class="button btn btn-success"><span class="button__icon"><i
                                     class='bx bx-check'></i></span> <span
                                 class="button__text2">Confirmar</span></button>
+                    </div>
+                </form>
+            </div>
+
+            <div id="modal-relatar-pendencia" class="modal hide fade" tabindex="-1" role="dialog"
+                aria-labelledby="myModalLabel" aria-hidden="true">
+                <?php $url_proxima_etapa = base_url('index.php/clientes/relatarPendencia/' . $result->idClientes . '/' . $result->etapa); ?>
+                <form action="<?php echo $url_proxima_etapa; ?>" method="post">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h5 id="myModalLabel">Relatar Pendência</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div class="control-group">
+                            <input type="hidden" name="etapa_atual" value="<?php echo $etapa_atual[$result->etapa]; ?>" />
+                            <input type="hidden" name="usuario" value="<?php echo $this->session->userdata['nome_admin'] ?>" />
+                        </div>
+                        <p style="text-align: center">Digite abaixo a justificativa dessa pendência:</p>
+
+                        <div class="span6" style="padding: 1%; margin-left: 0">
+                            <label for="justificativa">
+                                <h4>Justificativa</h4>
+                            </label>
+                            <textarea required class="span12 editor" name="justificativa" id="justificativa" cols="30"
+                                rows="5"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer" style="display:flex;justify-content: center">
+                        <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"><span
+                                class="button__icon"><i class="bx bx-x"></i></span> <span
+                                class="button__text2">Cancelar</span></button>
+                        <button class="button btn btn-success"><span class="button__icon"><i
+                                    class='bx bx-check'></i></span> <span
+                                class="button__text2">Relatar</span></button>
                     </div>
                 </form>
             </div>

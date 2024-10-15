@@ -83,62 +83,13 @@
                 <span class="icon">
                     <i class="fas fa-user"></i>
                 </span>
-                <h5>Cadastro de Clientes</h5>
+                <h5>Adicionar Endereço</h5>
             </div>
             <?php if ($custom_error != '') {
                 echo '<div class="alert alert-danger">' . $custom_error . '</div>';
             } ?>
             <form action="<?php echo current_url(); ?>" id="formCliente" method="post" class="form-horizontal">
                 <div class="widget-content nopadding tab-content">
-                    <div class="span6">
-                        <div class="control-group">
-                            <label for="documento" class="control-label">CPF/CNPJ</label>
-                            <div class="controls">
-                                <input id="documento" class="cpfcnpj" type="text" name="documento"
-                                    value="<?php echo set_value('documento'); ?>" />
-                                <button id="buscar_info_cnpj" class="btn btn-xs" type="button">Buscar(CNPJ)</button>
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label for="nomeCliente" class="control-label">Circuito + Nome <span
-                                    class="required">*</span></label>
-                            <div class="controls">
-                                <input id="nomeCliente" type="text" name="nomeCliente"
-                                    value="<?php echo set_value('nomeCliente'); ?>" />
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label for="telefone" class="control-label">Telefone</label>
-                            <div class="controls">
-                                <input id="telefone" type="text" name="telefone"
-                                    value="<?php echo set_value('telefone'); ?>" />
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label for="email" class="control-label">Email</label>
-                            <div class="controls">
-                                <input id="email" type="text" name="email" value="<?php echo set_value('email'); ?>" />
-                            </div>
-                        </div>
-                        <!--
-                        <div class="control-group">
-                            <label for="senha" class="control-label">Senha</label>
-                            <div class="controls">
-                                <input class="form-control" id="senha" type="password" name="senha" value="<?php echo set_value('senha'); ?>" />
-                                <img id="imgSenha" src="<?php echo base_url() ?>assets/img/eye.svg" alt="">
-                            </div>
-                        </div>
-                        <div class="control-group">
-                            <label class="control-label">Tipo de Cliente</label>
-                            <div class="controls">
-                                <label for="fornecedor" class="btn btn-default">Fornecedor
-                                    <input type="checkbox" id="fornecedor" name="fornecedor" class="badgebox" value="0">
-                                    <span class="badge">&check;</span>
-                                </label>
-                            </div>
-                        </div>
-                        -->
-                    </div>
 
                     <div class="span6">
                         <div class="control-group" class="control-label">
@@ -215,25 +166,6 @@
                                     <option value="TO">Tocantins</option>
                                 </select>
                             </div>
-                        </div>
-                        <div class="control-group" class="control-label">
-                            <label for="responsavel" class="control-label">Responsável</label>
-                            <div class="controls">
-                                <select id="responsavel" name="responsavel">
-                                    <option value="">Selecione...</option>
-
-                                    <?php foreach($usuarios as $usuario){ ?>
-                                    <option value="<?php echo $usuario->nome ?>"><?php echo $usuario->nome ?></option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="span6" style="padding: 1%; margin-left: 0">
-                            <label for="descricao">
-                                <h4>Descrição (opcional)</h4>
-                            </label>
-                            <textarea class="span12 editor" name="descricao" id="descricao" cols="30"
-                                rows="5"></textarea>
                         </div>
                     </div>
                 </div>

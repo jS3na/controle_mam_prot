@@ -146,13 +146,6 @@
 
     $(document).ready(function() {
 
-        /*
-            $("#test-autocomplete").autocomplete({
-                source: ["Option1", "Option2", "Option3"]
-            }); 
-        */
-
-
         $("#fornecedor").autocomplete({
             source: "<?php echo base_url(); ?>index.php/clientes/autoCompleteFornecedor",
             minLength: 2,

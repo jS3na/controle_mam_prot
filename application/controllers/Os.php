@@ -120,7 +120,7 @@ class Os extends MY_Controller
                     'idCliente' => $data['clientes_id'],
                     'usuario' => $this->input->post('usuario'),
                     'tarefa' => 'Adicionou uma OS com o status ' . $data['status_os'],
-                    'status' => $this->data['clienteInfo']->status
+                    'etapa' => $this->data['clienteInfo']->etapa
                 ];
 
                 $this->os_model->add('logs_cliente', $dataLog);

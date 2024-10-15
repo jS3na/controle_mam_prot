@@ -6,8 +6,6 @@
     "5": "Aguardando Instalação",
     "6": "Agendado",
     "7": "Instalado",
-    "8": [
-      "Finalizado",
-      "Finalizado com falta de evidência"
-    ]
+    "8": "Finalizado",
+    "9": "Finalizado com falta de evidência"
   }

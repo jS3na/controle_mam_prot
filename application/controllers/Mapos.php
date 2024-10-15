@@ -17,33 +17,17 @@ class Mapos extends MY_Controller
         $this->data['vendasstatus'] = $this->mapos_model->getVendasStatus($vstatus);
         $this->data['lancamentos'] = $this->mapos_model->getLancamentos();
 
-        $statuses = [
-            'INSTALADO',
-            'NÃO INSTALADO',
-            'FECHADO',
-            'COTADO',
-            'EM ANÁLISE',
-            'AGUARDANDO COTAÇÃO',
-            'SEM RETORNO',
-            'EM NEGOCIAÇÃO',
-            'VIABILIZADO',
-            'AGUARDANDO INSTALAÇÃO',
-            'AGUARDANDO CONTRATAÇÃO',
-            'CANCELADO',
-            'RADIO',
-            'VALOR ALTO',
-            'COTANDO'
-        ];
-
+        $etapas = $this->mapos_model->getEtapas();
+        $index = 1;
         $clientesCount = [];
 
-        foreach ($statuses as $status) {
-            $this->db->where('status', $status);
+        foreach ($etapas as $index => $etapa) {
+            $this->db->where('etapa', $index);
             $count = $this->db->count_all_results('clientes');
-
-            $clientesCount[$status] = $count;
+        
+            $clientesCount[$etapa] = $count;
         }
-
+        
         $this->data['clientesCount'] = json_encode($clientesCount);
 
         $nonUsers = [

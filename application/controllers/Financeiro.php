@@ -11,7 +11,7 @@ class Financeiro extends MY_Controller
         parent::__construct();
         $this->load->model('financeiro_model');
         $this->load->helper('codegen_helper');
-        $this->data['menuLancamentos'] = 'financeiro';
+        $this->data['menuFinanceiro'] = 'financeiro';
     }
 
     public function index()

@@ -63,6 +63,18 @@ $config = [
             'rules' => 'required|trim',
         ],
     ],
+    'adicionarEndereco' => [
+        [
+            'field' => 'cep',
+            'label' => 'cep',
+            'rules' => 'required|trim',
+        ],
+        [
+            'field' => 'cidade',
+            'label' => 'cidade',
+            'rules' => 'required|trim',
+        ],
+    ],
     'fornecedores' => [
         [
             'field' => 'nomeFornecedor',
