@@ -18,9 +18,9 @@ $config = [
             ],
         ],
     ],
-    'logs_cliente' => [
+    'notas_clientes' => [
         [
-            'field' => 'log',
+            'field' => 'nota',
             'label' => 'Nota',
             'rules' => 'required|trim',
         ],

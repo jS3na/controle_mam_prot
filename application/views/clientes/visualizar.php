@@ -142,6 +142,21 @@
 
                                         <?php if ($idEndereco !== null && !empty($enderecos) && isset($enderecos[$idEndereco]['rua'])) { ?>
 
+                                            <?php
+                                            if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aCliente') && $contrato->idContratoCliente != 1) {
+                                                $url_excluir_endereco = base_url('index.php/clientes/excluirEndereco/' . $contrato->idContratos . '/' . $enderecos[$idEndereco]['id'] . '/' . $contrato->idCliente);
+                                                echo '<div style="margin: 1.2rem">
+                                        <a href="' . $url_excluir_endereco . '"title="Excluir Endereço">
+                                            <button type="button" class="button btn btn-mini btn-danger">
+                                                <span class="button__icon"><i class="bx bx-trash"></i></span>
+                                                <span class="button__text2">Excluir Endereço</span>
+                                            </button>
+                                        </a>
+                                    </div>
+                                ';
+                                            }
+                                            ?>
+
                                             <tr>
                                                 <td style="text-align: right; width: 30%;"><strong>Rua</strong></td>
                                                 <td>
@@ -224,7 +239,7 @@
                         <div class="collapse accordion-body" id="collapseGFour<?php echo $indexContrato; ?>">
                             <?php
                             if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
-                                $url = base_url('index.php/clientes/adicionarLog/' . $result->idClientes);
+                                $url = base_url('index.php/clientes/adicionarLog/' . $result->idClientes . '/' . $contrato->idContratos);
                                 echo '<div style="margin: 1.2rem">
                                         <a href="' . $url . '"title="Adicionar Log">
                                             <button type="button" class="button btn btn-mini btn-success">
@@ -240,12 +255,12 @@
                             <div class="widget-content">
                                 <!-- Aba de Logs -->
                                 <div id="tab4" class="tab-pane" style="min-height: 300px">
-                                    <?php if (!$logs_clientes) { ?>
+                                    <?php if (!$notas_clientes) { ?>
                                         <table class="table table-bordered">
                                             <thead>
                                                 <tr>
                                                     <th>Usuário</th>
-                                                    <th>Log</th>
+                                                    <th>Nota</th>
                                                     <th>Etapa</th>
                                                     <th>Data</th>
                                                     <th>Hora</th>
@@ -253,7 +268,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td colspan="5">Nenhum log encontrado</td>
+                                                    <td colspan="5">Nenhuma Nota encontrado</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -262,21 +277,23 @@
                                             <thead>
                                                 <tr>
                                                     <th>Usuário</th>
-                                                    <th>Log</th>
+                                                    <th>Nota</th>
                                                     <th>Etapa</th>
                                                     <th>Data</th>
                                                     <th>Hora</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php foreach ($logs_clientes as $log) { ?>
-                                                    <tr>
-                                                        <td><?php echo $log->usuario; ?></td>
-                                                        <td><?php echo $log->tarefa; ?></td>
-                                                        <td><?php echo $log->etapa; ?></td>
-                                                        <td><?php echo date('d/m/Y', strtotime($log->data)); ?></td>
-                                                        <td><?php echo $log->hora; ?></td>
-                                                    </tr>
+                                                <?php foreach ($notas_clientes as $nota) { ?>
+                                                    <?php if ($contrato->idNotas != null && in_array($nota['id'], json_decode($contrato->idNotas, true))) { ?>
+                                                        <tr>
+                                                            <td><?php echo $nota['usuario']; ?></td>
+                                                            <td><?php echo $nota['nota']; ?></td>
+                                                            <td><?php echo $nota['etapa']; ?></td>
+                                                            <td><?php echo $nota['data']; ?></td>
+                                                            <td><?php echo $nota['hora']; ?></td>
+                                                        </tr>
+                                                    <?php } ?>
                                                 <?php } ?>
                                             </tbody>
                                         </table>
@@ -288,7 +305,7 @@
 
                     <div id="modal-excluir-fornecedor" class="modal hide fade" tabindex="-1" role="dialog"
                         aria-labelledby="myModalLabel" aria-hidden="true">
-                        <?php $url_excluir_fornecedor = base_url('index.php/clientes/excluirFornecedor/' . $result->idClientes); ?>
+                        <?php $url_excluir_fornecedor = base_url('index.php/clientes/excluirFornecedor/' . $result->idClientes . '/' . $contrato->idContratos); ?>
                         <form action="<?php echo $url_excluir_fornecedor; ?>" method="post">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -326,7 +343,7 @@
                             <?php
                             $fornecedor_cliente_loop = "fornecedor_cliente_" . $indexContrato;
                             if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente') && !$$fornecedor_cliente_loop) {
-                                $url = base_url('index.php/clientes/vincularFornecedor/' . $result->idClientes);
+                                $url = base_url('index.php/clientes/vincularFornecedor/' . $result->idClientes . '/' . $contrato->idContratos);
                                 echo '<div style="display: flex; flex-direction: row"> <div style="margin: 1.2rem">
                                             <a href="' . $url . '"title="Vincular Fornecedor">
                                                 <button type="button" class="button btn btn-mini btn-success">
@@ -619,81 +636,81 @@
                         <div class="modal-body">
 
                             <?php /* if (!$parcelas_cliente) { ?>
-                          <table class="table table-bordered">
-                              <thead>
-                                  <tr>
-                                      <th>Valor</th>
-                                      <th>Vencimento</th>
-                                      <th>Pago</th>
-                                      <th>Valor Pago</th>
-                                      <th>Meio de pagamento</th>
-                                      <th>Data do pagamento</th>
-                                      <th>Ações</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <tr>
-                                      <td colspan="4">Nenhum financeiro encontrado</td>
-                                  </tr>
-                              </tbody>
-                          </table>
-                      <?php } else { ?>
-                          <table class="table table-bordered">
-                              <thead>
-                                  <tr>
-                                      <th>Valor</th>
-                                      <th>Vencimento</th>
-                                      <th>Pago</th>
-                                      <th>Valor Pago</th>
-                                      <th>Meio de pagamento</th>
-                                      <th>Data do pagamento</th>
-                                      <th>Ações</th>
-                                  </tr>
-                              </thead>
-                              <tbody>
-                                  <?php foreach ($parcelas_cliente as $parc) {
-                                      // Define a classe CSS para a linha com base no status de pagamento
-                                      $rowClass = $parc->pago == 1 ? 'alert-success' : 'alert-danger';
-                                      ?>
-                                      <tr class="alert <?php echo $rowClass; ?>">
-                                          <td><?php echo $parc->valor; ?></td>
-                                          <td>
-                                              <?php
-                                              if (!empty($parc->data_pagamento) && $parc->vencimento != '0000-00-00') {
-                                                  echo date('d/m/Y', strtotime($parc->vencimento));
-                                              } else {
-                                                  echo '';
-                                              }
-                                              ?>
-                                          </td>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Valor</th>
+                                <th>Vencimento</th>
+                                <th>Pago</th>
+                                <th>Valor Pago</th>
+                                <th>Meio de pagamento</th>
+                                <th>Data do pagamento</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4">Nenhum financeiro encontrado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <?php } else { ?>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Valor</th>
+                                <th>Vencimento</th>
+                                <th>Pago</th>
+                                <th>Valor Pago</th>
+                                <th>Meio de pagamento</th>
+                                <th>Data do pagamento</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($parcelas_cliente as $parc) {
+                                // Define a classe CSS para a linha com base no status de pagamento
+                                $rowClass = $parc->pago == 1 ? 'alert-success' : 'alert-danger';
+                                ?>
+                                <tr class="alert <?php echo $rowClass; ?>">
+                                    <td><?php echo $parc->valor; ?></td>
+                                    <td>
+                                        <?php
+                                        if (!empty($parc->data_pagamento) && $parc->vencimento != '0000-00-00') {
+                                            echo date('d/m/Y', strtotime($parc->vencimento));
+                                        } else {
+                                            echo '';
+                                        }
+                                        ?>
+                                    </td>
 
-                                          <td><?php echo $parc->pago == 1 ? 'Sim' : 'Não'; ?></td>
-                                          <td><?php echo $parc->valorPago; ?></td>
-                                          <td><?php echo $parc->meio_pagamento; ?></td>
-                                          <td>
-                                              <?php
-                                              if (!empty($parc->data_pagamento) && $parc->data_pagamento != '0000-00-00') {
-                                                  echo date('d/m/Y', strtotime($parc->data_pagamento));
-                                              } else {
-                                                  echo '';
-                                              }
-                                              ?>
-                                          </td>
+                                    <td><?php echo $parc->pago == 1 ? 'Sim' : 'Não'; ?></td>
+                                    <td><?php echo $parc->valorPago; ?></td>
+                                    <td><?php echo $parc->meio_pagamento; ?></td>
+                                    <td>
+                                        <?php
+                                        if (!empty($parc->data_pagamento) && $parc->data_pagamento != '0000-00-00') {
+                                            echo date('d/m/Y', strtotime($parc->data_pagamento));
+                                        } else {
+                                            echo '';
+                                        }
+                                        ?>
+                                    </td>
 
-                                          <td>
-                                              <?php if ($parc->pago == 0) { ?>
-                                                  <a href="#modal-aprovar-parcela" role="button" data-toggle="modal"
-                                                      data-dismiss="modal" parcela="<?php echo $parc->idParcelas; ?>"
-                                                      style="margin-right: 1%" class="btn-nwe" title="Aprovar Parcela">
-                                                      <i class="bx bx-check bx-xs"></i>
-                                                  </a>
-                                              <?php } ?>
-                                          </td>
-                                      </tr>
-                                  <?php } ?>
-                              </tbody>
-                          </table>
-                      <?php } */ ?>
+                                    <td>
+                                        <?php if ($parc->pago == 0) { ?>
+                                            <a href="#modal-aprovar-parcela" role="button" data-toggle="modal"
+                                                data-dismiss="modal" parcela="<?php echo $parc->idParcelas; ?>"
+                                                style="margin-right: 1%" class="btn-nwe" title="Aprovar Parcela">
+                                                <i class="bx bx-check bx-xs"></i>
+                                            </a>
+                                        <?php } ?>
+                                    </td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                <?php } */ ?>
 
                         </div>
                         <div class="modal-footer" style="display:flex;justify-content: right">
@@ -889,10 +906,10 @@
                                                                     <?php endif ?>
 
                                                                     <?php /*if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eArquivo')): ?>
-                                                             <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
-                                                                 class="btn-nwe3" title="Editar"><i
-                                                                     class="bx bx-edit"></i></a>
-                                                         <?php endif*/ ?>
+                                                                               <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
+                                                                                   class="btn-nwe3" title="Editar"><i
+                                                                                       class="bx bx-edit"></i></a>
+                                                                           <?php endif*/ ?>
 
                                                                     <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dArquivo')): ?>
                                                                         <a href="#modal-excluir" style="margin-right: 1%"
@@ -1045,10 +1062,10 @@
                                                                     <?php endif ?>
 
                                                                     <?php /*if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eArquivo')): ?>
-                                                             <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
-                                                                 class="btn-nwe3" title="Editar"><i
-                                                                     class="bx bx-edit"></i></a>
-                                                         <?php endif*/ ?>
+                                                                               <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
+                                                                                   class="btn-nwe3" title="Editar"><i
+                                                                                       class="bx bx-edit"></i></a>
+                                                                           <?php endif*/ ?>
 
                                                                     <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dArquivo')): ?>
                                                                         <a href="#modal-excluir" style="margin-right: 1%"
@@ -1201,10 +1218,10 @@
                                                                     <?php endif ?>
 
                                                                     <?php /*if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eArquivo')): ?>
-                                                             <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
-                                                                 class="btn-nwe3" title="Editar"><i
-                                                                     class="bx bx-edit"></i></a>
-                                                         <?php endif */ ?>
+                                                                               <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
+                                                                                   class="btn-nwe3" title="Editar"><i
+                                                                                       class="bx bx-edit"></i></a>
+                                                                           <?php endif */ ?>
 
                                                                     <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dArquivo')): ?>
                                                                         <a href="#modal-excluir" style="margin-right: 1%"

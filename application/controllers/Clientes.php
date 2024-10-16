@@ -219,34 +219,25 @@ class Clientes extends MY_Controller
         $this->load->library('form_validation');
         $this->data['custom_error'] = '';
 
+        $idContrato = $this->uri->segment(4);
+        $idCliente = $this->input->post('idCliente');
+        $idFornecedor = $this->input->post('idFornecedor');
+
         if ($this->form_validation->run('vincular') == false) {
             $this->data['custom_error'] = (validation_errors() ? '<div class="form_error"> Preencha o campo do Fornecedor corretamente </div>' : false);
         } else {
-            $data = [
-                'idCliente' => set_value('idCliente'),
-                'idFornecedor' => set_value('idFornecedor'),
-            ];
 
-            if ($this->clientes_model->vincularFornecedor($data['idCliente'], $data) == true) {
+            if ($this->clientes_model->vincularFornecedor($idContrato, $idFornecedor) == true) {
                 $this->session->set_flashdata('success', 'Fornecedor vinculado com sucesso!');
 
-                $dataLog = [
-                    'idCliente' => set_value('idCliente'),
-                    'usuario' => set_value('usuario'),
-                    'tarefa' => 'Vinculou o Fornecedor com o id: ' . $data['idFornecedor'],
-                    'status' => set_value('status'),
-                ];
-
-                $this->clientes_model->add('logs_cliente', $dataLog);
-
                 log_info('Vinculou um cliente a um fornecedor.');
-                redirect(site_url('clientes/visualizar/' . $data['idCliente']));
+                redirect(site_url('clientes/visualizar/' . $idCliente));
             } else {
                 $this->data['custom_error'] = '<div class="form_error"><p>Ocorreu um erro.</p></div>';
             }
         }
 
-        // Carrega os dados do cliente e fornecedor
+        $this->data['etapa_atual'] = $this->clientes_model->getEtapas();
         $this->data['result'] = $this->clientes_model->getById($this->uri->segment(3));
         $this->data['fornecedor_cliente'] = $this->clientes_model->getFornecedorCliente($this->data['result']->idClientes);
 
@@ -372,33 +363,27 @@ class Clientes extends MY_Controller
     public function adicionarParcelaUnica()
     {
 
-        // Verifica permissão
         if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
             $this->session->set_flashdata('error', 'Você não tem permissão para adicionar parcelas');
             redirect(base_url());
         }
 
-        // Carrega a biblioteca de validação de formulário
         $this->load->library('form_validation');
         $this->data['custom_error'] = '';
 
-        // Verifica a validação do formulário
         if ($this->form_validation->run('adicionarParcelaUnica') == false) {
             $this->data['custom_error'] = (validation_errors() ? '<div class="form_error"> Preencha os campos corretamente </div>' : false);
         } else {
 
             $vencimento = $this->input->post('vencimento');
 
-            // Convertendo a data do formato 'd/m/Y' para 'Y-m-d'
             try {
                 $vencimento = DateTime::createFromFormat('d/m/Y', $vencimento);
                 if (!$vencimento) {
                     throw new Exception('Data inválida');
                 }
-                // Formatando a data para o banco de dados
                 $vencimentoFormatado = $vencimento->format('Y-m-d');
             } catch (Exception $e) {
-                // Se houver erro, usa a data atual
                 $vencimentoFormatado = date('Y-m-d');
             }
 
@@ -419,7 +404,6 @@ class Clientes extends MY_Controller
 
         }
 
-        // Carrega os dados do cliente
         $this->data['result'] = $this->clientes_model->getById($this->uri->segment(3));
 
         return $this->layout();
@@ -465,66 +449,55 @@ class Clientes extends MY_Controller
         }
 
         $idCliente = $this->uri->segment(3);
-        $status = $this->input->post('status');
-        if ($idCliente == null) {
+        $idContrato = $this->uri->segment(4);
+        if ($idCliente == null && $idContrato == null) {
             $this->session->set_flashdata('error', 'Erro ao tentar excluir fornecedor.');
             redirect(site_url('clientes/gerenciar/'));
         }
 
-        $this->clientes_model->delete('fornecedor_cliente', 'idCliente', $idCliente);
-        $this->clientes_model->delete('parcelas', 'idCliente', $idCliente);
+        $this->clientes_model->excluirFornecedor($idContrato);
         log_info('Removeu o fornecedor do cliente: ' . $idCliente);
 
         $this->session->set_flashdata('success', 'Fornecedor removido com sucesso!');
 
-        $dataLog = [
-            'idCliente' => $idCliente,
-            'usuario' => $this->session->userdata('nome_admin'),
-            'tarefa' => 'Removeu o fornecedor',
-            'status' => $status
-        ];
-
-        $this->clientes_model->add('logs_cliente', $dataLog);
-
-        redirect(site_url('clientes/gerenciar/'));
+        redirect(site_url('clientes/visualizar/' . $idCliente));
     }
 
     public function adicionarLog()
     {
-        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
-            $this->session->set_flashdata('error', 'Você não tem permissão para adicionar Logs.');
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'aCliente')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para adicionar notas a clientes.');
             redirect(base_url());
         }
 
         $this->load->library('form_validation');
         $this->data['custom_error'] = '';
 
-        if ($this->form_validation->run('logs_cliente') == false) {
+        $idCliente = $this->input->post('idCliente');
+        $idContrato = $this->uri->segment(4);
+
+        if ($this->form_validation->run('notas_clientes') == false) {
             $this->data['custom_error'] = (validation_errors() ? '<div class="form_error">' . validation_errors() . '</div>' : false);
         } else {
-
-            $idCliente = set_value('idCliente');
-
             $data = [
-                'idCliente' => $idCliente,
                 'usuario' => set_value('usuario'),
-                'tarefa' => set_value('log'),
+                'nota' => set_value('nota'),
                 'etapa' => set_value('etapa'),
-                //'data' => date('Y-m-d'),
-                //'hora' => date('HH:MM:SS'),
-                //'fornecedor' => (set_value('fornecedor') == true ? 1 : 0),
+                'data' => date('d-m-Y'),
+                'hora' => date('H:i:s')
             ];
 
-            if ($this->clientes_model->add('logs_cliente', $data) == true) {
-                $this->session->set_flashdata('success', 'Nota adicionada adicionado com sucesso!');
-                log_info('Adicionou um Log no Cliente: ' . $idCliente);
-                redirect(site_url('clientes/visualizar/' . $data['idCliente']));
+            if ($this->clientes_model->adicionarLog($data, $idCliente, $idContrato) == true) {
+                $this->session->set_flashdata('success', 'Nota adicionada ao cliente com sucesso!');
+                log_info('Adicionou uma nota a um cliente.');
+                redirect(site_url('clientes/visualizar/' . $idCliente));
             } else {
                 $this->data['custom_error'] = '<div class="form_error"><p>Ocorreu um erro.</p></div>';
             }
         }
 
         $this->data['result'] = $this->clientes_model->getById($this->uri->segment(3));
+        $this->data['etapa_atual'] = $this->clientes_model->getEtapas();
         $this->data['view'] = 'clientes/adicionarLog';
 
         return $this->layout();
@@ -685,6 +658,39 @@ class Clientes extends MY_Controller
 
     }
 
+    public function excluirEndereco()
+    {
+
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para vincular endereços a clientes.');
+            redirect(base_url());
+        }
+
+        $idContrato = $this->uri->segment(3);
+        $idEndereco = $this->uri->segment(4);
+        $idCliente = $this->uri->segment(5);
+
+        if ($idContrato == null && $idEndereco == null) {
+            $this->session->set_flashdata('error', 'Erro ao tentar vincular endereço a cliente.');
+            redirect(site_url('clientes/gerenciar/'));
+        }
+
+        $this->clientes_model->excluirEndereco($idContrato, $idEndereco);
+        log_info('Excluiu um endereço de um cliente. ID' . $idCliente);
+
+        $data = [
+            'idCliente' => $idCliente,
+            'usuario' => $this->session->userdata("nome_admin"),
+            'tarefa' => "Vinculou um endereço ao contrato",
+        ];
+
+        $this->clientes_model->add('logs_cliente', $data);
+
+        $this->session->set_flashdata('success', 'Endereço excluído com sucesso!');
+        redirect(site_url('clientes/visualizar/' . $idCliente));
+
+    }
+
     public function adicionarEndereco()
     {
         if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'aCliente')) {
@@ -803,7 +809,7 @@ class Clientes extends MY_Controller
             $this->data['motivo_pendencia'] = $this->clientes_model->getMotivoPendencia($this->data['result']->idClientes)[0];
         }
 
-        $this->data['logs_clientes'] = $this->clientes_model->getLogs($this->data['result']->idClientes);
+        $this->data['notas_clientes'] = $this->clientes_model->getNotas($this->data['result']->idClientes);
         $this->data['enderecos'] = $this->clientes_model->getEnderecos($this->data['result']->idClientes);
 
         $this->data['os_cliente'] = $this->clientes_model->getOsCliente($this->data['result']->idClientes);

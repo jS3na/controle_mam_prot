@@ -103,7 +103,7 @@
                     <div class="span6">
                         <div class="control-group">
                             <?php echo form_hidden('idCliente', $result->idClientes) ?>
-                            <?php echo form_hidden('status', $result->status) ?>
+                            <?php echo form_hidden('etapa', $etapa_atual[$result->etapa]) ?>
                             <?php echo form_hidden('usuario', $this->session->userdata('nome_admin')) ?>
                         </div>
 

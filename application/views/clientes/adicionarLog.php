@@ -94,14 +94,14 @@
                     <div class="span6">
                         <div class="control-group">
                             <?php echo form_hidden('idCliente', $result->idClientes) ?>
-                            <?php echo form_hidden('status', $result->status) ?>
+                            <?php echo form_hidden('etapa', $etapa_atual[$result->etapa]) ?>
                             <?php echo form_hidden('usuario', $this->session->userdata('nome_admin')) ?>
                         </div>
                         <div class="span6" style="padding: 1%; margin-left: 0">
-                            <label for="log">
+                            <label for="nota">
                                 <h4>Nota</h4>
                             </label>
-                            <textarea class="span12 editor" name="log" id="log" cols="30" rows="5"></textarea>
+                            <textarea class="span12 editor" name="nota" id="nota" cols="30" rows="5"></textarea>
                         </div>
 
                     </div>
