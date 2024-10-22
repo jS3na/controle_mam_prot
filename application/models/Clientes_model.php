@@ -50,7 +50,7 @@ class Clientes_model extends CI_Model
         $query = $this->db->get();
 
         if ($query === false) {
-            echo '<script>console.log("Erro ao executar a query.")</script>';
+            echo '<script>console.log("Erro ao executar a query.");</script>';
             return false;
         }
 
@@ -69,7 +69,7 @@ class Clientes_model extends CI_Model
         $query = $this->db->get();
 
         if ($query === false) {
-            echo '<script>console.log("Erro ao executar a query.")</script>';
+            echo '<script>console.log("Erro ao executar a query.");</script>';
             return false;
         }
 
@@ -83,17 +83,61 @@ class Clientes_model extends CI_Model
         return [];
     }
 
-    public function getMotivoPendencia($idCliente)
+    public function getEnderecoById($idCliente, $idEndereco)
     {
+
+        $this->db->select('enderecos');
+        $this->db->from('clientes');
+        $this->db->where('idClientes', $idCliente);
+        $query = $this->db->get();
+
+        if ($query === false) {
+            echo '<script>console.log("Erro ao executar a query.");</script>';
+            return false;
+        }
+
+        $result = $query->row();
+
+        if ($result && isset($result->enderecos)) {
+            $enderecos = json_decode($result->enderecos, true);
+
+            if (is_array($enderecos)) {
+                foreach ($enderecos as $endereco) {
+                    if (isset($endereco['id']) && $endereco['id'] == $idEndereco) {
+                        return $endereco;
+                    }
+                }
+            }
+        }
+
+        return [];
+    }
+
+
+    public function getMotivoPendencia($idContrato)
+    {
+
         $this->db->select('*');
-        $this->db->from('pendencias');
-        $this->db->where('idCliente', $idCliente);
+        $this->db->from('contratos');
+        $this->db->where('idContratos', $idContrato);
         $this->db->limit(1);
         $query = $this->db->get();
 
-        echo '<script>console.log("' . json_encode($query->result()) . '")</script>';
+        if ($query->num_rows() > 0) {
+            $idPendencia = $query->row()->idPendencia;
+        } else {
+            return null;
+        }
+
+        $this->db->select('*');
+        $this->db->from('pendencias');
+        $this->db->where('idPendencia', $idPendencia);
+        $this->db->order_by('idPendencia', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get();
 
         return $query->result();
+
     }
 
     public function getNotas($idCliente)
@@ -104,7 +148,7 @@ class Clientes_model extends CI_Model
         $query = $this->db->get();
 
         if ($query === false) {
-            echo '<script>console.log("Erro ao executar a query.")</script>';
+            echo '<script>console.log("Erro ao executar a query.");</script>';
             return false;
         }
 
@@ -246,15 +290,15 @@ class Clientes_model extends CI_Model
         $this->db->update('parcelas');
     }
 
-    public function proximaEtapa($idCliente, $etapaAtual)
+    public function proximaEtapa($idContrato, $etapaAtual)
     {
-        $this->db->where('idClientes', $idCliente);
-        $this->db->set('etapa', $etapaAtual + 1);
+        $this->db->where('idContratos', $idContrato);
+        $this->db->set('idEtapa', $etapaAtual + 1);
 
-        $this->db->update('clientes');
+        $this->db->update('contratos');
     }
 
-    public function relatarPendencia($idCliente, $data)
+    public function relatarPendencia($idContrato, $idCliente, $data)
     {
         $this->db->where('idClientes', $idCliente);
         $this->db->set('pendencia', 1);
@@ -263,6 +307,13 @@ class Clientes_model extends CI_Model
 
         $this->db->insert('pendencias', $data);
         if ($this->db->affected_rows() == '1') {
+            $idPendencia = $this->db->insert_id('pendencias');
+
+            $this->db->where('idContratos', $idContrato);
+            $this->db->set('idPendencia', $idPendencia);
+
+            $this->db->update('contratos');
+
             return $this->db->insert_id('pendencias');
         }
 
@@ -306,6 +357,14 @@ class Clientes_model extends CI_Model
         return $query->result();
     }
 
+    public function getParcela($idParcela)
+    {
+        $this->db->where('idParcelas', $idParcela);
+        $this->db->limit(1);
+
+        return $this->db->get('parcelas')->row();
+    }
+
     public function vincularEndereco($idContrato, $acao, $dataAdicionar)
     {
         $table = 'contratos';
@@ -337,6 +396,13 @@ class Clientes_model extends CI_Model
             } elseif ($acao == 'adicionar') {
 
                 $enderecos = json_decode($cliente->enderecos, true);
+
+                $maiorId = 0;
+                if (!empty($enderecos)) {
+                    $maiorId = max(array_column($enderecos, 'id'));
+                }
+
+                $dataAdicionar['id'] = $maiorId + 1;
 
                 $enderecos[] = $dataAdicionar;
 
@@ -415,8 +481,6 @@ class Clientes_model extends CI_Model
         return false;
     }
 
-
-
     public function excluirEndereco($idContrato, $idEndereco)
     {
         $table = 'contratos';
@@ -467,7 +531,97 @@ class Clientes_model extends CI_Model
     {
         $this->db->insert($table, $data);
         if ($this->db->affected_rows() == '1') {
-            return $this->db->insert_id($table);
+
+            $idCliente = $this->db->insert_id($table);
+
+            $dataContrato = [
+                'idContratoCliente' => 1,
+                'idCliente' => $idCliente,
+                'idEtapa' => 1
+            ];
+
+            $this->db->insert('contratos', $dataContrato);
+
+            return $this->db->insert_id('contratos');
+
+        }
+
+        return false;
+    }
+
+    public function addContrato($idCliente)
+    {
+
+        $this->db->select('*');
+        $this->db->from('contratos');
+        $this->db->where('idCliente', $idCliente);
+        $this->db->order_by('idContratos', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get();
+
+
+        if ($query->num_rows() > 0) {
+            $ultimo_id = $query->row()->idContratoCliente;
+        } else {
+            $ultimo_id = 0;
+        }
+
+        $dataContrato = [
+            'idContratoCliente' => $ultimo_id + 1,
+            'idCliente' => $idCliente,
+            'idEtapa' => 1
+        ];
+
+        $this->db->insert('contratos', $dataContrato);
+    }
+
+
+    public function addArquivo($table, $data, $idContrato)
+    {
+        $this->db->insert($table, $data);
+        if ($this->db->affected_rows() == '1') {
+
+            $idArquivo = $this->db->insert_id($table);
+
+            $this->db->where('idContratos', $idContrato);
+            $query_contrato = $this->db->get('contratos');
+
+            if ($query_contrato->num_rows() > 0) {
+                $contrato = $query_contrato->row();
+
+                $idArquivos = json_decode($contrato->idArquivos, true) ?? [];
+
+                $idArquivos[] = $idArquivo;
+
+                log_info(json_encode($idArquivos));
+
+                $this->db->where('idContratos', $idContrato);
+                $this->db->update('contratos', ['idArquivos' => json_encode($idArquivos)]);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public function addFinanceiro($table, $data, $idContrato)
+    {
+        $this->db->insert($table, $data);
+        if ($this->db->affected_rows() == '1') {
+
+            $idFinanceiro = $this->db->insert_id($table);
+
+            $this->db->where('idContratos', $idContrato);
+            $query_contrato = $this->db->get('contratos');
+
+            if ($query_contrato->num_rows() > 0) {
+
+                $this->db->where('idContratos', $idContrato);
+                $this->db->update('contratos', ['idFinanceiro' => $idFinanceiro]);
+            }
+
+            return true;
         }
 
         return false;
@@ -485,6 +639,56 @@ class Clientes_model extends CI_Model
         return false;
     }
 
+    public function editEndereco($data, $idEndereco, $idCliente)
+    {
+
+        $this->db->select('enderecos');
+        $this->db->from('clientes');
+        $this->db->where('idClientes', $idCliente);
+        $query = $this->db->get();
+        
+        if ($query === false) {
+            return false;
+        }
+    
+        $result = $query->row();
+    
+        if ($result && isset($result->enderecos)) {
+
+            $enderecos = json_decode($result->enderecos, true);
+    
+            $atualizado = false;
+            foreach ($enderecos as &$endereco) {
+                if ($endereco['id'] == $idEndereco) {
+
+                    $endereco['rua'] = $data['rua'];
+                    $endereco['numero'] = $data['numero'];
+                    $endereco['complemento'] = $data['complemento'];
+                    $endereco['bairro'] = $data['bairro'];
+                    $endereco['cidade'] = $data['cidade'];
+                    $endereco['estado'] = $data['estado'];
+                    $endereco['cep'] = $data['cep'];
+                    $atualizado = true;
+                    break;
+                }
+            }
+    
+            if ($atualizado) {
+                $enderecosAtualizados = json_encode($enderecos);
+    
+                $this->db->where('idClientes', $idCliente);
+                $this->db->update('clientes', ['enderecos' => $enderecosAtualizados]);
+    
+                if ($this->db->affected_rows() >= 0) {
+                    return true;
+                }
+            }
+        }
+    
+        return false;
+    }
+    
+
     public function delete($table, $fieldID, $ID)
     {
         $this->db->where($fieldID, $ID);
@@ -499,15 +703,6 @@ class Clientes_model extends CI_Model
     public function count($table)
     {
         return $this->db->count_all($table);
-    }
-
-    public function getOsByCliente($id)
-    {
-        $this->db->where('clientes_id', $id);
-        $this->db->order_by('idOs', 'desc');
-        $this->db->limit(10);
-
-        return $this->db->get('os')->result();
     }
 
     /**

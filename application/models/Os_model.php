@@ -18,26 +18,26 @@ class Os_model extends CI_Model
 
         $this->db->order_by('idOs', 'desc');
         $this->db->limit($perpage, $start);
-    
+
         if ($where !== '') {
             $this->db->like($table . '.clientes_id', $where);
         }
-    
+
         if ($status != '') {
             $this->db->where($table . '.status_os', $status);
         }
-    
+
         if ($dataInicial != '') {
             $this->db->where($table . '.dataInicial >=', $dataInicial);
         }
-    
+
         if ($dataFinal != '') {
             $this->db->where($table . '.dataFinal <=', $dataFinal);
         }
-    
+
         $query = $this->db->get();
         $result = !$one ? $query->result() : $query->row();
-    
+
         return $result;
     }
 
@@ -95,7 +95,7 @@ class Os_model extends CI_Model
 
         $query = $this->db->get();
 
-        $result = ! $one ? $query->result() : $query->row();
+        $result = !$one ? $query->result() : $query->row();
 
         return $result;
     }
@@ -163,12 +163,33 @@ class Os_model extends CI_Model
         return $this->db->get()->result();
     }
 
-    public function add($table, $data, $returnId = false)
+    public function add($table, $data, $returnId = false, $idContrato)
     {
+
         $this->db->insert($table, $data);
+
         if ($this->db->affected_rows() == '1') {
             if ($returnId == true) {
-                return $this->db->insert_id($table);
+
+                $idOrdem = $this->db->insert_id($table);
+
+                $this->db->where('idContratos', $idContrato);
+                $query_contrato = $this->db->get('contratos');
+
+                if ($query_contrato->num_rows() > 0) {
+                    $contrato = $query_contrato->row();
+
+                    $idOrdens = json_decode($contrato->idOrdens, true) ?? [];
+
+                    $idOrdens[] = $idOrdem;
+
+                    log_info(json_encode($idOrdens));
+
+                    $this->db->where('idContratos', $idContrato);
+                    $this->db->update('contratos', ['idOrdens' => json_encode($idOrdens)]);
+                }
+
+                return $idOrdem;
             }
 
             return true;
@@ -176,6 +197,7 @@ class Os_model extends CI_Model
 
         return false;
     }
+
 
     public function edit($table, $data, $fieldID, $ID)
     {
@@ -365,7 +387,7 @@ class Os_model extends CI_Model
 
     public function isEditable($id = null)
     {
-        if (! $this->permission->checkPermission($this->session->userdata('permissao'), 'eOs')) {
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eOs')) {
             return false;
         }
         if ($os = $this->getById($id)) {

@@ -60,8 +60,9 @@ class Os extends MY_Controller
         $this->load->library('form_validation');
         $this->data['custom_error'] = '';
 
-        if($this->uri->segment(3)){
+        if($this->uri->segment(3) && $this->uri->segment(4)){
             $this->data['cliente'] = $this->os_model->getCliente('nomeCliente', urldecode($this->uri->segment(3)));
+            $idContrato = $this->uri->segment(4);
         }
         else{
             $this->data['cliente'] = false;
@@ -110,24 +111,15 @@ class Os extends MY_Controller
 
             log_message('debug', 'Valor de descricao_os: ' . $data['descricao_os']);
 
-            if (is_numeric($id = $this->os_model->add('os', $data, true))) {
+            if (is_numeric($id = $this->os_model->add('os', $data, true, $idContrato))) {
                 $this->load->model('mapos_model');
                 $this->load->model('usuarios_model');
 
                 $this->data['clienteInfo']  = $this->os_model->getCliente('idClientes', $data['clientes_id'])[0];
 
-                $dataLog = [
-                    'idCliente' => $data['clientes_id'],
-                    'usuario' => $this->input->post('usuario'),
-                    'tarefa' => 'Adicionou uma OS com o status ' . $data['status_os'],
-                    'etapa' => $this->data['clienteInfo']->etapa
-                ];
-
-                $this->os_model->add('logs_cliente', $dataLog);
-
                 $this->session->set_flashdata('success', 'O.S adicionada com sucesso!');
                 log_info('Adicionou uma OS. ID: ' . $id);
-                redirect(site_url('os/'));
+                redirect(site_url('clientes/visualizar/' . $this->input->post('clientes_id')));
             } else {
                 $this->data['custom_error'] = '<div class="alert">Ocorreu um erro.</div>';
             }

@@ -64,6 +64,8 @@ class Clientes extends MY_Controller
 
         $this->form_validation->set_rules('nome', '', 'trim|required');
 
+        $idContrato = $this->uri->segment(5);
+
         if ($this->form_validation->run() == false) {
             $this->data['custom_error'] = (validation_errors() ? '<div class="form_error">' . validation_errors() . '</div>' : false);
         } else {
@@ -101,7 +103,7 @@ class Clientes extends MY_Controller
                 'secao' => $secao,
             ];
 
-            if ($this->clientes_model->add('documentos', $data) == true) {
+            if ($this->clientes_model->addArquivo('documentos', $data, $idContrato) == true) {
                 $this->session->set_flashdata('success', 'Arquivo adicionado com sucesso!');
 
                 log_info('Adicionou um arquivo na seção ' . $secao . ' no cliente com o id ' . $idReferencia);
@@ -162,7 +164,7 @@ class Clientes extends MY_Controller
 
         //$senhaCliente = $this->input->post('senha') ? $this->input->post('senha') : preg_replace('/[^\p{L}\p{N}\s]/', '', set_value('documento'));
 
-        $cpf_cnpj = preg_replace('/[^\p{L}\p{N}\s]/', '', set_value('documento'));
+        //$cpf_cnpj = preg_replace('/[^\p{L}\p{N}\s]/', '', set_value('documento'));
 
         /*if (strlen($cpf_cnpj) == 11) {
             $pessoa_fisica = true;
@@ -180,19 +182,27 @@ class Clientes extends MY_Controller
                 'descricao' => set_value('descricao'),
                 'email' => set_value('email'),
                 //'senha' => password_hash($senhaCliente, PASSWORD_DEFAULT),
-                'rua' => set_value('rua'),
-                'numero' => set_value('numero'),
-                'complemento' => set_value('complemento'),
-                'bairro' => set_value('bairro'),
-                'cidade' => set_value('cidade'),
-                'estado' => set_value('estado'),
-                'cep' => set_value('cep'),
                 'dataCadastro' => date('Y-m-d'),
                 'responsavel' => set_value(field: 'responsavel'),
                 //'fornecedor' => (set_value('fornecedor') == true ? 1 : 0),
             ];
 
-            if ($this->clientes_model->add('clientes', $data) == true) {
+            $idContrato = $this->clientes_model->add('clientes', $data);
+
+            if ($idContrato) {
+
+                $dataEndereco = [
+                    'rua' => set_value('rua'),
+                    'numero' => set_value('numero'),
+                    'complemento' => set_value('complemento'),
+                    'bairro' => set_value('bairro'),
+                    'cidade' => set_value('cidade'),
+                    'estado' => set_value('estado'),
+                    'cep' => set_value('cep'),
+                ];
+
+                $this->clientes_model->vincularEndereco($idContrato, 'adicionar', $dataEndereco);
+                
                 $this->session->set_flashdata('success', 'Cliente adicionado com sucesso!');
                 log_info('Adicionou um cliente.');
                 redirect(site_url('clientes/'));
@@ -207,9 +217,15 @@ class Clientes extends MY_Controller
         return $this->layout();
     }
 
+    public function addContrato($idCliente) {
+        $this->clientes_model->addContrato($idCliente);
+        redirect(site_url('clientes/visualizar/' . $idCliente));
+    }
+    
+
     public function vincularFornecedor()
     {
-        echo "<script>console.log('entrou');</script>";
+        //echo "<script>console.log('entrou');</script>";
 
         if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
             $this->session->set_flashdata('error', 'Você não tem permissão para vincular o cliente ao fornecedor.');
@@ -263,6 +279,8 @@ class Clientes extends MY_Controller
         $this->load->library('form_validation');
         $this->data['custom_error'] = '';
 
+        $idContrato = $this->uri->segment(4);
+
         if ($this->form_validation->run('gerarFinanceiro') == false) {
             $this->data['custom_error'] = (validation_errors() ? '<div class="form_error"> Preencha os campos corretamente </div>' : false);
         } else {
@@ -292,7 +310,7 @@ class Clientes extends MY_Controller
                 'valorTotal' => $valorTotal,
             ];
 
-            if ($this->clientes_model->add('financeiro_cliente', $data) == true) {
+            if ($this->clientes_model->addFinanceiro('financeiro_cliente', $data, $idContrato) == true) {
 
                 $valorPorParcela = $valorTotal / $parcelas;
 
@@ -311,15 +329,6 @@ class Clientes extends MY_Controller
 
                     $this->clientes_model->add('parcelas', $dataParcela);
                 }
-
-                $dataLog = [
-                    'idCliente' => $idCliente,
-                    'usuario' => $this->session->userdata('nome_admin'),
-                    'tarefa' => 'Gerou um financeiro com ' . $parcelas . ' parcelas',
-                    'status' => $status
-                ];
-
-                $this->clientes_model->add('logs_cliente', $dataLog);
 
                 $this->session->set_flashdata('success', 'Financeiro gerado com sucesso!');
                 log_info('Gerou um financeiro a um cliente.');
@@ -345,6 +354,7 @@ class Clientes extends MY_Controller
         }
 
         $idParcela = $this->input->post('idParcela');
+
         $meio_pagamento = $this->input->post('meio_pagamento');
         $valorJuros = $this->input->post('valorJuros');
 
@@ -590,6 +600,102 @@ class Clientes extends MY_Controller
         return $this->layout();
     }
 
+    public function editarEndereco()
+    {
+        if (!$this->uri->segment(3) || !is_numeric($this->uri->segment(3))) {
+            $this->session->set_flashdata('error', 'Item não pode ser encontrado, parâmetro não foi passado corretamente.');
+            redirect('mapos');
+        }
+
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para editar endereços de clientes.');
+            redirect(base_url());
+        }
+
+        $idContrato = $this->uri->segment(3);
+        $idEndereco = $this->uri->segment(4);
+        $idCliente = $this->uri->segment(5);
+
+        $this->load->library('form_validation');
+        $this->data['custom_error'] = '';
+
+        if ($this->form_validation->run('endereco_cliente') == false) {
+            $this->data['custom_error'] = (validation_errors() ? '<div class="form_error">' . validation_errors() . '</div>' : false);
+        } else {
+
+                $idEndereco = $this->input->post('id');
+            
+                $data = [
+                    'id' => $idEndereco,
+                    'rua' => $this->input->post('rua'),
+                    'numero' => $this->input->post('numero'),
+                    'complemento' => $this->input->post('complemento'),
+                    'bairro' => $this->input->post('bairro'),
+                    'cidade' => $this->input->post('cidade'),
+                    'estado' => $this->input->post('estado'),
+                    'cep' => $this->input->post('cep'),
+                ];
+
+            if ($this->clientes_model->editEndereco($data, $idEndereco, $idCliente) == true) {
+                $this->session->set_flashdata('success', 'Cliente editado com sucesso!');
+                log_info('Alterou um endereço do cliente. ID' . $idCliente);
+                redirect(site_url('clientes/visualizar/') . $idCliente);
+            } else {
+                $this->data['custom_error'] = '<div class="form_error"><p>Ocorreu um erro</p></div>';
+            }
+        }
+
+        $this->data['result'] = $this->clientes_model->getEnderecoById($idCliente, $idEndereco);
+
+        $this->data['usuarios'] = $this->clientes_model->getUsuarios();
+        $this->data['etapa_atual'] = $this->clientes_model->getEtapas();
+        $this->data['view'] = 'clientes/editarEndereco';
+
+        return $this->layout();
+    }
+
+    public function editarParcela()
+    {
+        if (!$this->uri->segment(3) || !is_numeric($this->uri->segment(3))) {
+            $this->session->set_flashdata('error', 'Item não pode ser encontrado, parâmetro não foi passado corretamente.');
+            redirect('mapos');
+        }
+
+        if (!$this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
+            $this->session->set_flashdata('error', 'Você não tem permissão para editar parcelas de clientes.');
+            redirect(base_url());
+        }
+
+        $this->load->library('form_validation');
+        $this->data['custom_error'] = '';
+
+        $idParcela = $this->uri->segment(3);
+        $idCliente = $this->uri->segment(4);
+
+        if ($this->form_validation->run('parcelas') == false) {
+            $this->data['custom_error'] = (validation_errors() ? '<div class="form_error">' . validation_errors() . '</div>' : false);
+        } else {
+            $data = [
+                'codigo' => $this->input->post('codigo'),
+            ];
+
+
+            if ($this->clientes_model->edit('parcelas', $data, 'idParcelas', $idParcela) == true) {
+                $this->session->set_flashdata('success', 'Parcela editada com sucesso!');
+                log_info('Alterou uma parcela do cliente. ID' . $idCliente);
+                redirect(site_url('clientes/visualizar/') . $idCliente);
+            } else {
+                $this->data['custom_error'] = '<div class="form_error"><p>Ocorreu um erro</p></div>';
+            }
+
+        }
+
+        $this->data['result'] = $this->clientes_model->getParcela($idParcela);
+        $this->data['view'] = 'clientes/editarParcela';
+
+        return $this->layout();
+    }
+
     public function proximaEtapa()
     {
 
@@ -598,19 +704,22 @@ class Clientes extends MY_Controller
             redirect(base_url());
         }
 
-        $idCliente = $this->uri->segment(3);
+        $idContrato = $this->uri->segment(3);
         $etapaAtual = $this->uri->segment(4);
+        $idCliente = $this->uri->segment(5);
 
         $etapa_atual_nome = $this->input->post('etapa_atual');
         $etapa_promovida_nome = $this->input->post('etapa_promovida');
 
-        if ($idCliente == null || $etapaAtual == null) {
+        if ($idContrato == null || $etapaAtual == null) {
             $this->session->set_flashdata('error', 'Erro ao tentar promover cliente.');
             redirect(site_url('clientes/gerenciar/'));
         }
 
-        $this->clientes_model->proximaEtapa($idCliente, $etapaAtual);
-        log_info('Promoveu um cliente. ID' . $idCliente);
+        $this->clientes_model->proximaEtapa($idContrato, $etapaAtual);
+        log_info('Promoveu um cliente. Contrato ID' . $idContrato);
+
+        /*
 
         $data = [
             'idCliente' => $idCliente,
@@ -621,8 +730,10 @@ class Clientes extends MY_Controller
 
         $this->clientes_model->add('logs_cliente', $data);
 
+        */
+
         $this->session->set_flashdata('success', 'Cliente promovido com sucesso!');
-        redirect(site_url('clientes/editar/' . $idCliente));
+        redirect(site_url('clientes/visualizar/' . $idCliente));
 
     }
 
@@ -718,7 +829,7 @@ class Clientes extends MY_Controller
                 'cep' => set_value('cep'),
             ];
 
-            if ($this->clientes_model->vincularEndereco($idContrato, 'adicionar',  $data) == true) {
+            if ($this->clientes_model->vincularEndereco($idContrato, 'adicionar', $data) == true) {
                 $this->session->set_flashdata('success', 'Cliente adicionado com sucesso!');
                 log_info('Adicionou um cliente.');
                 redirect(site_url('clientes/'));
@@ -740,23 +851,25 @@ class Clientes extends MY_Controller
             redirect(base_url());
         }
 
-        $idCliente = $this->uri->segment(3);
+        $idContrato = $this->uri->segment(3);
+        $idCliente = $this->uri->segment(4);
 
         $etapa_atual_nome = $this->input->post('etapa_atual');
 
-        if ($idCliente == null || $etapa_atual_nome == null) {
+        if ($idContrato == null || $etapa_atual_nome == null) {
             $this->session->set_flashdata('error', 'Erro ao tentar relatar pendência de cliente.');
             redirect(site_url('clientes/gerenciar/'));
         }
 
         $dataPendencia = [
-            'idCliente' => $idCliente,
             'etapaPendencia' => $etapa_atual_nome,
             'justificativa' => $this->input->post('justificativa')
         ];
 
-        $this->clientes_model->relatarPendencia($idCliente, $dataPendencia);
-        log_info('Relatou uma pendência a um cliente. ID' . $idCliente);
+        $this->clientes_model->relatarPendencia($idContrato, $idCliente, $dataPendencia);
+        log_info('Relatou uma pendência a um contrato. ID' . $idContrato);
+
+        /*
 
         $data = [
             'idCliente' => $idCliente,
@@ -767,8 +880,10 @@ class Clientes extends MY_Controller
 
         $this->clientes_model->add('logs_cliente', $data);
 
+        */
+
         $this->session->set_flashdata('success', 'Pendência relatada com sucesso!');
-        redirect(site_url('clientes/editar/' . $idCliente));
+        redirect(site_url('clientes/visualizar/' . $idCliente));
 
     }
 
@@ -793,8 +908,10 @@ class Clientes extends MY_Controller
         foreach ($this->data['contratos'] as $contrato) {
             if ($contrato->idFinanceiro) {
                 $this->data['financeiro_cliente_' . $indexContratos] = $this->clientes_model->getFinanceiroCliente($contrato->idFinanceiro);
+                $this->data['parcelas_cliente_' . $indexContratos] = $this->clientes_model->getParcelasCliente($this->data['result']->idClientes);
             } else {
                 $this->data['financeiro_cliente_' . $indexContratos] = null;
+                $this->data['parcelas_cliente_' . $indexContratos] = null;
             }
             if ($contrato->idFornecedor) {
                 $this->data['fornecedor_cliente_' . $indexContratos] = $this->clientes_model->getFornecedorCliente($contrato->idFornecedor);
@@ -802,11 +919,11 @@ class Clientes extends MY_Controller
                 $this->data['fornecedor_cliente_' . $indexContratos] = null;
             }
 
-            $indexContratos++;
-        }
+            if ($contrato->idPendencia) {
+                $this->data['motivo_pendencia_' . $indexContratos] = $this->clientes_model->getMotivoPendencia($contrato->idContratos)[0];
+            }
 
-        if ($this->data['result']->pendencia) {
-            $this->data['motivo_pendencia'] = $this->clientes_model->getMotivoPendencia($this->data['result']->idClientes)[0];
+            $indexContratos++;
         }
 
         $this->data['notas_clientes'] = $this->clientes_model->getNotas($this->data['result']->idClientes);

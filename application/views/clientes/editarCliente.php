@@ -121,9 +121,26 @@
                                 <input id="email" type="text" name="email" value="<?php echo $result->email; ?>" />
                             </div>
                         </div>
+
+                        <div class="control-group" class="control-label">
+                            <label for="responsavel" class="control-label">Responsável</label>
+                            <div class="controls">
+                                <select id="responsavel" name="responsavel">
+                                    <option value="">Selecione...</option>
+
+                                    <?php foreach ($usuarios as $usuario) { ?>
+                                        <option value="<?php echo $usuario->nome ?>" <?php echo ($result->responsavel == $usuario->nome) ? 'selected' : ''; ?>>
+                                            <?php echo $usuario->nome ?>
+                                        </option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="span6">
+
+
+                    <!-- <div class="span6">
                         <div class="control-group" class="control-label">
                             <label for="cep" class="control-label">CEP</label>
                             <div class="controls">
@@ -222,21 +239,9 @@
                                         Tocantins</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div class="control-group" class="control-label">
-                            <label for="responsavel" class="control-label">Responsável</label>
-                            <div class="controls">
-                                <select id="responsavel" name="responsavel">
-                                    <option value="">Selecione...</option>
-
-                                    <?php foreach($usuarios as $usuario){ ?>
-                                    <option value="<?php echo $usuario->nome ?>" <?php echo ($result->responsavel == $usuario->nome) ? 'selected' : ''; ?>><?php echo $usuario->nome ?></option>
-                                    <?php } ?>
-                                </select>
-                            </div>
-                        </div>
-
+                    <!-- 
                         <div class="control-group" class="control-label">
                             <label for="etapa" class="control-label">Etapa</label>
                             <div class="controls">
@@ -250,33 +255,33 @@
                                     <span class="button__icon"><i class="bx bx-message-alt-error"></i></span><span
                                         class="button__text2" title="Relatar Pendência">Relatar Pendência</span></a>
                             </div>
-                        </div>
+                        </div> -->
 
-                        <div class="span6" style="padding: 1%; margin-left: 0">
-                            <label for="descricao">
-                                <h4>Descrição</h4>
-                            </label>
-                            <textarea class="span12 editor" name="descricao" id="descricao" cols="30"
-                                rows="5"><?php echo $result->descricao ?></textarea>
-                        </div>
-
+                    <div class="span6" style="padding: 1%; margin-left: 0">
+                        <label for="descricao">
+                            <h4>Descrição</h4>
+                        </label>
+                        <textarea class="span12 editor" name="descricao" id="descricao" cols="30"
+                            rows="5"><?php echo $result->descricao ?></textarea>
                     </div>
-                </div>
-                <div class="form-actions">
-                    <div class="span12">
-                        <div class="span6 offset3" style="display:flex;justify-content: center">
-                            <button type="submit" class="button btn btn-primary" style="max-width: 160px">
-                                <span class="button__icon"><i class="bx bx-sync"></i></span><span
-                                    class="button__text2">Atualizar</span></button>
-                            <a title="Voltar" class="button btn btn-warning"
-                                href="<?php echo site_url() ?>/clientes"><span class="button__icon"><i
-                                        class="bx bx-undo"></i></span> <span class="button__text2">Voltar</span></a>
-                        </div>
-                    </div>
-                </div>
-            </form>
 
-            <div id="modal-proxima-etapa" class="modal hide fade" tabindex="-1" role="dialog"
+                </div>
+        </div>
+        <div class="form-actions">
+            <div class="span12">
+                <div class="span6 offset3" style="display:flex;justify-content: center">
+                    <button type="submit" class="button btn btn-primary" style="max-width: 160px">
+                        <span class="button__icon"><i class="bx bx-sync"></i></span><span
+                            class="button__text2">Atualizar</span></button>
+                    <a title="Voltar" class="button btn btn-warning" href="<?php echo site_url() ?>/clientes"><span
+                            class="button__icon"><i class="bx bx-undo"></i></span> <span
+                            class="button__text2">Voltar</span></a>
+                </div>
+            </div>
+        </div>
+        </form>
+
+        <!-- <div id="modal-proxima-etapa" class="modal hide fade" tabindex="-1" role="dialog"
                 aria-labelledby="myModalLabel" aria-hidden="true">
                 <?php $url_proxima_etapa = base_url('index.php/clientes/proximaEtapa/' . $result->idClientes . '/' . $result->etapa); ?>
                 <form action="<?php echo $url_proxima_etapa; ?>" method="post">
@@ -286,9 +291,12 @@
                     </div>
                     <div class="modal-body">
                         <div class="control-group">
-                            <input type="hidden" name="etapa_atual" value="<?php echo $etapa_atual[$result->etapa]; ?>" />
-                            <input type="hidden" name="etapa_promovida" value="<?php echo $etapa_atual[$result->etapa + 1]; ?>" />
-                            <input type="hidden" name="usuario" value="<?php echo $this->session->userdata['nome_admin'] ?>" />
+                            <input type="hidden" name="etapa_atual"
+                                value="<?php echo $etapa_atual[$result->etapa]; ?>" />
+                            <input type="hidden" name="etapa_promovida"
+                                value="<?php echo $etapa_atual[$result->etapa + 1]; ?>" />
+                            <input type="hidden" name="usuario"
+                                value="<?php echo $this->session->userdata['nome_admin'] ?>" />
                         </div>
                         <p style="text-align: center">Deseja realmente promover esse Cliente de
                             <strong><?php echo $etapa_atual[$result->etapa]; ?></strong> a
@@ -316,8 +324,10 @@
                     </div>
                     <div class="modal-body">
                         <div class="control-group">
-                            <input type="hidden" name="etapa_atual" value="<?php echo $etapa_atual[$result->etapa]; ?>" />
-                            <input type="hidden" name="usuario" value="<?php echo $this->session->userdata['nome_admin'] ?>" />
+                            <input type="hidden" name="etapa_atual"
+                                value="<?php echo $etapa_atual[$result->etapa]; ?>" />
+                            <input type="hidden" name="usuario"
+                                value="<?php echo $this->session->userdata['nome_admin'] ?>" />
                         </div>
                         <p style="text-align: center">Digite abaixo a justificativa dessa pendência:</p>
 
@@ -334,13 +344,12 @@
                                 class="button__icon"><i class="bx bx-x"></i></span> <span
                                 class="button__text2">Cancelar</span></button>
                         <button class="button btn btn-success"><span class="button__icon"><i
-                                    class='bx bx-check'></i></span> <span
-                                class="button__text2">Relatar</span></button>
+                                    class='bx bx-check'></i></span> <span class="button__text2">Relatar</span></button>
                     </div>
                 </form>
-            </div>
-        </div>
+            </div> -->
     </div>
+</div>
 </div>
 <script src="<?php echo base_url() ?>assets/js/jquery.validate.js"></script>
 <script type="text/javascript">

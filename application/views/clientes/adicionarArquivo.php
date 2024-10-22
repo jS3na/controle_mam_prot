@@ -23,7 +23,7 @@
                     </div>
 
                     <div class="control-group">
-                        <label for="nome" class="control-label">Circuito + Nome do Cliente *</label>
+                        <label for="nome" class="control-label">Nome do Arquivo*</label>
                         <div class="controls">
                             <input id="nome" type="text" name="nome" />
                         </div>

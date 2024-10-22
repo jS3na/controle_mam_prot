@@ -18,6 +18,13 @@ $config = [
             ],
         ],
     ],
+    'endereco_cliente' => [
+        [
+            'field' => 'cidade',
+            'label' => 'cidade',
+            'rules' => 'required|trim',
+        ]
+    ],
     'notas_clientes' => [
         [
             'field' => 'nota',
@@ -29,6 +36,13 @@ $config = [
         [
             'field' => 'log',
             'label' => 'Nota',
+            'rules' => 'required|trim',
+        ],
+    ],
+    'parcelas' => [
+        [
+            'field' => 'codigo',
+            'label' => 'codigo',
             'rules' => 'required|trim',
         ],
     ],
