@@ -83,7 +83,7 @@
                 <span class="icon">
                     <i class="fas fa-user"></i>
                 </span>
-                <h5>Editar Cliente</h5>
+                <h5>Editar Parcela</h5>
             </div>
             <?php if ($custom_error != '') {
                 echo '<div class="alert alert-danger">' . $custom_error . '</div>';

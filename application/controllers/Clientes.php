@@ -238,12 +238,25 @@ class Clientes extends MY_Controller
         $idContrato = $this->uri->segment(4);
         $idCliente = $this->input->post('idCliente');
         $idFornecedor = $this->input->post('idFornecedor');
+        $nomeFornecedor = $this->input->post('fornecedor');
+        $etapa = $this->input->post('etapa');
 
         if ($this->form_validation->run('vincular') == false) {
             $this->data['custom_error'] = (validation_errors() ? '<div class="form_error"> Preencha o campo do Fornecedor corretamente </div>' : false);
         } else {
 
             if ($this->clientes_model->vincularFornecedor($idContrato, $idFornecedor) == true) {
+
+                $data = [
+                    'usuario' => $this->session->userdata('nome_admin'),
+                    'nota' => 'Vinculou o fornecedor ' . $nomeFornecedor,
+                    'etapa' => urldecode($etapa),
+                    'data' => date('d-m-Y'),
+                    'hora' => date('H:i:s')
+                ];
+        
+                $this->clientes_model->adicionarLog($data, $idCliente, $idContrato);
+
                 $this->session->set_flashdata('success', 'Fornecedor vinculado com sucesso!');
 
                 log_info('Vinculou um cliente a um fornecedor.');
@@ -279,7 +292,9 @@ class Clientes extends MY_Controller
         $this->load->library('form_validation');
         $this->data['custom_error'] = '';
 
+        $idCliente = $this->uri->segment(3);
         $idContrato = $this->uri->segment(4);
+        $etapa = $this->uri->segment(5);
 
         if ($this->form_validation->run('gerarFinanceiro') == false) {
             $this->data['custom_error'] = (validation_errors() ? '<div class="form_error"> Preencha os campos corretamente </div>' : false);
@@ -312,6 +327,16 @@ class Clientes extends MY_Controller
 
             if ($this->clientes_model->addFinanceiro('financeiro_cliente', $data, $idContrato) == true) {
 
+                $dataLog = [
+                    'usuario' => $this->session->userdata('nome_admin'),
+                    'nota' => 'Gerou um Financeiro',
+                    'etapa' => urldecode($etapa),
+                    'data' => date('d-m-Y'),
+                    'hora' => date('H:i:s')
+                ];
+        
+                $this->clientes_model->adicionarLog($dataLog, $idCliente, $idContrato);
+
                 $valorPorParcela = $valorTotal / $parcelas;
 
                 $vencimento = DateTime::createFromFormat('Y-m-d', $vencimentoFormatado);
@@ -339,8 +364,8 @@ class Clientes extends MY_Controller
 
         }
 
-        // Carrega os dados do cliente
         $this->data['result'] = $this->clientes_model->getById($this->uri->segment(3));
+        $this->data['etapa_atual'] = $this->clientes_model->getEtapas();
         $this->data['view'] = 'clientes/gerarFinanceiro';
 
         return $this->layout();
@@ -355,6 +380,10 @@ class Clientes extends MY_Controller
 
         $idParcela = $this->input->post('idParcela');
 
+        $idCliente = $this->uri->segment(3);
+        $idContrato = $this->uri->segment(4);
+        $etapa = $this->uri->segment(5);
+
         $meio_pagamento = $this->input->post('meio_pagamento');
         $valorJuros = $this->input->post('valorJuros');
 
@@ -365,6 +394,16 @@ class Clientes extends MY_Controller
 
         $this->clientes_model->aprovarParcela($idParcela, $meio_pagamento, $valorJuros);
         log_info('Aprovou uma parcela. ID' . $idParcela);
+
+        $data = [
+            'usuario' => $this->session->userdata('nome_admin'),
+            'nota' => 'Aprovou uma parcela',
+            'etapa' => urldecode($etapa),
+            'data' => date('d-m-Y'),
+            'hora' => date('H:i:s')
+        ];
+
+        $this->clientes_model->adicionarLog($data, $idCliente, $idContrato);
 
         $this->session->set_flashdata('success', 'Parcela aprovada com sucesso!');
         redirect(site_url('clientes/visualizar/' . $this->uri->segment(3)));
@@ -427,7 +466,9 @@ class Clientes extends MY_Controller
         }
 
         $idCliente = $this->uri->segment(3);
-        $status = $this->input->post('status');
+        $idContrato = $this->uri->segment(4);
+        $etapa = $this->uri->segment(5);
+
         if ($idCliente == null) {
             $this->session->set_flashdata('error', 'Erro ao tentar excluir financeiro.');
             redirect(site_url('clientes/gerenciar/'));
@@ -435,20 +476,22 @@ class Clientes extends MY_Controller
 
         $this->clientes_model->delete('financeiro_cliente', 'idCliente', $idCliente);
         $this->clientes_model->delete('parcelas', 'idCliente', $idCliente);
+        $this->clientes_model->excluirItemContrato('idFinanceiro', $idContrato);
         log_info('Removeu um financeiro do cliente: ' . $idCliente);
 
         $this->session->set_flashdata('success', 'Financeiro removido com sucesso!');
 
-        $dataLog = [
-            'idCliente' => $idCliente,
+        $data = [
             'usuario' => $this->session->userdata('nome_admin'),
-            'tarefa' => 'Removeu o financeiro',
-            'status' => $status
+            'nota' => 'Removeu o financeiro',
+            'etapa' => urldecode($etapa),
+            'data' => date('d-m-Y'),
+            'hora' => date('H:i:s')
         ];
 
-        $this->clientes_model->add('logs_cliente', $dataLog);
+        $this->clientes_model->adicionarLog($data, $idCliente, $idContrato);
 
-        redirect(site_url('clientes/gerenciar/'));
+        redirect(site_url('clientes/visualizar/' . $idCliente));
     }
 
     public function excluirFornecedor()
@@ -460,13 +503,24 @@ class Clientes extends MY_Controller
 
         $idCliente = $this->uri->segment(3);
         $idContrato = $this->uri->segment(4);
+        $etapa = $this->uri->segment(5);
         if ($idCliente == null && $idContrato == null) {
             $this->session->set_flashdata('error', 'Erro ao tentar excluir fornecedor.');
             redirect(site_url('clientes/gerenciar/'));
         }
 
-        $this->clientes_model->excluirFornecedor($idContrato);
+        $this->clientes_model->excluirItemContrato('idFornecedor', $idContrato);
         log_info('Removeu o fornecedor do cliente: ' . $idCliente);
+
+        $data = [
+            'usuario' => $this->session->userdata('nome_admin'),
+            'nota' => 'Removeu um fornecedor',
+            'etapa' => urldecode($etapa),
+            'data' => date('d-m-Y'),
+            'hora' => date('H:i:s')
+        ];
+
+        $this->clientes_model->adicionarLog($data, $idCliente, $idContrato);
 
         $this->session->set_flashdata('success', 'Fornecedor removido com sucesso!');
 
@@ -615,6 +669,7 @@ class Clientes extends MY_Controller
         $idContrato = $this->uri->segment(3);
         $idEndereco = $this->uri->segment(4);
         $idCliente = $this->uri->segment(5);
+        $etapa = $this->uri->segment(6);
 
         $this->load->library('form_validation');
         $this->data['custom_error'] = '';
@@ -637,6 +692,17 @@ class Clientes extends MY_Controller
                 ];
 
             if ($this->clientes_model->editEndereco($data, $idEndereco, $idCliente) == true) {
+
+                $data = [
+                    'usuario' => $this->session->userdata('nome_admin'),
+                    'nota' => 'Editou um endereço',
+                    'etapa' => urldecode($etapa),
+                    'data' => date('d-m-Y'),
+                    'hora' => date('H:i:s')
+                ];
+        
+                $this->clientes_model->adicionarLog($data, $idCliente, $idContrato);
+
                 $this->session->set_flashdata('success', 'Cliente editado com sucesso!');
                 log_info('Alterou um endereço do cliente. ID' . $idCliente);
                 redirect(site_url('clientes/visualizar/') . $idCliente);
@@ -707,6 +773,7 @@ class Clientes extends MY_Controller
         $idContrato = $this->uri->segment(3);
         $etapaAtual = $this->uri->segment(4);
         $idCliente = $this->uri->segment(5);
+        $etapa = $this->uri->segment(6);
 
         $etapa_atual_nome = $this->input->post('etapa_atual');
         $etapa_promovida_nome = $this->input->post('etapa_promovida');
@@ -719,18 +786,15 @@ class Clientes extends MY_Controller
         $this->clientes_model->proximaEtapa($idContrato, $etapaAtual);
         log_info('Promoveu um cliente. Contrato ID' . $idContrato);
 
-        /*
-
         $data = [
-            'idCliente' => $idCliente,
-            'usuario' => $this->input->post('usuario'),
-            'tarefa' => "Promoveu o cliente de " . $etapa_atual_nome . ' para ' . $etapa_promovida_nome,
-            'etapa' => $etapa_promovida_nome,
+            'usuario' => $this->session->userdata('nome_admin'),
+            'nota' => 'Promoveu o contrato de ' . $etapa_atual_nome . ' para ' . $etapa_promovida_nome,
+            'etapa' => urldecode($etapa),
+            'data' => date('d-m-Y'),
+            'hora' => date('H:i:s')
         ];
 
-        $this->clientes_model->add('logs_cliente', $data);
-
-        */
+        $this->clientes_model->adicionarLog($data, $idCliente, $idContrato);
 
         $this->session->set_flashdata('success', 'Cliente promovido com sucesso!');
         redirect(site_url('clientes/visualizar/' . $idCliente));
@@ -747,6 +811,7 @@ class Clientes extends MY_Controller
 
         $idContrato = $this->uri->segment(3);
         $idCliente = $this->uri->segment(4);
+        $etapa = $this->uri->segment(5);
 
         if ($idContrato == null) {
             $this->session->set_flashdata('error', 'Erro ao tentar vincular endereço a cliente.');
@@ -757,12 +822,14 @@ class Clientes extends MY_Controller
         log_info('Vinculou um endereço a um cliente. ID' . $idCliente);
 
         $data = [
-            'idCliente' => $idCliente,
-            'usuario' => $this->session->userdata("nome_admin"),
-            'tarefa' => "Vinculou um endereço ao contrato",
+            'usuario' => $this->session->userdata('nome_admin'),
+            'nota' => 'Vinculou o endereço principal',
+            'etapa' => urldecode($etapa),
+            'data' => date('d-m-Y'),
+            'hora' => date('H:i:s')
         ];
 
-        $this->clientes_model->add('logs_cliente', $data);
+        $this->clientes_model->adicionarLog($data, $idCliente, $idContrato);
 
         $this->session->set_flashdata('success', 'Endereco vinculado com sucesso!');
         redirect(site_url('clientes/visualizar/' . $idCliente));
@@ -780,6 +847,7 @@ class Clientes extends MY_Controller
         $idContrato = $this->uri->segment(3);
         $idEndereco = $this->uri->segment(4);
         $idCliente = $this->uri->segment(5);
+        $etapa = $this->uri->segment(6);
 
         if ($idContrato == null && $idEndereco == null) {
             $this->session->set_flashdata('error', 'Erro ao tentar vincular endereço a cliente.');
@@ -790,12 +858,14 @@ class Clientes extends MY_Controller
         log_info('Excluiu um endereço de um cliente. ID' . $idCliente);
 
         $data = [
-            'idCliente' => $idCliente,
-            'usuario' => $this->session->userdata("nome_admin"),
-            'tarefa' => "Vinculou um endereço ao contrato",
+            'usuario' => $this->session->userdata('nome_admin'),
+            'nota' => 'Excluiu um endereço',
+            'etapa' => urldecode($etapa),
+            'data' => date('d-m-Y'),
+            'hora' => date('H:i:s')
         ];
 
-        $this->clientes_model->add('logs_cliente', $data);
+        $this->clientes_model->adicionarLog($data, $idCliente, $idContrato);
 
         $this->session->set_flashdata('success', 'Endereço excluído com sucesso!');
         redirect(site_url('clientes/visualizar/' . $idCliente));
@@ -810,6 +880,8 @@ class Clientes extends MY_Controller
         }
 
         $idContrato = $this->uri->segment(3);
+        $idCliente = $this->uri->segment(4);
+        $etapa = $this->uri->segment(5);
 
         //echo '<script>console.log("' . $idContrato . '");</script>';
 
@@ -830,7 +902,18 @@ class Clientes extends MY_Controller
             ];
 
             if ($this->clientes_model->vincularEndereco($idContrato, 'adicionar', $data) == true) {
-                $this->session->set_flashdata('success', 'Cliente adicionado com sucesso!');
+
+                $data = [
+                    'usuario' => $this->session->userdata('nome_admin'),
+                    'nota' => 'Adicionou um endereço',
+                    'etapa' => urldecode($etapa),
+                    'data' => date('d-m-Y'),
+                    'hora' => date('H:i:s')
+                ];
+        
+                $this->clientes_model->adicionarLog($data, $idCliente, $idContrato);
+
+                $this->session->set_flashdata('success', 'Endereço adicionado com sucesso!');
                 log_info('Adicionou um cliente.');
                 redirect(site_url('clientes/'));
             } else {
@@ -853,6 +936,7 @@ class Clientes extends MY_Controller
 
         $idContrato = $this->uri->segment(3);
         $idCliente = $this->uri->segment(4);
+        $etapa = $this->uri->segment(5);
 
         $etapa_atual_nome = $this->input->post('etapa_atual');
 
@@ -869,18 +953,15 @@ class Clientes extends MY_Controller
         $this->clientes_model->relatarPendencia($idContrato, $idCliente, $dataPendencia);
         log_info('Relatou uma pendência a um contrato. ID' . $idContrato);
 
-        /*
-
         $data = [
-            'idCliente' => $idCliente,
-            'usuario' => $this->input->post('usuario'),
-            'tarefa' => "Relatou uma pendência a esse cliente",
-            'etapa' => $etapa_atual_nome,
+            'usuario' => $this->session->userdata('nome_admin'),
+            'nota' => 'Relatou uma pendência',
+            'etapa' => urldecode($etapa),
+            'data' => date('d-m-Y'),
+            'hora' => date('H:i:s')
         ];
 
-        $this->clientes_model->add('logs_cliente', $data);
-
-        */
+        $this->clientes_model->adicionarLog($data, $idCliente, $idContrato);
 
         $this->session->set_flashdata('success', 'Pendência relatada com sucesso!');
         redirect(site_url('clientes/visualizar/' . $idCliente));

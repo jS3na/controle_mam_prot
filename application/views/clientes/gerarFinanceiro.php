@@ -113,7 +113,7 @@
                                 <select id="parcelas" name="parcelas">
                                     <option value="">Selecione...</option>
                                     <option value="12">12</option>
-                                    <!--<option value="24">24</option>-->
+                                    <option value="24">24</option>
                                 </select>
                             </div>
                         </div>

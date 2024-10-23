@@ -200,11 +200,11 @@ class Clientes_model extends CI_Model
 
     }
 
-    public function excluirFornecedor($idContrato)
+    public function excluirItemContrato($idAlvo, $idContrato)
     {
 
         $this->db->where('idContratos', $idContrato);
-        $this->db->set('idFornecedor', null);
+        $this->db->set($idAlvo, null);
 
         $this->db->update('contratos');
 

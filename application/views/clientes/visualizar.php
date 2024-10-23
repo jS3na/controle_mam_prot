@@ -55,7 +55,7 @@
                                 <a data-parent="#collapse-group" href="#collapseGOne<?php echo $indexContrato; ?>"
                                     data-toggle="collapse">
                                     <span><i class='bx bx-user icon-cli'></i></span>
-                                    <h5 style="padding-left: 28px">Dados Pessoais do Cliente</h5>
+                                    <h5 style="padding-left: 28px">Dados do Cliente/Contrato</h5>
                                 </a>
                             </div>
                         </div>
@@ -98,22 +98,26 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="text-align: right"><strong>Etapa Atual</strong></td>
+                                            <td style="text-align: right; vertical-align: middle;"><strong>Etapa
+                                                    Atual</strong></td>
                                             <td>
-                                                <?php echo $etapa_atual[$contrato->idEtapa] ?>
-                                                <a href="#modal-proxima-etapa<?php echo $indexContrato; ?>"
-                                                    data-toggle="modal" role="button"
-                                                    class="button btn btn-mini btn-success" style="width: 230px">
-                                                    <span class="button__icon"><i
-                                                            class="bx bx-right-arrow-alt"></i></span><span
-                                                        class="button__text2" title="Próxima Etapa">Próxima Etapa</span></a>
-                                                <a href="#modal-relatar-pendencia<?php echo $indexContrato; ?>"
-                                                    data-toggle="modal" role="button" class="button btn btn-mini btn-danger"
-                                                    style="width: 230px">
-                                                    <span class="button__icon"><i
-                                                            class="bx bx-message-alt-error"></i></span><span
-                                                        class="button__text2" title="Relatar Pendência">Relatar
-                                                        Pendência</span></a>
+                                                <div style="display: flex; align-items: center;">
+                                                    <span><?php echo $etapa_atual[$contrato->idEtapa]; ?></span>
+                                                    <div style="margin-left: 20px;">
+                                                        <a href="#modal-proxima-etapa<?php echo $indexContrato; ?>"
+                                                            data-toggle="modal" role="button" class="btn btn-success"
+                                                            style="min-width: 150px; margin-right: 10px;">
+                                                            <i class="bx bx-right-arrow-alt"
+                                                                style="margin-right: 5px;"></i>Próxima Etapa
+                                                        </a>
+                                                        <a href="#modal-relatar-pendencia<?php echo $indexContrato; ?>"
+                                                            data-toggle="modal" role="button" class="btn btn-danger"
+                                                            style="min-width: 150px;">
+                                                            <i class="bx bx-message-alt-error"
+                                                                style="margin-right: 5px;"></i>Relatar Pendência
+                                                        </a>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr>
@@ -130,7 +134,7 @@
 
                     <div id="modal-proxima-etapa<?php echo $indexContrato; ?>" class="modal hide fade" tabindex="-1"
                         role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <?php $url_proxima_etapa = base_url('index.php/clientes/proximaEtapa/' . $contrato->idContratos . '/' . $contrato->idEtapa . '/' . $result->idClientes); ?>
+                        <?php $url_proxima_etapa = base_url('index.php/clientes/proximaEtapa/' . $contrato->idContratos . '/' . $contrato->idEtapa . '/' . $result->idClientes . '/' . $etapa_atual[$contrato->idEtapa]); ?>
                         <form action="<?php echo $url_proxima_etapa; ?>" method="post">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -163,7 +167,7 @@
 
                     <div id="modal-relatar-pendencia<?php echo $indexContrato; ?>" class="modal hide fade" tabindex="-1"
                         role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <?php $url_proxima_etapa = base_url('index.php/clientes/relatarPendencia/' . $contrato->idContratos . '/' . $result->idClientes); ?>
+                        <?php $url_proxima_etapa = base_url('index.php/clientes/relatarPendencia/' . $contrato->idContratos . '/' . $result->idClientes . '/' . $etapa_atual[$contrato->idEtapa]); ?>
                         <form action="<?php echo $url_proxima_etapa; ?>" method="post">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -228,7 +232,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="accordion-group widget-box">
+                    <div class="accordion-group widget-box" <?php echo !$contrato->idClienteEndereco ? 'style="background-color: #faa6a0;"' : null ?>>
                         <div class="accordion-heading">
                             <div class="widget-title">
                                 <a data-parent="#collapse-group" href="#collapseGThree<?php echo $indexContrato; ?>"
@@ -255,7 +259,7 @@
 
                                             <?php
                                             if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aCliente') && $contrato->idContratoCliente != 1) {
-                                                $url_excluir_endereco = base_url('index.php/clientes/excluirEndereco/' . $contrato->idContratos . '/' . $enderecos[$idEndereco]['id'] . '/' . $contrato->idCliente);
+                                                $url_excluir_endereco = base_url('index.php/clientes/excluirEndereco/' . $contrato->idContratos . '/' . $enderecos[$idEndereco]['id'] . '/' . $contrato->idCliente . '/' . $etapa_atual[$contrato->idEtapa]);
                                                 echo '<div style="margin: 1.2rem">
                                         <a href="' . $url_excluir_endereco . '"title="Excluir Endereço">
                                             <button type="button" class="button btn btn-mini btn-danger">
@@ -268,7 +272,7 @@
                                             }
 
                                             if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aCliente')) {
-                                                $url_editar_endereco = base_url('index.php/clientes/editarEndereco/' . $contrato->idContratos . '/' . $enderecos[$idEndereco]['id'] . '/' . $contrato->idCliente);
+                                                $url_editar_endereco = base_url('index.php/clientes/editarEndereco/' . $contrato->idContratos . '/' . $enderecos[$idEndereco]['id'] . '/' . $contrato->idCliente . '/' . $etapa_atual[$contrato->idEtapa]);
                                                 echo '<div style="margin: 1.2rem">
                                         <a href="' . $url_editar_endereco . '"title="Editar Endereço">
                                             <button type="button" class="button btn btn-mini btn-primary">
@@ -322,8 +326,8 @@
                                         <?php } else { ?>
                                             <?php
                                             if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente')) {
-                                                $url_adicionar_endereco = base_url('index.php/clientes/adicionarEndereco/' . $contrato->idContratos . '/' . $result->idClientes);
-                                                $url_vincular_endereco = base_url('index.php/clientes/vincularEndereco/' . $contrato->idContratos . '/' . $result->idClientes);
+                                                $url_adicionar_endereco = base_url('index.php/clientes/adicionarEndereco/' . $contrato->idContratos . '/' . $result->idClientes . '/' . $etapa_atual[$contrato->idEtapa]);
+                                                $url_vincular_endereco = base_url('index.php/clientes/vincularEndereco/' . $contrato->idContratos . '/' . $result->idClientes . '/' . $etapa_atual[$contrato->idEtapa]);
                                                 echo '<div style="margin: 1.2rem">
                                         <a href="' . $url_adicionar_endereco . '"title="Adicionar Endereço">
                                             <button type="button" class="button btn btn-mini btn-success">
@@ -331,9 +335,9 @@
                                                 <span class="button__text2">Adicionar Endereço</span>
                                             </button>
                                         </a>
-                                        <a href="' . $url_vincular_endereco . '"title="Adicionar Endereço">
+                                        <a href="' . $url_vincular_endereco . '"title="Vincular Endereço">
                                             <button type="button" class="button btn btn-mini btn-primary">
-                                                <span class="button__icon"><i class="bx bx-arrow"></i></span>
+                                                <span class="button__icon"><i class="bx bx-sort"></i></span>
                                                 <span class="button__text2">Vincular Endereço Principal</span>
                                             </button>
                                         </a>
@@ -427,16 +431,15 @@
                         </div>
                     </div>
 
-                    <div id="modal-excluir-fornecedor" class="modal hide fade" tabindex="-1" role="dialog"
-                        aria-labelledby="myModalLabel" aria-hidden="true">
-                        <?php $url_excluir_fornecedor = base_url('index.php/clientes/excluirFornecedor/' . $result->idClientes . '/' . $contrato->idContratos); ?>
+                    <div id="modal-excluir-fornecedor<?php echo $indexContrato; ?>" class="modal hide fade" tabindex="-1"
+                        role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <?php $url_excluir_fornecedor = base_url('index.php/clientes/excluirFornecedor/' . $result->idClientes . '/' . $contrato->idContratos . '/' . $etapa_atual[$contrato->idEtapa]); ?>
                         <form action="<?php echo $url_excluir_fornecedor; ?>" method="post">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                 <h5 id="myModalLabel">Remover Fornecedor</h5>
                             </div>
                             <div class="modal-body">
-                                <input type="hidden" id="idParcela" name="idParcela" value="" />
                                 <h5 style="text-align: center">Deseja realmente remover esse Fornecedor?</h5>
                                 <div class="control-group">
                                     <input type="hidden" name="status" value="<?php echo $result->status; ?>" />
@@ -453,7 +456,7 @@
                         </form>
                     </div>
 
-                    <div class="accordion-group widget-box">
+                    <div class="accordion-group widget-box" <?php echo !$contrato->idFornecedor ? 'style="background-color: #faa6a0;"' : null ?>>
                         <div class="accordion-heading">
                             <div class="widget-title">
                                 <a data-parent="#collapse-group" href="#collapseGFive<?php echo $indexContrato; ?>"
@@ -490,7 +493,7 @@
                             }
                             if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dCliente') && $$fornecedor_cliente_loop) {
                                 echo '<div class="" style="margin: 0.7rem; gap: 10px; display: flex; flex-direction: row">
-                                            <a href="#modal-excluir-fornecedor" data-toggle="modal" role="button" class="button btn btn-mini btn-danger" style="width: 230px">
+                                            <a href="#modal-excluir-fornecedor' . $indexContrato . '" data-toggle="modal" role="button" class="button btn btn-mini btn-danger" style="width: 230px">
                                                 <span class="button__icon"><i class="bx bx-trash"></i></span><span class="button__text2" title="Remover Financeiro">Remover Fornecedor</span></a>
                                         </div>
                                     ';
@@ -635,9 +638,9 @@
                         </div>
                     </div>
 
-                    <div id="modal-aprovar-parcela" class="modal hide fade" tabindex="-1" role="dialog"
+                    <div id="modal-aprovar-parcela<?php echo $indexContrato; ?>" class="modal hide fade" tabindex="-1" role="dialog"
                         aria-labelledby="myModalLabel" aria-hidden="true">
-                        <?php $url = base_url('index.php/clientes/aprovarParcela/' . $result->idClientes); ?>
+                        <?php $url = base_url('index.php/clientes/aprovarParcela/' . $result->idClientes . '/' . $contrato->idContratos . '/' . $etapa_atual[$contrato->idEtapa]); ?>
                         <form action="<?php echo $url; ?>" method="post">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -689,14 +692,13 @@
 
                     <div id="modal-excluir-financeiro" class="modal hide fade" tabindex="-1" role="dialog"
                         aria-labelledby="myModalLabel" aria-hidden="true">
-                        <?php $url_excluir_financeiro = base_url('index.php/clientes/excluirFinanceiro/' . $result->idClientes); ?>
+                        <?php $url_excluir_financeiro = base_url('index.php/clientes/excluirFinanceiro/' . $result->idClientes . '/' . $contrato->idContratos . '/' . $etapa_atual[$contrato->idEtapa]); ?>
                         <form action="<?php echo $url_excluir_financeiro; ?>" method="post">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                 <h5 id="myModalLabel">Remover Financeiro</h5>
                             </div>
                             <div class="modal-body">
-                                <input type="hidden" id="idParcela" name="idParcela" value="" />
                                 <h5 style="text-align: center">Deseja realmente remover esse Financeiro?</h5>
                                 <div class="control-group">
                                     <input type="hidden" name="status" value="<?php echo $result->status; ?>" />
@@ -753,7 +755,7 @@
                         </form>
                     </div>
 
-                    <div class="accordion-group widget-box">
+                    <div class="accordion-group widget-box" <?php echo !$contrato->idFinanceiro ? 'style="background-color: #faa6a0;"' : null ?>>
                         <div class="accordion-heading">
                             <div class="widget-title">
                                 <a data-parent="#collapse-group" href="#collapseGSix<?php echo $indexContrato; ?>"
@@ -768,7 +770,7 @@
                             $financeiro_cliente_loop = "financeiro_cliente_" . $indexContrato;
                             if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eCliente') && !$$financeiro_cliente_loop) {
                                 $parcelas_cliente_loop = null;
-                                $url = base_url('index.php/clientes/gerarFinanceiro/' . $result->idClientes . '/' . $contrato->idContratos);
+                                $url = base_url('index.php/clientes/gerarFinanceiro/' . $result->idClientes . '/' . $contrato->idContratos . '/' . $etapa_atual[$contrato->idEtapa]);
                                 echo '<div style="margin: 0.7rem">
                                             <a href="' . $url . '"title="Gerar Financeiro">
                                                 <button type="button" class="button btn btn-mini btn-success">
@@ -782,7 +784,7 @@
                             if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dCliente') && $$financeiro_cliente_loop) {
                                 $parcelas_cliente_loop = "parcelas_cliente_" . $indexContrato;
                                 echo '<div class="" style="margin: 0.7rem; gap: 10px; display: flex; flex-direction: row">
-                                            <a href="#modalParcelas" data-toggle="modal" role="button" class="button btn btn-mini btn-success" style="width: 230px">
+                                            <a href="#modalParcelas' . $indexContrato . '" data-toggle="modal" role="button" class="button btn btn-mini btn-success" style="width: 230px">
                                                 <span class="button__icon"><i class="bx bx-qr-scan"></i></span><span class="button__text2" title="Visualizar Parcelas">Visualizar Parcelas</span></a>
                                             <a href="#modal-excluir-financeiro" data-toggle="modal" role="button" class="button btn btn-mini btn-danger" style="width: 230px">
                                                 <span class="button__icon"><i class="bx bx-trash"></i></span><span class="button__text2" title="Remover Financeiro">Remover Financeiro</span></a>
@@ -839,7 +841,7 @@
                         </div>
                     </div>
 
-                    <div id="modalParcelas" class="modal hide fade" tabindex="-1" role="dialog"
+                    <div id="modalParcelas<?php echo $indexContrato; ?>" class="modal hide fade" tabindex="-1" role="dialog"
                         aria-labelledby="myModalLabel" aria-hidden="true">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
@@ -914,9 +916,10 @@
 
                                                 <td>
                                                     <?php if ($parc->pago == 0) { ?>
-                                                        <a class='aprovar-parcela' href="#modal-aprovar-parcela" role="button"
+                                                        <a class='aprovar-parcela'
+                                                            href="#modal-aprovar-parcela<?php echo $indexContrato; ?>" role="button"
                                                             data-toggle="modal" data-dismiss="modal"
-                                                            data-parcela="<?php echo $parc->idParcelas; ?>" style="margin-right: 1%"
+                                                            parcela="<?php echo $parc->idParcelas; ?>" style="margin-right: 1%"
                                                             class="btn-nwe" title="Aprovar Parcela">
                                                             <i class="bx bx-check bx-xs"></i>
                                                         </a>
@@ -1044,10 +1047,10 @@
                                                                         <?php endif ?>
 
                                                                         <?php /*if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eArquivo')): ?>
-                                                                                                                                                                                                                             <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
-                                                                                                                                                                                                                                 class="btn-nwe3" title="Editar"><i
-                                                                                                                                                                                                                                     class="bx bx-edit"></i></a>
-                                                                                                                                                                                                                         <?php endif*/ ?>
+                                                                                                                                                                                                                                                  <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
+                                                                                                                                                                                                                                                      class="btn-nwe3" title="Editar"><i
+                                                                                                                                                                                                                                                          class="bx bx-edit"></i></a>
+                                                                                                                                                                                                                                              <?php endif*/ ?>
 
                                                                         <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dArquivo')): ?>
                                                                             <a href="#modal-excluir" style="margin-right: 1%"
@@ -1202,10 +1205,10 @@
                                                                         <?php endif ?>
 
                                                                         <?php /*if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eArquivo')): ?>
-                                                                                                                                                                                                                                 <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
-                                                                                                                                                                                                                                     class="btn-nwe3" title="Editar"><i
-                                                                                                                                                                                                                                         class="bx bx-edit"></i></a>
-                                                                                                                                                                                                                             <?php endif*/ ?>
+                                                                                                                                                                                                                                                      <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
+                                                                                                                                                                                                                                                          class="btn-nwe3" title="Editar"><i
+                                                                                                                                                                                                                                                              class="bx bx-edit"></i></a>
+                                                                                                                                                                                                                                                  <?php endif*/ ?>
 
                                                                         <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dArquivo')): ?>
                                                                             <a href="#modal-excluir" style="margin-right: 1%"
@@ -1360,10 +1363,10 @@
                                                                         <?php endif ?>
 
                                                                         <?php /*if ($this->permission->checkPermission($this->session->userdata('permissao'), 'eArquivo')): ?>
-                                                                                                                                                                                                                                     <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
-                                                                                                                                                                                                                                         class="btn-nwe3" title="Editar"><i
-                                                                                                                                                                                                                                             class="bx bx-edit"></i></a>
-                                                                                                                                                                                                                                 <?php endif */ ?>
+                                                                                                                                                                                                                                                          <a href="<?= base_url() ?>index.php/arquivos/editar/<?= $r->idDocumentos ?>"
+                                                                                                                                                                                                                                                              class="btn-nwe3" title="Editar"><i
+                                                                                                                                                                                                                                                                  class="bx bx-edit"></i></a>
+                                                                                                                                                                                                                                                      <?php endif */ ?>
 
                                                                         <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'dArquivo')): ?>
                                                                             <a href="#modal-excluir" style="margin-right: 1%"
@@ -1440,16 +1443,11 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        document.addEventListener('click', function (event) {
-            if (event.target.classList.contains('aprovar-parcela')) {
-
-                var parcela = event.target.getAttribute('data-parcela');
-                console.log(parcela);
-                var idParcela = document.getElementById('idParcela');
-                idParcela.value = parcela;
-            }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on('click', 'a', function (event) {
+            var parcela = $(this).attr('parcela');
+            $('#idParcela').val(parcela);
         });
     });
 
