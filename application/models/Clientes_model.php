@@ -18,6 +18,12 @@ class Clientes_model extends CI_Model
         $this->db->order_by('idClientes', 'DESC');
         $this->db->limit($perpage, $start);
 
+        /*
+        if($this->session->userdata('nome_admin') == 'Admin'){
+            echo '<script>console.log("teste")</script>';
+        }
+        */
+
         if ($where !== '') {
             $this->db->group_start(); //inicia o grupo de filtros
             $this->db->like('nomeCliente', $where);
@@ -25,6 +31,7 @@ class Clientes_model extends CI_Model
             $this->db->or_like('email', $where);
             $this->db->or_like('telefone', $where);
             $this->db->or_like('cidade', $where);
+            $this->db->or_like('enderecos', $where);
             $this->db->group_end(); //fecha o grupo de filtros
         }
 
@@ -441,7 +448,7 @@ class Clientes_model extends CI_Model
             $this->db->where('idContratos', $idContrato);
             $query_contrato = $this->db->get('contratos');
 
-            if ($query_contrato->num_rows() > 0) {
+            if ($query_contrato->num_rows() > 0) { 
                 $contrato = $query_contrato->row();
 
                 $notas = json_decode($cliente->notas, true);

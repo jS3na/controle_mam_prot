@@ -64,8 +64,6 @@ class Clientes extends MY_Controller
 
         $this->form_validation->set_rules('nome', '', 'trim|required');
 
-        $idContrato = $this->uri->segment(5);
-
         if ($this->form_validation->run() == false) {
             $this->data['custom_error'] = (validation_errors() ? '<div class="form_error">' . validation_errors() . '</div>' : false);
         } else {
@@ -79,7 +77,9 @@ class Clientes extends MY_Controller
 
             $idReferencia = $this->uri->segment(3);
             $secao = $this->uri->segment(4);
-
+            $idContrato = $this->uri->segment(5);
+            $etapa = $this->uri->segment(6);
+            
             $data = $this->input->post('data');
 
             if ($data == null) {
@@ -104,6 +104,17 @@ class Clientes extends MY_Controller
             ];
 
             if ($this->clientes_model->addArquivo('documentos', $data, $idContrato) == true) {
+
+                $dataLog = [
+                    'usuario' => $this->session->userdata('nome_admin'),
+                    'nota' => 'Adicionou um arquivo na seção ' . $secao,
+                    'etapa' => urldecode($etapa),
+                    'data' => date('d-m-Y'),
+                    'hora' => date('H:i:s')
+                ];
+        
+                $this->clientes_model->adicionarLog($dataLog, $idReferencia, $idContrato);
+
                 $this->session->set_flashdata('success', 'Arquivo adicionado com sucesso!');
 
                 log_info('Adicionou um arquivo na seção ' . $secao . ' no cliente com o id ' . $idReferencia);

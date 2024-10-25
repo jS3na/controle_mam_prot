@@ -98,7 +98,6 @@
                             <th>CNPJ</th>
                             <th>Telefone</th>
                             <th>Email</th>
-                            <th>Cidade</th>
                             <th>Etapa</th>
                             <th>Ações</th>
                         </tr> 
@@ -117,7 +116,6 @@
                             echo '<td>' . $r->documento . '</td>';
                             echo '<td>' . $r->telefone . '</td>';
                             echo '<td>' . $r->email . '</td>';
-                            echo '<td>' . $r->cidade . '</td>';
                             echo '<td>' . $etapa_atual[$r->etapa] . '</td>';
 
                             echo '<td>';

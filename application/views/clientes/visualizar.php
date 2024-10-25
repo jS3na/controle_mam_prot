@@ -741,8 +741,8 @@
                                 </div>
 
                             </div>
-                            <div class="modal-footer" style="display:flex;justify-content: right">
-                                <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"
+                            <div class="modal-footer" style="display:flex;justify-content: right">w
+                                <button class="button btn btn-warning" data-dismiss="modal" aria-hidden="true"w
                                     style="min-width: 110px">
                                     <span class="button__icon"><i class="bx bx-x"></i></span>
                                     <span class="button__text2">Cancelar
@@ -972,7 +972,7 @@
                                     <form method="get" action="<?= current_url(); ?>">
                                         <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aArquivo')): ?>
                                             <div class="span3">
-                                                <a href="<?= base_url(); ?>index.php/clientes/adicionarArquivo/<?php echo $result->idClientes . '/financeiro/' . $contrato->idContratos ?>"
+                                                <a href="<?= base_url(); ?>index.php/clientes/adicionarArquivo/<?php echo $result->idClientes . '/financeiro/' . $contrato->idContratos . '/' . $etapa_atual[$contrato->idEtapa] ?>"
                                                     class="button btn btn-mini btn-success" style="max-width:150px">
                                                     <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span
                                                         class="button__text2">Arquivo</span></a>
@@ -1130,7 +1130,7 @@
                                     <form method="get" action="<?= current_url(); ?>">
                                         <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aArquivo')): ?>
                                             <div class="span3">
-                                                <a href="<?= base_url(); ?>index.php/clientes/adicionarArquivo/<?php echo $result->idClientes . '/evidencias/' . $contrato->idContratos ?>"
+                                                <a href="<?= base_url(); ?>index.php/clientes/adicionarArquivo/<?php echo $result->idClientes . '/evidencias/' . $contrato->idContratos . '/' . $etapa_atual[$contrato->idEtapa] ?>"
                                                     class="button btn btn-mini btn-success" style="max-width:150px">
                                                     <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span
                                                         class="button__text2">Arquivo</span></a>
@@ -1288,7 +1288,7 @@
                                     <form method="get" action="<?= current_url(); ?>">
                                         <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aArquivo')): ?>
                                             <div class="span3">
-                                                <a href="<?= base_url(); ?>index.php/clientes/adicionarArquivo/<?php echo $result->idClientes . '/contratos/' . $contrato->idContratos ?>"
+                                                <a href="<?= base_url(); ?>index.php/clientes/adicionarArquivo/<?php echo $result->idClientes . '/contratos/' . $contrato->idContratos . '/' . $etapa_atual[$contrato->idEtapa] ?>"
                                                     class="button btn btn-mini btn-success" style="max-width:150px">
                                                     <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span
                                                         class="button__text2">Arquivo</span></a>

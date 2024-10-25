@@ -26,8 +26,9 @@
         <?php if ($this->permission->checkPermission($this->session->userdata('permissao'), 'aOs')) { ?>
         <div class="topActions">
             <div class="span3">
-                <a href="<?php echo base_url(); ?>index.php/os/adicionar" class="button btn btn-mini btn-success" style="max-width: 160px">
-                    <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span class="button__text2">Adicinar O.S</span></a>
+
+                <!-- <a href="<?php echo base_url(); ?>index.php/os/adicionar" class="button btn btn-mini btn-success" style="max-width: 160px">
+                    <span class="button__icon"><i class='bx bx-plus-circle'></i></span><span class="button__text2">Adicinar O.S</span></a> -->
             </div>
         <?php
         } ?>
